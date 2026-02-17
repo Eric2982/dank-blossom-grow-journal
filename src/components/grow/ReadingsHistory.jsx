@@ -39,7 +39,7 @@ export default function ReadingsHistory({ readings, onDelete }) {
           <tbody>
             {readings.map((r) => (
               <tr key={r.id} className="border-b border-white/[0.03] hover:bg-white/[0.02] transition-colors">
-                <td className="px-4 py-3 text-white/50 text-xs">{format(new Date(r.created_date), "MMM d, h:mm a")}</td>
+                <td className="px-4 py-3 text-white/50 text-xs">{format(new Date(r.date || r.created_date), "MMM d, h:mm a")}</td>
                 <td className="text-center px-3 py-3">{stageEmoji[r.grow_stage] || "—"}</td>
                 <td className="text-right px-3 py-3 text-white/70 tabular-nums">{r.temperature ?? "—"}</td>
                 <td className="text-right px-3 py-3 text-white/70 tabular-nums">{r.humidity ?? "—"}</td>

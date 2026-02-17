@@ -21,10 +21,10 @@ export default function ReadingsChart({ readings }) {
   };
 
   const chartData = [...readings]
-    .sort((a, b) => new Date(a.created_date) - new Date(b.created_date))
+    .sort((a, b) => new Date(a.date || a.created_date) - new Date(b.date || b.created_date))
     .slice(-30)
     .map(r => ({
-      date: format(new Date(r.created_date), "MMM d, h:mm a"),
+      date: format(new Date(r.date || r.created_date), "MMM d, h:mm a"),
       temperature: r.temperature,
       humidity: r.humidity,
       ppfd: r.ppfd,

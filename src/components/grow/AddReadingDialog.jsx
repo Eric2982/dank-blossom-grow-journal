@@ -17,20 +17,21 @@ const fields = [
 
 export default function AddReadingDialog({ open, onOpenChange, onSubmit }) {
   const [form, setForm] = useState({
+    date: new Date().toISOString().slice(0, 16),
     temperature: "", humidity: "", ppfd: "", ec: "", vpd: "", ph: "",
     grow_stage: "vegetative", notes: ""
   });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const data = {};
+    const data = { date: new Date(form.date).toISOString() };
     fields.forEach(f => {
       if (form[f.key] !== "") data[f.key] = parseFloat(form[f.key]);
     });
     data.grow_stage = form.grow_stage;
     if (form.notes) data.notes = form.notes;
     onSubmit(data);
-    setForm({ temperature: "", humidity: "", ppfd: "", ec: "", vpd: "", ph: "", grow_stage: "vegetative", notes: "" });
+    setForm({ date: new Date().toISOString().slice(0, 16), temperature: "", humidity: "", ppfd: "", ec: "", vpd: "", ph: "", grow_stage: "vegetative", notes: "" });
   };
 
   return (
@@ -40,6 +41,16 @@ export default function AddReadingDialog({ open, onOpenChange, onSubmit }) {
           <DialogTitle className="text-white font-light text-xl">Log Reading</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label className="text-white/50 text-xs">Date & Time</Label>
+            <Input
+              type="datetime-local"
+              value={form.date}
+              onChange={(e) => setForm({ ...form, date: e.target.value })}
+              className="bg-white/5 border-white/10 text-white mt-1"
+              required
+            />
+          </div>
           <div className="grid grid-cols-2 gap-3">
             {fields.map(f => (
               <div key={f.key}>
