@@ -1,0 +1,95 @@
+import React, { useState } from "react";
+import { ChevronDown, Leaf, AlertTriangle, BookOpen, Lightbulb } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+
+const sections = [
+  {
+    id: "vpd",
+    icon: Lightbulb,
+    title: "Understanding VPD",
+    color: "text-violet-400",
+    content: `**Vapor Pressure Deficit (VPD)** measures the difference between the moisture in the air and how much moisture the air can hold when saturated.\n\n**Ideal Ranges:**\n- Seedling / Clone: 0.4–0.8 kPa\n- Vegetative: 0.8–1.2 kPa\n- Early Flower: 1.0–1.5 kPa\n- Late Flower: 1.2–1.6 kPa\n\n**Why it matters:** VPD directly affects transpiration rate. Too low = risk of mold. Too high = plants close stomata and stop growing.`
+  },
+  {
+    id: "ppfd",
+    icon: Lightbulb,
+    title: "PPFD & Light",
+    color: "text-yellow-400",
+    content: `**Photosynthetic Photon Flux Density (PPFD)** measures the amount of usable light reaching your canopy.\n\n**Ideal Ranges:**\n- Seedlings: 100–300 µmol/m²/s\n- Vegetative: 400–600 µmol/m²/s\n- Flowering: 600–900 µmol/m²/s\n\n**DLI (Daily Light Integral):** Aim for 25–40 mol/m²/day during flower. Calculate: PPFD × 3600 × hours ÷ 1,000,000.`
+  },
+  {
+    id: "ec",
+    icon: Lightbulb,
+    title: "EC & Nutrients",
+    color: "text-emerald-400",
+    content: `**Electrical Conductivity (EC)** measures the total dissolved salts in your nutrient solution.\n\n**Ideal Ranges:**\n- Seedling: 0.5–0.8 mS/cm\n- Early Veg: 0.8–1.2 mS/cm\n- Late Veg: 1.2–1.6 mS/cm\n- Flowering: 1.6–2.2 mS/cm\n- Late Flower: 1.0–1.6 mS/cm\n\n**Tip:** Always measure runoff EC. If runoff EC is much higher than input, flush your medium.`
+  },
+  {
+    id: "deficiencies",
+    icon: AlertTriangle,
+    title: "Common Deficiencies",
+    color: "text-rose-400",
+    content: `**Nitrogen (N):** Lower leaves turn pale yellow, then fall off. Common in late veg/early flower.\n\n**Phosphorus (P):** Dark green leaves with purple stems. Slow growth. Common in flower.\n\n**Potassium (K):** Brown/burnt leaf edges (tips and margins). Older leaves affected first.\n\n**Calcium (Ca):** Brown spots on new growth, curling leaf tips. Common in coco coir.\n\n**Magnesium (Mg):** Interveinal chlorosis (yellowing between veins) on older leaves.\n\n**Iron (Fe):** Interveinal chlorosis on NEW growth. Usually caused by high pH.\n\n**Tip:** Most deficiencies are caused by pH lockout, not lack of nutrients. Check pH first!`
+  },
+  {
+    id: "ph",
+    icon: BookOpen,
+    title: "pH Guide",
+    color: "text-pink-400",
+    content: `**pH** determines nutrient availability. Wrong pH = lockout even with plenty of nutrients.\n\n**Ideal Ranges:**\n- Soil: 6.0–7.0 (sweet spot: 6.5)\n- Coco / Hydro: 5.5–6.5 (sweet spot: 5.8–6.0)\n\n**Tip:** Let pH drift slightly between waterings (e.g., 5.8 → 6.2) so all nutrients get a chance to be absorbed at their optimal pH range.`
+  },
+  {
+    id: "environment",
+    icon: Leaf,
+    title: "Climate Control",
+    color: "text-blue-400",
+    content: `**Temperature:**\n- Veg: 70–85°F (lights on), 65–75°F (lights off)\n- Flower: 65–80°F (lights on), 60–70°F (lights off)\n- Late flower: drop to 60–65°F at night for color expression\n\n**Humidity:**\n- Seedling: 65–70%\n- Veg: 50–60%\n- Flower: 40–50%\n- Late Flower: 35–45%\n\n**Airflow:** Ensure gentle leaf movement. Stagnant air = mold & weak stems.`
+  },
+];
+
+function AccordionItem({ section }) {
+  const [open, setOpen] = useState(false);
+  const Icon = section.icon;
+
+  return (
+    <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
+      <button
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center gap-3 p-5 text-left hover:bg-white/[0.02] transition-colors"
+      >
+        <Icon className={`w-5 h-5 ${section.color} shrink-0`} />
+        <span className="text-white font-medium text-sm flex-1">{section.title}</span>
+        <ChevronDown className={`w-4 h-4 text-white/30 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            className="overflow-hidden"
+          >
+            <div className="px-5 pb-5 pt-0">
+              <div className="text-white/50 text-sm leading-relaxed whitespace-pre-line">
+                {section.content.split(/\*\*(.*?)\*\*/g).map((part, i) =>
+                  i % 2 === 1 ? <strong key={i} className="text-white/80">{part}</strong> : part
+                )}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+export default function LearnSection() {
+  return (
+    <div className="space-y-3">
+      {sections.map(section => (
+        <AccordionItem key={section.id} section={section} />
+      ))}
+    </div>
+  );
+}
