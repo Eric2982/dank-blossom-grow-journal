@@ -51,6 +51,7 @@ import Dashboard from './pages/Dashboard';
 import Nutrients from './pages/Nutrients';
 import Store from './pages/Store';
 import Learn from './pages/Learn';
+import Summary from './pages/Summary';
 import __Layout from './Layout.jsx';
 
 
@@ -59,6 +60,7 @@ export const PAGES = {
     "Nutrients": Nutrients,
     "Store": Store,
     "Learn": Learn,
+    "Summary": Summary,
 }
 
 export const pagesConfig = {
