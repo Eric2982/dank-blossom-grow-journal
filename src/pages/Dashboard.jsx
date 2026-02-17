@@ -7,6 +7,7 @@ import ReadingCard from "../components/grow/ReadingCard";
 import ReadingsChart from "../components/grow/ReadingsChart";
 import ReadingsHistory from "../components/grow/ReadingsHistory";
 import AddReadingDialog from "../components/grow/AddReadingDialog";
+import WateringReminders from "../components/grow/WateringReminders";
 
 export default function Dashboard() {
   const [showForm, setShowForm] = useState(false);
@@ -53,6 +54,9 @@ export default function Dashboard() {
 
       {/* Trend Chart */}
       <ReadingsChart readings={readings} />
+
+      {/* Watering Reminders */}
+      <WateringReminders />
 
       {/* History Table */}
       <div>

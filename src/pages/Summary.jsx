@@ -3,7 +3,6 @@ import { base44 } from "@/api/base44Client";
 import { useQuery } from "@tanstack/react-query";
 import { Thermometer, Droplets, Sun, Zap, Wind, FlaskConical, Activity } from "lucide-react";
 import StatCard from "../components/grow/StatCard";
-import WateringReminders from "../components/grow/WateringReminders";
 
 export default function Summary() {
   const { data: readings = [] } = useQuery({
@@ -122,8 +121,6 @@ export default function Summary() {
           </div>
         </>
       )}
-
-      <WateringReminders />
     </div>
   );
 }
