@@ -1,7 +1,42 @@
 import React from "react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { format } from "date-fns";
-import { TrendingUp, TrendingDown, Activity } from "lucide-react";
+import { TrendingUp, TrendingDown, Activity, AlertTriangle, CheckCircle } from "lucide-react";
+
+const ranges = {
+  temp: { low: 65, optimal: [70, 85], high: 90, unit: "°F" },
+  humidity: { low: 30, optimal: [40, 60], high: 70, unit: "%" },
+  vpd: { low: 0.4, optimal: [0.8, 1.5], high: 2.0, unit: "kPa" }
+};
+
+const getRange = (value, metric) => {
+  const range = ranges[metric];
+  if (!value || !range) return null;
+  if (value < range.low) return "low";
+  if (value > range.high) return "high";
+  if (value >= range.optimal[0] && value <= range.optimal[1]) return "optimal";
+  return "suboptimal";
+};
+
+const getRangeColor = (status) => {
+  switch (status) {
+    case "optimal": return "text-green-400";
+    case "low": return "text-blue-400";
+    case "high": return "text-orange-400";
+    case "suboptimal": return "text-yellow-400";
+    default: return "text-white/40";
+  }
+};
+
+const getRangeIcon = (status) => {
+  switch (status) {
+    case "optimal": return CheckCircle;
+    case "low":
+    case "high":
+    case "suboptimal": return AlertTriangle;
+    default: return Activity;
+  }
+};
 
 export default function StrainAnalytics({ readings }) {
   if (!readings || readings.length === 0) {
@@ -47,23 +82,35 @@ export default function StrainAnalytics({ readings }) {
         
         <div className="grid grid-cols-3 gap-4 mb-6">
           {[
-            { label: "Temperature", value: chartData[chartData.length - 1]?.temp, unit: "°F", trend: trends.temp, color: "text-orange-400" },
-            { label: "Humidity", value: chartData[chartData.length - 1]?.humidity, unit: "%", trend: trends.humidity, color: "text-blue-400" },
-            { label: "VPD", value: chartData[chartData.length - 1]?.vpd, unit: "kPa", trend: trends.vpd, color: "text-purple-400" },
-          ].map(stat => (
-            <div key={stat.label} className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
-              <div className="text-white/40 text-xs mb-1">{stat.label}</div>
-              <div className={`text-2xl font-light ${stat.color}`}>
-                {stat.value?.toFixed(1) || "—"} <span className="text-sm">{stat.unit}</span>
-              </div>
-              {stat.trend !== 0 && (
-                <div className={`flex items-center gap-1 mt-2 text-xs ${parseFloat(stat.trend) > 0 ? 'text-green-400' : 'text-red-400'}`}>
-                  {parseFloat(stat.trend) > 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                  <span>{Math.abs(stat.trend)}% vs last week</span>
+            { label: "Temperature", value: chartData[chartData.length - 1]?.temp, metric: "temp", trend: trends.temp, color: "text-orange-400" },
+            { label: "Humidity", value: chartData[chartData.length - 1]?.humidity, metric: "humidity", trend: trends.humidity, color: "text-blue-400" },
+            { label: "VPD", value: chartData[chartData.length - 1]?.vpd, metric: "vpd", trend: trends.vpd, color: "text-purple-400" },
+          ].map(stat => {
+            const rangeStatus = getRange(stat.value, stat.metric);
+            const RangeIcon = getRangeIcon(rangeStatus);
+            return (
+              <div key={stat.label} className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+                <div className="flex items-center justify-between mb-1">
+                  <div className="text-white/40 text-xs">{stat.label}</div>
+                  {rangeStatus && (
+                    <div className={`flex items-center gap-1 ${getRangeColor(rangeStatus)}`}>
+                      <RangeIcon className="w-3 h-3" />
+                      <span className="text-xs capitalize">{rangeStatus}</span>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
+                <div className={`text-2xl font-light ${stat.color}`}>
+                  {stat.value?.toFixed(1) || "—"} <span className="text-sm">{ranges[stat.metric]?.unit}</span>
+                </div>
+                {stat.trend !== 0 && (
+                  <div className={`flex items-center gap-1 mt-2 text-xs ${parseFloat(stat.trend) > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                    {parseFloat(stat.trend) > 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
+                    <span>{Math.abs(stat.trend)}% vs last week</span>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
 
         <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">

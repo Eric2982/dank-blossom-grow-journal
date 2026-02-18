@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Trash2, Scan } from "lucide-react";
+import { base44 } from "@/api/base44Client";
 
 const nutrientTypes = [
   { value: "base", label: "Base" },
@@ -20,7 +21,7 @@ const nutrientTypes = [
   { value: "other", label: "Other" },
 ];
 
-export default function NutrientForm({ open, onOpenChange, onSubmit }) {
+export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient }) {
   const [nutrients, setNutrients] = useState([{
     nutrient_name: "", brand: "", volume_ml: "", nutrient_type: "base"
   }]);
@@ -28,6 +29,20 @@ export default function NutrientForm({ open, onOpenChange, onSubmit }) {
   const [growStage, setGrowStage] = useState("vegetative");
   const [notes, setNotes] = useState("");
   const [scanningIndex, setScanningIndex] = useState(null);
+
+  useEffect(() => {
+    if (nutrient) {
+      setNutrients([{
+        nutrient_name: nutrient.nutrient_name || "",
+        brand: nutrient.brand || "",
+        volume_ml: nutrient.volume_ml?.toString() || "",
+        nutrient_type: nutrient.nutrient_type || "base"
+      }]);
+      setWaterVolume(nutrient.water_volume_liters?.toString() || "");
+      setGrowStage(nutrient.grow_stage || "vegetative");
+      setNotes(nutrient.notes || "");
+    }
+  }, [nutrient]);
 
   const addNutrient = () => {
     setNutrients([...nutrients, { nutrient_name: "", brand: "", volume_ml: "", nutrient_type: "base" }]);
@@ -76,29 +91,45 @@ export default function NutrientForm({ open, onOpenChange, onSubmit }) {
       return;
     }
 
-    onSubmit({
-      nutrients: validNutrients.map(n => ({
-        nutrient_name: n.nutrient_name,
-        brand: n.brand || undefined,
-        volume_ml: parseFloat(n.volume_ml),
+    if (nutrient) {
+      // Single nutrient edit
+      onSubmit({
+        nutrient_name: validNutrients[0].nutrient_name,
+        brand: validNutrients[0].brand || undefined,
+        volume_ml: parseFloat(validNutrients[0].volume_ml),
         water_volume_liters: waterVolume ? parseFloat(waterVolume) : undefined,
-        nutrient_type: n.nutrient_type,
+        nutrient_type: validNutrients[0].nutrient_type,
         grow_stage: growStage,
         notes: notes || undefined,
-      }))
-    });
+      });
+    } else {
+      // Multiple nutrients create
+      onSubmit({
+        nutrients: validNutrients.map(n => ({
+          nutrient_name: n.nutrient_name,
+          brand: n.brand || undefined,
+          volume_ml: parseFloat(n.volume_ml),
+          water_volume_liters: waterVolume ? parseFloat(waterVolume) : undefined,
+          nutrient_type: n.nutrient_type,
+          grow_stage: growStage,
+          notes: notes || undefined,
+        }))
+      });
+    }
 
-    setNutrients([{ nutrient_name: "", brand: "", volume_ml: "", nutrient_type: "base" }]);
-    setWaterVolume("");
-    setGrowStage("vegetative");
-    setNotes("");
+    if (!nutrient) {
+      setNutrients([{ nutrient_name: "", brand: "", volume_ml: "", nutrient_type: "base" }]);
+      setWaterVolume("");
+      setGrowStage("vegetative");
+      setNotes("");
+    }
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-zinc-900 border-white/10 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-white font-light text-xl">Log Nutrients</DialogTitle>
+          <DialogTitle className="text-white font-light text-xl">{nutrient ? "Edit" : "Log"} Nutrients</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-3">
@@ -172,10 +203,12 @@ export default function NutrientForm({ open, onOpenChange, onSubmit }) {
             ))}
           </div>
 
-          <Button type="button" onClick={addNutrient} variant="outline" size="sm"
-            className="border-white/10 text-white hover:bg-white/5 w-full">
-            <Plus className="w-3 h-3 mr-2" /> Add Another Nutrient
-          </Button>
+          {!nutrient && (
+            <Button type="button" onClick={addNutrient} variant="outline" size="sm"
+              className="border-white/10 text-white hover:bg-white/5 w-full">
+              <Plus className="w-3 h-3 mr-2" /> Add Another Nutrient
+            </Button>
+          )}
 
           <div className="grid grid-cols-2 gap-3">
             <div>
@@ -215,7 +248,7 @@ export default function NutrientForm({ open, onOpenChange, onSubmit }) {
           </div>
 
           <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-500 text-white">
-            Log Nutrients
+            {nutrient ? "Update" : "Log"} Nutrients
           </Button>
         </form>
       </DialogContent>
