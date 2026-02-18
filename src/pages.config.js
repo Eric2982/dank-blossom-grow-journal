@@ -54,6 +54,7 @@ import Nutrients from './pages/Nutrients';
 import Store from './pages/Store';
 import StrainDetail from './pages/StrainDetail';
 import Summary from './pages/Summary';
+import Premium from './pages/Premium';
 import __Layout from './Layout.jsx';
 
 
@@ -65,6 +66,7 @@ export const PAGES = {
     "Store": Store,
     "StrainDetail": StrainDetail,
     "Summary": Summary,
+    "Premium": Premium,
 }
 
 export const pagesConfig = {
