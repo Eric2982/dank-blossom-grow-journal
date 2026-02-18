@@ -55,6 +55,7 @@ import Premium from './pages/Premium';
 import Store from './pages/Store';
 import StrainDetail from './pages/StrainDetail';
 import Summary from './pages/Summary';
+import Settings from './pages/Settings';
 import __Layout from './Layout.jsx';
 
 
@@ -67,6 +68,7 @@ export const PAGES = {
     "Store": Store,
     "StrainDetail": StrainDetail,
     "Summary": Summary,
+    "Settings": Settings,
 }
 
 export const pagesConfig = {

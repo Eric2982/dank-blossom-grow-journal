@@ -38,11 +38,11 @@ const Button = React.forwardRef(({ className, variant, size, asChild = false, ..
   const Comp = asChild ? Slot : "button"
   return (
     (<Comp
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(buttonVariants({ variant, size, className }), "select-none min-h-[44px]")}
       ref={ref}
       {...props} />)
   );
-})
-Button.displayName = "Button"
+  })
+  Button.displayName = "Button"
 
 export { Button, buttonVariants }
