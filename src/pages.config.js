@@ -51,10 +51,10 @@ import Chat from './pages/Chat';
 import Dashboard from './pages/Dashboard';
 import Learn from './pages/Learn';
 import Nutrients from './pages/Nutrients';
+import Premium from './pages/Premium';
 import Store from './pages/Store';
 import StrainDetail from './pages/StrainDetail';
 import Summary from './pages/Summary';
-import Premium from './pages/Premium';
 import __Layout from './Layout.jsx';
 
 
@@ -63,10 +63,10 @@ export const PAGES = {
     "Dashboard": Dashboard,
     "Learn": Learn,
     "Nutrients": Nutrients,
+    "Premium": Premium,
     "Store": Store,
     "StrainDetail": StrainDetail,
     "Summary": Summary,
-    "Premium": Premium,
 }
 
 export const pagesConfig = {

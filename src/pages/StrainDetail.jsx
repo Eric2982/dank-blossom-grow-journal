@@ -14,6 +14,8 @@ import NutrientForm from "../components/grow/NutrientForm";
 import WateringForm from "../components/grow/WateringForm";
 import StrainForm from "../components/grow/StrainForm";
 import StrainAnalytics from "../components/grow/StrainAnalytics";
+import FeedingPlanner from "../components/grow/FeedingPlanner";
+import HarvestTracker from "../components/grow/HarvestTracker";
 import { Badge } from "@/components/ui/badge";
 
 export default function StrainDetail() {
@@ -64,6 +66,16 @@ export default function StrainDetail() {
   const { data: wateringActions = [] } = useQuery({
     queryKey: ["wateringActions", strainId],
     queryFn: () => base44.entities.WateringAction.filter({ strain_id: strainId }, "-created_date", 50),
+  });
+
+  const { data: feedingPlans = [] } = useQuery({
+    queryKey: ["feedingPlans", strainId],
+    queryFn: () => base44.entities.FeedingPlan.filter({ strain_id: strainId }),
+  });
+
+  const { data: harvests = [] } = useQuery({
+    queryKey: ["harvests", strainId],
+    queryFn: () => base44.entities.Harvest.filter({ strain_id: strainId }, "-created_date"),
   });
 
   const createReadingMutation = useMutation({
@@ -142,6 +154,36 @@ export default function StrainDetail() {
   const deleteWateringMutation = useMutation({
     mutationFn: (id) => base44.entities.WateringSchedule.delete(id),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["watering", strainId] }),
+  });
+
+  const createFeedingPlanMutation = useMutation({
+    mutationFn: (data) => base44.entities.FeedingPlan.create(data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["feedingPlans", strainId] }),
+  });
+
+  const updateFeedingPlanMutation = useMutation({
+    mutationFn: ({ id, data }) => base44.entities.FeedingPlan.update(id, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["feedingPlans", strainId] }),
+  });
+
+  const deleteFeedingPlanMutation = useMutation({
+    mutationFn: (id) => base44.entities.FeedingPlan.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["feedingPlans", strainId] }),
+  });
+
+  const createHarvestMutation = useMutation({
+    mutationFn: (data) => base44.entities.Harvest.create(data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["harvests", strainId] }),
+  });
+
+  const updateHarvestMutation = useMutation({
+    mutationFn: ({ id, data }) => base44.entities.Harvest.update(id, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["harvests", strainId] }),
+  });
+
+  const deleteHarvestMutation = useMutation({
+    mutationFn: (id) => base44.entities.Harvest.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["harvests", strainId] }),
   });
 
   const updateStrainMutation = useMutation({
@@ -515,6 +557,24 @@ export default function StrainDetail() {
           </div>
         )}
       </div>
+
+      {/* Feeding Planner */}
+      <FeedingPlanner
+        strainId={strainId}
+        plans={feedingPlans}
+        onCreatePlan={(data) => createFeedingPlanMutation.mutate(data)}
+        onUpdatePlan={({ id, data }) => updateFeedingPlanMutation.mutate({ id, data })}
+        onDeletePlan={(id) => deleteFeedingPlanMutation.mutate(id)}
+      />
+
+      {/* Harvest Tracker */}
+      <HarvestTracker
+        strainId={strainId}
+        harvests={harvests}
+        onCreateHarvest={(data) => createHarvestMutation.mutate(data)}
+        onUpdateHarvest={({ id, data }) => updateHarvestMutation.mutate({ id, data })}
+        onDeleteHarvest={(id) => deleteHarvestMutation.mutate(id)}
+      />
 
       {/* Watering History */}
       {wateringActions.length > 0 && (
