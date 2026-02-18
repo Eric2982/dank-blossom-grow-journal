@@ -156,6 +156,11 @@ export default function StrainDetail() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["watering", strainId] }),
   });
 
+  const logWateringAction = useMutation({
+    mutationFn: (data) => base44.entities.WateringAction.create(data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["wateringActions", strainId] }),
+  });
+
   const createFeedingPlanMutation = useMutation({
     mutationFn: (data) => base44.entities.FeedingPlan.create(data),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["feedingPlans", strainId] }),
@@ -273,11 +278,6 @@ export default function StrainDetail() {
   const flowerDays = strain.flipped_to_flower_date && strain.status === "active"
     ? differenceInDays(new Date(), new Date(strain.flipped_to_flower_date))
     : null;
-
-  const logWateringAction = useMutation({
-    mutationFn: (data) => base44.entities.WateringAction.create(data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["wateringActions", strainId] }),
-  });
 
   const handleWatered = (schedule, method = "manual", amount = null) => {
     const now = new Date();
