@@ -24,62 +24,36 @@ export default function Dashboard() {
   });
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-light text-white">Grow Dashboard</h1>
-          <p className="text-white/30 text-sm mt-1">Monitor your environment in real-time</p>
+          <h1 className="text-2xl font-light text-white">Dashboard</h1>
+          <p className="text-white/40 text-sm mt-1">Manage your grow strains and track progress</p>
         </div>
-        <Button onClick={() => setShowForm(true)} className="bg-emerald-600 hover:bg-emerald-500 text-white gap-2">
-          <Plus className="w-4 h-4" /> Log Reading
+        <Button onClick={() => setShowStrainForm(true)} className="bg-emerald-600 hover:bg-emerald-500 text-white gap-2">
+          <Plus className="w-4 h-4" /> Add Strain
         </Button>
       </div>
 
       {/* Strains Section */}
-      <div>
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <Leaf className="w-5 h-5 text-emerald-400" />
-            <h2 className="text-lg font-light text-white">Active Strains</h2>
-          </div>
-          <Button onClick={() => setShowStrainForm(true)} variant="outline" size="sm"
-            className="border-white/10 text-white hover:bg-white/5 gap-2 h-8 text-xs">
-            <Plus className="w-3 h-3" /> Add Strain
+      {strains.length === 0 ? (
+        <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-12 text-center">
+          <Leaf className="w-12 h-12 text-white/10 mx-auto mb-4" />
+          <h3 className="text-white text-lg mb-2">No strains yet</h3>
+          <p className="text-white/30 text-sm mb-4">Start tracking your grows by adding a strain</p>
+          <Button onClick={() => setShowStrainForm(true)} className="bg-emerald-600 hover:bg-emerald-500 text-white">
+            <Plus className="w-4 h-4 mr-2" /> Add Your First Strain
           </Button>
         </div>
-        {strains.length === 0 ? (
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-8 text-center">
-            <p className="text-white/30 text-sm">No strains tracked yet</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {strains.map(strain => (
-              <StrainCard key={strain.id} strain={strain} onDelete={(id) => deleteStrainMutation.mutate(id)} />
-            ))}
-          </div>
-        )}
-      </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {strains.map(strain => (
+            <StrainCard key={strain.id} strain={strain} />
+          ))}
+        </div>
+      )}
 
-      {/* Latest Readings Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3">
-        {["temperature", "humidity", "ppfd", "ec", "vpd", "ph"].map((type) => (
-          <ReadingCard key={type} type={type} value={latest?.[type]} />
-        ))}
-      </div>
-
-      {/* Trend Chart */}
-      <ReadingsChart readings={readings} />
-
-      {/* Watering Reminders */}
-      <WateringReminders />
-
-      {/* History Table */}
-      <div>
-        <h2 className="text-lg font-light text-white mb-4">Reading History</h2>
-        <ReadingsHistory readings={readings} onDelete={(id) => deleteMutation.mutate(id)} />
-      </div>
-
-      <AddReadingDialog open={showForm} onOpenChange={setShowForm} onSubmit={(data) => createMutation.mutate(data)} />
       <StrainForm open={showStrainForm} onOpenChange={setShowStrainForm} onSubmit={(data) => createStrainMutation.mutate(data)} />
     </div>
   );
