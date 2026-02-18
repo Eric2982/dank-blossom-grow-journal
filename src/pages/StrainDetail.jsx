@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
-import { Plus, Edit, ArrowLeft, Trash2, Sprout, Flower } from "lucide-react";
+import { Plus, Edit, ArrowLeft, Trash2, Sprout, Flower, Upload, X, Bell, BellOff } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
 import { differenceInDays, format } from "date-fns";
@@ -13,6 +13,7 @@ import AddReadingDialog from "../components/grow/AddReadingDialog";
 import NutrientForm from "../components/grow/NutrientForm";
 import WateringForm from "../components/grow/WateringForm";
 import StrainForm from "../components/grow/StrainForm";
+import StrainAnalytics from "../components/grow/StrainAnalytics";
 import { Badge } from "@/components/ui/badge";
 
 export default function StrainDetail() {
@@ -23,8 +24,16 @@ export default function StrainDetail() {
   const [showNutrientForm, setShowNutrientForm] = useState(false);
   const [showWateringForm, setShowWateringForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   
   const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if ("Notification" in window) {
+      setNotificationsEnabled(Notification.permission === "granted");
+    }
+  }, []);
 
   const { data: strain } = useQuery({
     queryKey: ["strain", strainId],
@@ -63,7 +72,12 @@ export default function StrainDetail() {
   });
 
   const createNutrientMutation = useMutation({
-    mutationFn: (data) => base44.entities.NutrientLog.create({ ...data, strain_id: strainId }),
+    mutationFn: async (data) => {
+      const promises = data.nutrients.map(n => 
+        base44.entities.NutrientLog.create({ ...n, strain_id: strainId })
+      );
+      await Promise.all(promises);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["nutrients", strainId] });
       setShowNutrientForm(false);
@@ -102,6 +116,65 @@ export default function StrainDetail() {
       window.location.href = createPageUrl("Dashboard");
     },
   });
+
+  const handlePhotoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      const updatedPhotos = [...(strain.photos || []), file_url];
+      await base44.entities.Strain.update(strainId, { photos: updatedPhotos });
+      queryClient.invalidateQueries({ queryKey: ["strain", strainId] });
+    } catch (error) {
+      alert("Failed to upload photo");
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  const handleDeletePhoto = async (photoUrl) => {
+    const updatedPhotos = (strain.photos || []).filter(p => p !== photoUrl);
+    await base44.entities.Strain.update(strainId, { photos: updatedPhotos });
+    queryClient.invalidateQueries({ queryKey: ["strain", strainId] });
+  };
+
+  const handleToggleNotifications = async () => {
+    if (!("Notification" in window)) {
+      alert("Notifications not supported in this browser");
+      return;
+    }
+
+    if (Notification.permission === "granted") {
+      setNotificationsEnabled(!notificationsEnabled);
+    } else if (Notification.permission !== "denied") {
+      const permission = await Notification.requestPermission();
+      setNotificationsEnabled(permission === "granted");
+    }
+  };
+
+  useEffect(() => {
+    if (!notificationsEnabled || !watering.length) return;
+
+    const checkWatering = () => {
+      watering.forEach(schedule => {
+        const next = new Date(schedule.next_watering);
+        const now = new Date();
+        const hoursUntil = (next - now) / (1000 * 60 * 60);
+
+        if (hoursUntil <= 2 && hoursUntil > 0) {
+          new Notification("Watering Reminder", {
+            body: `Time to water ${strain.name}!`,
+            icon: "/favicon.ico"
+          });
+        }
+      });
+    };
+
+    const interval = setInterval(checkWatering, 60000);
+    return () => clearInterval(interval);
+  }, [notificationsEnabled, watering, strain]);
 
   if (!strain) return <div className="text-white/50">Loading...</div>;
 
@@ -152,6 +225,11 @@ export default function StrainDetail() {
           </div>
         </div>
         <div className="flex gap-2">
+          <Button onClick={handleToggleNotifications} variant="outline" size="sm"
+            className={`border-white/10 ${notificationsEnabled ? 'text-emerald-400' : 'text-white'} hover:bg-white/5`}>
+            {notificationsEnabled ? <Bell className="w-3 h-3 mr-2" /> : <BellOff className="w-3 h-3 mr-2" />}
+            Alerts
+          </Button>
           <Button onClick={() => setShowEditForm(true)} variant="outline" size="sm"
             className="border-white/10 text-white hover:bg-white/5">
             <Edit className="w-3 h-3 mr-2" /> Edit
@@ -162,6 +240,34 @@ export default function StrainDetail() {
           </Button>
         </div>
       </div>
+
+      {/* Photos */}
+      {(strain.photos?.length > 0 || !uploading) && (
+        <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-white font-medium">Photos</h3>
+            <label>
+              <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
+              <Button type="button" size="sm" variant="outline" className="border-white/10 text-white hover:bg-white/5" asChild>
+                <span className="cursor-pointer"><Upload className="w-3 h-3 mr-2" /> Upload</span>
+              </Button>
+            </label>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+            {strain.photos?.map((photo, idx) => (
+              <div key={idx} className="relative group rounded-lg overflow-hidden aspect-square">
+                <img src={photo} alt={`${strain.name} ${idx + 1}`} className="w-full h-full object-cover" />
+                <button
+                  onClick={() => handleDeletePhoto(photo)}
+                  className="absolute top-2 right-2 bg-red-500/80 hover:bg-red-500 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  <X className="w-3 h-3 text-white" />
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {/* Strain Info Card */}
       <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
@@ -198,6 +304,9 @@ export default function StrainDetail() {
           )}
         </div>
       </div>
+
+      {/* Analytics */}
+      <StrainAnalytics readings={readings} />
 
       {/* Grow Readings */}
       <div>
