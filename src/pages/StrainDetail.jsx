@@ -61,6 +61,11 @@ export default function StrainDetail() {
     queryFn: () => base44.entities.WateringSchedule.filter({ strain_id: strainId, active: true }),
   });
 
+  const { data: wateringActions = [] } = useQuery({
+    queryKey: ["wateringActions", strainId],
+    queryFn: () => base44.entities.WateringAction.filter({ strain_id: strainId }, "-created_date", 50),
+  });
+
   const createReadingMutation = useMutation({
     mutationFn: (data) => base44.entities.GrowReading.create({ ...data, strain_id: strainId }),
     onSuccess: () => {
@@ -227,14 +232,48 @@ export default function StrainDetail() {
     ? differenceInDays(new Date(), new Date(strain.flipped_to_flower_date))
     : null;
 
-  const handleWatered = (schedule) => {
+  const logWateringAction = useMutation({
+    mutationFn: (data) => base44.entities.WateringAction.create(data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["wateringActions", strainId] }),
+  });
+
+  const handleWatered = (schedule, method = "manual", amount = null) => {
     const now = new Date();
     const next = new Date(now);
     next.setDate(next.getDate() + schedule.frequency_days);
+    
     updateWateringMutation.mutate({
       id: schedule.id,
       data: { last_watered: now.toISOString(), next_watering: next.toISOString() }
     });
+
+    logWateringAction.mutate({
+      strain_id: strainId,
+      schedule_id: schedule.id,
+      amount_liters: amount,
+      method: method,
+      sensor_data: latest ? {
+        temperature: latest.temperature,
+        humidity: latest.humidity,
+        vpd: latest.vpd
+      } : null
+    });
+  };
+
+  const handleAutomatedWatering = (schedule) => {
+    if (window.confirm(`Trigger automated watering for ${strain.name}?`)) {
+      const amount = parseFloat(prompt("Enter water amount (liters):", "2"));
+      if (amount) {
+        handleWatered(schedule, "automated", amount);
+      }
+    }
+  };
+
+  const handleManualOverride = (schedule) => {
+    const amount = parseFloat(prompt("Manual override - Enter water amount (liters):", "2"));
+    if (amount) {
+      handleWatered(schedule, "manual_override", amount);
+    }
   };
 
   const getWateringStatus = (schedule) => {
@@ -452,9 +491,13 @@ export default function StrainDetail() {
                       </div>
                     </div>
                     <div className="flex gap-2">
-                      <Button onClick={() => handleWatered(w)} size="sm" variant="outline"
+                      <Button onClick={() => handleAutomatedWatering(w)} size="sm" variant="outline"
+                        className="border-blue-500/20 text-blue-400 hover:bg-blue-500/10">
+                        Auto Water
+                      </Button>
+                      <Button onClick={() => handleManualOverride(w)} size="sm" variant="outline"
                         className="border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/10">
-                        Mark Watered
+                        Manual
                       </Button>
                       <Button onClick={() => { setEditingWatering(w); setShowWateringForm(true); }} 
                         size="sm" variant="ghost" className="text-white/40 hover:text-white">
@@ -472,6 +515,47 @@ export default function StrainDetail() {
           </div>
         )}
       </div>
+
+      {/* Watering History */}
+      {wateringActions.length > 0 && (
+        <div>
+          <h2 className="text-lg font-light text-white mb-4">Watering History</h2>
+          <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="border-b border-white/5">
+                  <tr className="text-white/40 text-xs">
+                    <th className="text-left p-3 font-normal">Date</th>
+                    <th className="text-left p-3 font-normal">Method</th>
+                    <th className="text-left p-3 font-normal">Amount</th>
+                    <th className="text-left p-3 font-normal">Conditions</th>
+                  </tr>
+                </thead>
+                <tbody className="text-white text-sm">
+                  {wateringActions.map((action) => (
+                    <tr key={action.id} className="border-b border-white/5 hover:bg-white/[0.02]">
+                      <td className="p-3">{format(new Date(action.created_date), "MMM d, yyyy h:mm a")}</td>
+                      <td className="p-3">
+                        <Badge className={`${
+                          action.method === "automated" ? "bg-blue-500/10 text-blue-400" :
+                          action.method === "manual_override" ? "bg-yellow-500/10 text-yellow-400" :
+                          "bg-green-500/10 text-green-400"
+                        } border-none text-xs`}>
+                          {action.method.replace("_", " ")}
+                        </Badge>
+                      </td>
+                      <td className="p-3">{action.amount_liters ? `${action.amount_liters}L` : "—"}</td>
+                      <td className="p-3 text-white/40 text-xs">
+                        {action.sensor_data ? `${action.sensor_data.temperature}°F, ${action.sensor_data.humidity}% RH` : "—"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      )}
 
       <AddReadingDialog open={showReadingForm} onOpenChange={(open) => { setShowReadingForm(open); if (!open) setEditingReading(null); }} 
         reading={editingReading}
