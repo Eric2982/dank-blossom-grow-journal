@@ -30,7 +30,7 @@ export default function Layout({ children, currentPageName }) {
               <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
                 <Leaf className="w-4 h-4 text-white" />
               </div>
-              <span className="text-white font-semibold tracking-tight text-lg hidden sm:block">GrowLog</span>
+              <span className="text-white font-semibold tracking-tight text-lg hidden sm:block">Dank Blossom Grow Journal</span>
             </Link>
             <nav className="flex items-center gap-1">
               {navItems.map((item) => {

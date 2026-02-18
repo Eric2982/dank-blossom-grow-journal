@@ -3,40 +3,16 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Plus, Leaf } from "lucide-react";
-import ReadingCard from "../components/grow/ReadingCard";
-import ReadingsChart from "../components/grow/ReadingsChart";
-import ReadingsHistory from "../components/grow/ReadingsHistory";
-import AddReadingDialog from "../components/grow/AddReadingDialog";
-import WateringReminders from "../components/grow/WateringReminders";
 import StrainCard from "../components/grow/StrainCard";
 import StrainForm from "../components/grow/StrainForm";
 
 export default function Dashboard() {
-  const [showForm, setShowForm] = useState(false);
   const [showStrainForm, setShowStrainForm] = useState(false);
   const queryClient = useQueryClient();
-
-  const { data: readings = [], isLoading } = useQuery({
-    queryKey: ["readings"],
-    queryFn: () => base44.entities.GrowReading.list("-created_date", 100),
-  });
 
   const { data: strains = [] } = useQuery({
     queryKey: ["strains"],
     queryFn: () => base44.entities.Strain.list("-created_date", 50),
-  });
-
-  const createMutation = useMutation({
-    mutationFn: (data) => base44.entities.GrowReading.create(data),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["readings"] });
-      setShowForm(false);
-    },
-  });
-
-  const deleteMutation = useMutation({
-    mutationFn: (id) => base44.entities.GrowReading.delete(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["readings"] }),
   });
 
   const createStrainMutation = useMutation({
@@ -46,13 +22,6 @@ export default function Dashboard() {
       setShowStrainForm(false);
     },
   });
-
-  const deleteStrainMutation = useMutation({
-    mutationFn: (id) => base44.entities.Strain.delete(id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["strains"] }),
-  });
-
-  const latest = readings[0];
 
   return (
     <div className="space-y-8">
