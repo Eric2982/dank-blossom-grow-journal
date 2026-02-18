@@ -47,24 +47,24 @@
  *
  * The mainPage value must match a key in the PAGES object exactly.
  */
+import Chat from './pages/Chat';
 import Dashboard from './pages/Dashboard';
 import Learn from './pages/Learn';
 import Nutrients from './pages/Nutrients';
 import Store from './pages/Store';
-import Summary from './pages/Summary';
 import StrainDetail from './pages/StrainDetail';
-import Chat from './pages/Chat';
+import Summary from './pages/Summary';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
+    "Chat": Chat,
     "Dashboard": Dashboard,
     "Learn": Learn,
     "Nutrients": Nutrients,
     "Store": Store,
-    "Summary": Summary,
     "StrainDetail": StrainDetail,
-    "Chat": Chat,
+    "Summary": Summary,
 }
 
 export const pagesConfig = {

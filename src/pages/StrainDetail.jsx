@@ -26,6 +26,9 @@ export default function StrainDetail() {
   const [showEditForm, setShowEditForm] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [editingReading, setEditingReading] = useState(null);
+  const [editingNutrient, setEditingNutrient] = useState(null);
+  const [editingWatering, setEditingWatering] = useState(null);
   
   const queryClient = useQueryClient();
 
@@ -63,6 +66,16 @@ export default function StrainDetail() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["readings", strainId] });
       setShowReadingForm(false);
+      setEditingReading(null);
+    },
+  });
+
+  const updateReadingMutation = useMutation({
+    mutationFn: ({ id, data }) => base44.entities.GrowReading.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["readings", strainId] });
+      setShowReadingForm(false);
+      setEditingReading(null);
     },
   });
 
@@ -73,15 +86,34 @@ export default function StrainDetail() {
 
   const createNutrientMutation = useMutation({
     mutationFn: async (data) => {
-      const promises = data.nutrients.map(n => 
-        base44.entities.NutrientLog.create({ ...n, strain_id: strainId })
-      );
-      await Promise.all(promises);
+      if (data.nutrients) {
+        const promises = data.nutrients.map(n => 
+          base44.entities.NutrientLog.create({ ...n, strain_id: strainId })
+        );
+        await Promise.all(promises);
+      } else {
+        await base44.entities.NutrientLog.create({ ...data, strain_id: strainId });
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["nutrients", strainId] });
       setShowNutrientForm(false);
+      setEditingNutrient(null);
     },
+  });
+
+  const updateNutrientMutation = useMutation({
+    mutationFn: ({ id, data }) => base44.entities.NutrientLog.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["nutrients", strainId] });
+      setShowNutrientForm(false);
+      setEditingNutrient(null);
+    },
+  });
+
+  const deleteNutrientMutation = useMutation({
+    mutationFn: (id) => base44.entities.NutrientLog.delete(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["nutrients", strainId] }),
   });
 
   const createWateringMutation = useMutation({
@@ -89,12 +121,17 @@ export default function StrainDetail() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["watering", strainId] });
       setShowWateringForm(false);
+      setEditingWatering(null);
     },
   });
 
   const updateWateringMutation = useMutation({
     mutationFn: ({ id, data }) => base44.entities.WateringSchedule.update(id, data),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["watering", strainId] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["watering", strainId] });
+      setShowWateringForm(false);
+      setEditingWatering(null);
+    },
   });
 
   const deleteWateringMutation = useMutation({
@@ -323,7 +360,8 @@ export default function StrainDetail() {
           ))}
         </div>
         <ReadingsChart readings={readings} />
-        <ReadingsHistory readings={readings} onDelete={(id) => deleteReadingMutation.mutate(id)} />
+        <ReadingsHistory readings={readings} onDelete={(id) => deleteReadingMutation.mutate(id)} 
+          onEdit={(reading) => { setEditingReading(reading); setShowReadingForm(true); }} />
       </div>
 
       {/* Nutrients */}
@@ -350,6 +388,7 @@ export default function StrainDetail() {
                     <th className="text-left p-3 font-normal">Type</th>
                     <th className="text-left p-3 font-normal">Amount</th>
                     <th className="text-left p-3 font-normal">Stage</th>
+                    <th className="text-left p-3 font-normal">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="text-white text-sm">
@@ -360,6 +399,18 @@ export default function StrainDetail() {
                       <td className="p-3">{n.nutrient_type}</td>
                       <td className="p-3">{n.volume_ml}ml</td>
                       <td className="p-3">{n.grow_stage}</td>
+                      <td className="p-3">
+                        <div className="flex gap-2">
+                          <Button onClick={() => { setEditingNutrient(n); setShowNutrientForm(true); }} 
+                            size="sm" variant="ghost" className="h-7 px-2 text-white/40 hover:text-white">
+                            <Edit className="w-3 h-3" />
+                          </Button>
+                          <Button onClick={() => deleteNutrientMutation.mutate(n.id)} 
+                            size="sm" variant="ghost" className="h-7 px-2 text-white/20 hover:text-red-400">
+                            <Trash2 className="w-3 h-3" />
+                          </Button>
+                        </div>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -405,6 +456,10 @@ export default function StrainDetail() {
                         className="border-emerald-500/20 text-emerald-400 hover:bg-emerald-500/10">
                         Mark Watered
                       </Button>
+                      <Button onClick={() => { setEditingWatering(w); setShowWateringForm(true); }} 
+                        size="sm" variant="ghost" className="text-white/40 hover:text-white">
+                        <Edit className="w-3 h-3" />
+                      </Button>
                       <Button onClick={() => deleteWateringMutation.mutate(w.id)} size="sm" variant="ghost"
                         className="text-white/20 hover:text-red-400">
                         <Trash2 className="w-3 h-3" />
@@ -418,12 +473,15 @@ export default function StrainDetail() {
         )}
       </div>
 
-      <AddReadingDialog open={showReadingForm} onOpenChange={setShowReadingForm} 
-        onSubmit={(data) => createReadingMutation.mutate(data)} />
-      <NutrientForm open={showNutrientForm} onOpenChange={setShowNutrientForm}
-        onSubmit={(data) => createNutrientMutation.mutate(data)} />
-      <WateringForm open={showWateringForm} onOpenChange={setShowWateringForm}
-        onSubmit={(data) => createWateringMutation.mutate(data)} />
+      <AddReadingDialog open={showReadingForm} onOpenChange={(open) => { setShowReadingForm(open); if (!open) setEditingReading(null); }} 
+        reading={editingReading}
+        onSubmit={(data) => editingReading ? updateReadingMutation.mutate({ id: editingReading.id, data }) : createReadingMutation.mutate(data)} />
+      <NutrientForm open={showNutrientForm} onOpenChange={(open) => { setShowNutrientForm(open); if (!open) setEditingNutrient(null); }}
+        nutrient={editingNutrient}
+        onSubmit={(data) => editingNutrient ? updateNutrientMutation.mutate({ id: editingNutrient.id, data }) : createNutrientMutation.mutate(data)} />
+      <WateringForm open={showWateringForm} onOpenChange={(open) => { setShowWateringForm(open); if (!open) setEditingWatering(null); }}
+        schedule={editingWatering}
+        onSubmit={(data) => editingWatering ? updateWateringMutation.mutate({ id: editingWatering.id, data }) : createWateringMutation.mutate(data)} />
       <StrainForm open={showEditForm} onOpenChange={setShowEditForm} strain={strain}
         onSubmit={(data) => updateStrainMutation.mutate(data)} />
     </div>

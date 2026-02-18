@@ -10,7 +10,7 @@ const stageEmoji = {
   harvest: "🌾",
 };
 
-export default function ReadingsHistory({ readings, onDelete }) {
+export default function ReadingsHistory({ readings, onDelete, onEdit }) {
   if (readings.length === 0) {
     return (
       <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-8 text-center">
