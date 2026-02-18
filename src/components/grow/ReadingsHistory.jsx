@@ -1,6 +1,6 @@
 import React from "react";
 import { format } from "date-fns";
-import { Trash2 } from "lucide-react";
+import { Trash2, Edit } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const stageEmoji = {
@@ -33,7 +33,7 @@ export default function ReadingsHistory({ readings, onDelete, onEdit }) {
               <th className="text-right px-3 py-3 text-emerald-400/60 font-medium text-xs">EC</th>
               <th className="text-right px-3 py-3 text-violet-400/60 font-medium text-xs">VPD</th>
               <th className="text-right px-3 py-3 text-pink-400/60 font-medium text-xs">pH</th>
-              <th className="px-3 py-3"></th>
+              <th className="px-3 py-3 text-white/30 font-medium text-xs">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -48,9 +48,14 @@ export default function ReadingsHistory({ readings, onDelete, onEdit }) {
                 <td className="text-right px-3 py-3 text-white/70 tabular-nums">{r.vpd ?? "—"}</td>
                 <td className="text-right px-3 py-3 text-white/70 tabular-nums">{r.ph ?? "—"}</td>
                 <td className="px-3 py-3">
-                  <Button variant="ghost" size="icon" className="h-6 w-6 text-white/20 hover:text-red-400" onClick={() => onDelete(r.id)}>
-                    <Trash2 className="w-3 h-3" />
-                  </Button>
+                  <div className="flex gap-1">
+                    <Button variant="ghost" size="icon" className="h-6 w-6 text-white/40 hover:text-white" onClick={() => onEdit(r)}>
+                      <Edit className="w-3 h-3" />
+                    </Button>
+                    <Button variant="ghost" size="icon" className="h-6 w-6 text-white/20 hover:text-red-400" onClick={() => onDelete(r.id)}>
+                      <Trash2 className="w-3 h-3" />
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}

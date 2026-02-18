@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -15,12 +15,34 @@ const fields = [
   { key: "ph", label: "pH", type: "number", step: "0.1" },
 ];
 
-export default function AddReadingDialog({ open, onOpenChange, onSubmit }) {
+export default function AddReadingDialog({ open, onOpenChange, onSubmit, reading }) {
   const [form, setForm] = useState({
     date: new Date().toISOString().slice(0, 16),
     temperature: "", humidity: "", ppfd: "", ec: "", vpd: "", ph: "",
     grow_stage: "vegetative", notes: ""
   });
+
+  useEffect(() => {
+    if (reading) {
+      setForm({
+        date: reading.date ? new Date(reading.date).toISOString().slice(0, 16) : new Date().toISOString().slice(0, 16),
+        temperature: reading.temperature?.toString() || "",
+        humidity: reading.humidity?.toString() || "",
+        ppfd: reading.ppfd?.toString() || "",
+        ec: reading.ec?.toString() || "",
+        vpd: reading.vpd?.toString() || "",
+        ph: reading.ph?.toString() || "",
+        grow_stage: reading.grow_stage || "vegetative",
+        notes: reading.notes || "",
+      });
+    } else {
+      setForm({
+        date: new Date().toISOString().slice(0, 16),
+        temperature: "", humidity: "", ppfd: "", ec: "", vpd: "", ph: "",
+        grow_stage: "vegetative", notes: ""
+      });
+    }
+  }, [reading, open]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -31,14 +53,13 @@ export default function AddReadingDialog({ open, onOpenChange, onSubmit }) {
     data.grow_stage = form.grow_stage;
     if (form.notes) data.notes = form.notes;
     onSubmit(data);
-    setForm({ date: new Date().toISOString().slice(0, 16), temperature: "", humidity: "", ppfd: "", ec: "", vpd: "", ph: "", grow_stage: "vegetative", notes: "" });
   };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-zinc-900 border-white/10 text-white max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-white font-light text-xl">Log Reading</DialogTitle>
+          <DialogTitle className="text-white font-light text-xl">{reading ? "Edit" : "Log"} Reading</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -91,7 +112,7 @@ export default function AddReadingDialog({ open, onOpenChange, onSubmit }) {
             />
           </div>
           <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-500 text-white">
-            Save Reading
+            {reading ? "Update" : "Save"} Reading
           </Button>
         </form>
       </DialogContent>
