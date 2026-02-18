@@ -53,6 +53,7 @@ import Nutrients from './pages/Nutrients';
 import Store from './pages/Store';
 import Summary from './pages/Summary';
 import StrainDetail from './pages/StrainDetail';
+import Chat from './pages/Chat';
 import __Layout from './Layout.jsx';
 
 
@@ -63,6 +64,7 @@ export const PAGES = {
     "Store": Store,
     "Summary": Summary,
     "StrainDetail": StrainDetail,
+    "Chat": Chat,
 }
 
 export const pagesConfig = {

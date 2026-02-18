@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { LayoutDashboard, Droplets, ShoppingBag, BookOpen, Leaf, BarChart3 } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, BookOpen, Leaf, BarChart3, MessageSquare } from "lucide-react";
 
 const navItems = [
   { name: "Dashboard", icon: LayoutDashboard, page: "Dashboard" },
   { name: "Summary", icon: BarChart3, page: "Summary" },
-  { name: "Nutrients", icon: Droplets, page: "Nutrients" },
+  { name: "Chat", icon: MessageSquare, page: "Chat" },
   { name: "Shop", icon: ShoppingBag, page: "Store" },
   { name: "Learn", icon: BookOpen, page: "Learn" },
 ];
