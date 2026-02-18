@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import MobileSelect from "../MobileSelect";
 
 export default function StrainForm({ open, onOpenChange, onSubmit, strain }) {
   const [form, setForm] = useState(strain || {
@@ -54,37 +54,49 @@ export default function StrainForm({ open, onOpenChange, onSubmit, strain }) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label className="text-white/50 text-xs">Type *</Label>
-              <Select value={form.type} onValueChange={(v) => setForm({ ...form, type: v })}>
-                <SelectTrigger className="bg-white/5 border-white/10 text-white mt-1"><SelectValue /></SelectTrigger>
-                <SelectContent className="bg-zinc-800 border-white/10">
-                  <SelectItem value="indica">Indica</SelectItem>
-                  <SelectItem value="sativa">Sativa</SelectItem>
-                  <SelectItem value="hybrid">Hybrid</SelectItem>
-                </SelectContent>
-              </Select>
+              <MobileSelect
+                value={form.type}
+                onValueChange={(v) => setForm({ ...form, type: v })}
+                options={[
+                  { value: "indica", label: "Indica" },
+                  { value: "sativa", label: "Sativa" },
+                  { value: "hybrid", label: "Hybrid" },
+                ]}
+                placeholder="Select type"
+                label="Strain Type"
+                className="mt-1 w-full"
+              />
             </div>
             <div>
               <Label className="text-white/50 text-xs">Plant Type *</Label>
-              <Select value={form.plant_type} onValueChange={(v) => setForm({ ...form, plant_type: v })}>
-                <SelectTrigger className="bg-white/5 border-white/10 text-white mt-1"><SelectValue /></SelectTrigger>
-                <SelectContent className="bg-zinc-800 border-white/10">
-                  <SelectItem value="photoperiod">Photoperiod</SelectItem>
-                  <SelectItem value="autoflower">Autoflower</SelectItem>
-                  <SelectItem value="fast_flower">Fast Flower</SelectItem>
-                </SelectContent>
-              </Select>
+              <MobileSelect
+                value={form.plant_type}
+                onValueChange={(v) => setForm({ ...form, plant_type: v })}
+                options={[
+                  { value: "photoperiod", label: "Photoperiod" },
+                  { value: "autoflower", label: "Autoflower" },
+                  { value: "fast_flower", label: "Fast Flower" },
+                ]}
+                placeholder="Select plant type"
+                label="Plant Type"
+                className="mt-1 w-full"
+              />
             </div>
           </div>
           <div>
             <Label className="text-white/50 text-xs">Status</Label>
-            <Select value={form.status} onValueChange={(v) => setForm({ ...form, status: v })}>
-              <SelectTrigger className="bg-white/5 border-white/10 text-white mt-1"><SelectValue /></SelectTrigger>
-              <SelectContent className="bg-zinc-800 border-white/10">
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="harvested">Harvested</SelectItem>
-                <SelectItem value="planned">Planned</SelectItem>
-              </SelectContent>
-            </Select>
+            <MobileSelect
+              value={form.status}
+              onValueChange={(v) => setForm({ ...form, status: v })}
+              options={[
+                { value: "active", label: "Active" },
+                { value: "harvested", label: "Harvested" },
+                { value: "planned", label: "Planned" },
+              ]}
+              placeholder="Select status"
+              label="Status"
+              className="mt-1 w-full"
+            />
           </div>
           <div>
             <Label className="text-white/50 text-xs">Breeder / Seed Bank</Label>

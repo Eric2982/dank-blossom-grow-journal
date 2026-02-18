@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import MobileSelect from "../MobileSelect";
 
 const fields = [
   { key: "temperature", label: "Temperature (°F)", type: "number", step: "0.1" },
@@ -89,17 +89,19 @@ export default function AddReadingDialog({ open, onOpenChange, onSubmit, reading
           </div>
           <div>
             <Label className="text-white/50 text-xs">Growth Stage</Label>
-            <Select value={form.grow_stage} onValueChange={(v) => setForm({ ...form, grow_stage: v })}>
-              <SelectTrigger className="bg-white/5 border-white/10 text-white mt-1">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="bg-zinc-800 border-white/10">
-                <SelectItem value="seedling">🌱 Seedling</SelectItem>
-                <SelectItem value="vegetative">🌿 Vegetative</SelectItem>
-                <SelectItem value="flowering">🌸 Flowering</SelectItem>
-                <SelectItem value="harvest">🌾 Harvest</SelectItem>
-              </SelectContent>
-            </Select>
+            <MobileSelect
+              value={form.grow_stage}
+              onValueChange={(v) => setForm({ ...form, grow_stage: v })}
+              options={[
+                { value: "seedling", label: "🌱 Seedling" },
+                { value: "vegetative", label: "🌿 Vegetative" },
+                { value: "flowering", label: "🌸 Flowering" },
+                { value: "harvest", label: "🌾 Harvest" },
+              ]}
+              placeholder="Select growth stage"
+              label="Growth Stage"
+              className="mt-1 w-full"
+            />
           </div>
           <div>
             <Label className="text-white/50 text-xs">Notes</Label>

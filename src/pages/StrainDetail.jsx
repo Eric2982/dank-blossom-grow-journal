@@ -80,6 +80,20 @@ export default function StrainDetail() {
 
   const createReadingMutation = useMutation({
     mutationFn: (data) => base44.entities.GrowReading.create({ ...data, strain_id: strainId }),
+    onMutate: async (newReading) => {
+      await queryClient.cancelQueries({ queryKey: ["readings", strainId] });
+      const previous = queryClient.getQueryData(["readings", strainId]);
+      
+      queryClient.setQueryData(["readings", strainId], (old = []) => [
+        { ...newReading, id: "temp-" + Date.now(), created_date: new Date().toISOString(), strain_id: strainId },
+        ...old
+      ]);
+      
+      return { previous };
+    },
+    onError: (err, newReading, context) => {
+      queryClient.setQueryData(["readings", strainId], context.previous);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["readings", strainId] });
       setShowReadingForm(false);
@@ -144,6 +158,19 @@ export default function StrainDetail() {
 
   const updateWateringMutation = useMutation({
     mutationFn: ({ id, data }) => base44.entities.WateringSchedule.update(id, data),
+    onMutate: async ({ id, data }) => {
+      await queryClient.cancelQueries({ queryKey: ["watering", strainId] });
+      const previous = queryClient.getQueryData(["watering", strainId]);
+      
+      queryClient.setQueryData(["watering", strainId], (old = []) =>
+        old.map(w => w.id === id ? { ...w, ...data } : w)
+      );
+      
+      return { previous };
+    },
+    onError: (err, variables, context) => {
+      queryClient.setQueryData(["watering", strainId], context.previous);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["watering", strainId] });
       setShowWateringForm(false);

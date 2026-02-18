@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Plus, Leaf, Crown } from "lucide-react";
 import StrainCard from "../components/grow/StrainCard";
 import StrainForm from "../components/grow/StrainForm";
+import PullToRefresh from "../components/PullToRefresh";
 
 export default function Dashboard() {
   const [showStrainForm, setShowStrainForm] = useState(false);
@@ -35,8 +36,17 @@ export default function Dashboard() {
     },
   });
 
+  const handleRefresh = async () => {
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ["strains"] }),
+      queryClient.invalidateQueries({ queryKey: ["user"] }),
+      queryClient.invalidateQueries({ queryKey: ["subscription", user?.email] }),
+    ]);
+  };
+
   return (
-    <div className="space-y-6">
+    <PullToRefresh onRefresh={handleRefresh}>
+      <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
@@ -76,6 +86,7 @@ export default function Dashboard() {
       )}
 
       <StrainForm open={showStrainForm} onOpenChange={setShowStrainForm} onSubmit={(data) => createStrainMutation.mutate(data)} />
-    </div>
+      </div>
+    </PullToRefresh>
   );
 }

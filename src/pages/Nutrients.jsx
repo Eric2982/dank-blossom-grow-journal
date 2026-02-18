@@ -6,6 +6,7 @@ import { Plus, Trash2, Droplets } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { format } from "date-fns";
 import NutrientForm from "../components/grow/NutrientForm";
+import PullToRefresh from "../components/PullToRefresh";
 
 const typeColors = {
   base: "bg-blue-500/15 text-blue-400",
@@ -44,8 +45,13 @@ export default function Nutrients() {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["nutrients"] }),
   });
 
+  const handleRefresh = async () => {
+    await queryClient.invalidateQueries({ queryKey: ["nutrients"] });
+  };
+
   return (
-    <div className="space-y-8">
+    <PullToRefresh onRefresh={handleRefresh}>
+      <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-light text-white">Nutrient Log</h1>
@@ -102,6 +108,7 @@ export default function Nutrients() {
       )}
 
       <NutrientForm open={showForm} onOpenChange={setShowForm} onSubmit={(data) => createMutation.mutate(data)} />
-    </div>
+      </div>
+    </PullToRefresh>
   );
 }

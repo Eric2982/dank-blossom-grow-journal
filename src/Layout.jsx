@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { LayoutDashboard, ShoppingBag, BookOpen, Leaf, BarChart3, MessageSquare, Crown, ArrowLeft, Settings } from "lucide-react";
+import { motion } from "framer-motion";
 
 const rootPages = ["Dashboard", "Summary", "Chat", "Store", "Learn", "Premium"];
 
@@ -18,6 +19,14 @@ export default function Layout({ children, currentPageName }) {
   const navigate = useNavigate();
   const location = useLocation();
   const isRootPage = rootPages.includes(currentPageName);
+  const [pageCache, setPageCache] = React.useState({});
+
+  // Cache page content to preserve state
+  React.useEffect(() => {
+    if (isRootPage && children) {
+      setPageCache(prev => ({ ...prev, [currentPageName]: children }));
+    }
+  }, [currentPageName, children, isRootPage]);
 
   return (
     <div className="min-h-screen bg-zinc-950 text-white pb-20 md:pb-0">
@@ -111,9 +120,17 @@ export default function Layout({ children, currentPageName }) {
         </div>
       </header>
 
-      {/* Page Content */}
+      {/* Page Content with transitions */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 pb-24 md:pb-8">
-        {children}
+        <motion.div
+          key={currentPageName}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.2, ease: "easeOut" }}
+        >
+          {children}
+        </motion.div>
       </main>
 
       {/* Mobile Bottom Navigation */}
