@@ -8,7 +8,6 @@ import { addDays } from "date-fns";
 
 export default function WateringForm({ open, onOpenChange, onSubmit }) {
   const [form, setForm] = useState({
-    plant_name: "",
     frequency_days: "3",
     last_watered: new Date().toISOString().slice(0, 16),
     notes: "",
@@ -20,7 +19,6 @@ export default function WateringForm({ open, onOpenChange, onSubmit }) {
     const nextWatering = addDays(new Date(form.last_watered), parseInt(form.frequency_days)).toISOString();
     
     onSubmit({
-      plant_name: form.plant_name,
       frequency_days: parseInt(form.frequency_days),
       last_watered: lastWatered,
       next_watering: nextWatering,
@@ -28,7 +26,7 @@ export default function WateringForm({ open, onOpenChange, onSubmit }) {
       active: true,
     });
     
-    setForm({ plant_name: "", frequency_days: "3", last_watered: new Date().toISOString().slice(0, 16), notes: "" });
+    setForm({ frequency_days: "3", last_watered: new Date().toISOString().slice(0, 16), notes: "" });
   };
 
   return (
@@ -38,16 +36,6 @@ export default function WateringForm({ open, onOpenChange, onSubmit }) {
           <DialogTitle className="text-white font-light text-xl">Add Watering Schedule</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <Label className="text-white/50 text-xs">Plant Name *</Label>
-            <Input
-              value={form.plant_name}
-              onChange={(e) => setForm({ ...form, plant_name: e.target.value })}
-              className="bg-white/5 border-white/10 text-white mt-1"
-              placeholder="e.g. Main Tent #1"
-              required
-            />
-          </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label className="text-white/50 text-xs">Frequency (days) *</Label>
