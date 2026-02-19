@@ -670,5 +670,6 @@ export default function StrainDetail() {
       <StrainForm open={showEditForm} onOpenChange={setShowEditForm} strain={strain}
         onSubmit={(data) => updateStrainMutation.mutate(data)} />
     </div>
+    </PullToRefresh>
   );
 }
