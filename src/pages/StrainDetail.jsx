@@ -293,6 +293,18 @@ export default function StrainDetail() {
     return () => clearInterval(interval);
   }, [notificationsEnabled, watering, strain]);
 
+  const handleRefresh = async () => {
+    await Promise.all([
+      queryClient.invalidateQueries({ queryKey: ["strain", strainId] }),
+      queryClient.invalidateQueries({ queryKey: ["readings", strainId] }),
+      queryClient.invalidateQueries({ queryKey: ["nutrients", strainId] }),
+      queryClient.invalidateQueries({ queryKey: ["watering", strainId] }),
+      queryClient.invalidateQueries({ queryKey: ["wateringActions", strainId] }),
+      queryClient.invalidateQueries({ queryKey: ["feedingPlans", strainId] }),
+      queryClient.invalidateQueries({ queryKey: ["harvests", strainId] }),
+    ]);
+  };
+
   if (!strain) return <div className="text-white/50">Loading...</div>;
 
   const latest = readings[0];
