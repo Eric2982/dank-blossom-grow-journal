@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import MobileSelect from "@/components/MobileSelect";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Check, Plus, Trash2, Edit } from "lucide-react";
@@ -149,17 +149,18 @@ export default function FeedingPlanner({ strainId, plans, onCreatePlan, onUpdate
               </div>
               <div>
                 <Label className="text-white/50 text-xs">Stage *</Label>
-                <Select value={form.stage} onValueChange={(v) => setForm({ ...form, stage: v })}>
-                  <SelectTrigger className="bg-white/5 border-white/10 text-white mt-1">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-zinc-800 border-white/10">
-                    <SelectItem value="seedling">Seedling</SelectItem>
-                    <SelectItem value="vegetative">Vegetative</SelectItem>
-                    <SelectItem value="flowering">Flowering</SelectItem>
-                    <SelectItem value="flush">Flush</SelectItem>
-                  </SelectContent>
-                </Select>
+                <MobileSelect
+                  value={form.stage}
+                  onValueChange={(v) => setForm({ ...form, stage: v })}
+                  options={[
+                    { value: "seedling", label: "Seedling" },
+                    { value: "vegetative", label: "Vegetative" },
+                    { value: "flowering", label: "Flowering" },
+                    { value: "flush", label: "Flush" }
+                  ]}
+                  placeholder="Select stage"
+                  className="mt-1"
+                />
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">

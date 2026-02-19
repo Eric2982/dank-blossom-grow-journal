@@ -20,11 +20,13 @@ export default function Layout({ children, currentPageName }) {
   const location = useLocation();
   const isRootPage = rootPages.includes(currentPageName);
   const [pageCache, setPageCache] = React.useState({});
+  const [renderedPages, setRenderedPages] = React.useState(new Set());
 
-  // Cache page content to preserve state
+  // Cache page content and track rendered pages
   React.useEffect(() => {
     if (isRootPage && children) {
       setPageCache(prev => ({ ...prev, [currentPageName]: children }));
+      setRenderedPages(prev => new Set([...prev, currentPageName]));
     }
   }, [currentPageName, children, isRootPage]);
 
@@ -120,17 +122,35 @@ export default function Layout({ children, currentPageName }) {
         </div>
       </header>
 
-      {/* Page Content with transitions */}
+      {/* Page Content with state preservation */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 py-8 pb-24 md:pb-8">
-        <motion.div
-          key={currentPageName}
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ duration: 0.2, ease: "easeOut" }}
-        >
-          {children}
-        </motion.div>
+        {isRootPage ? (
+          <>
+            {/* Render all cached root pages, show only the active one */}
+            {rootPages.map(pageName => (
+              <motion.div
+                key={pageName}
+                className={currentPageName === pageName ? '' : 'hidden'}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+              >
+                {renderedPages.has(pageName) && (pageName === currentPageName ? children : pageCache[pageName])}
+              </motion.div>
+            ))}
+          </>
+        ) : (
+          <motion.div
+            key={currentPageName}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
+            {children}
+          </motion.div>
+        )}
       </main>
 
       {/* Mobile Bottom Navigation */}

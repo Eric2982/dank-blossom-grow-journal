@@ -1,10 +1,12 @@
 import React from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Thermometer, Droplets, Sun, Zap, Wind, FlaskConical, Activity } from "lucide-react";
 import StatCard from "../components/grow/StatCard";
+import PullToRefresh from "../components/PullToRefresh";
 
 export default function Summary() {
+  const queryClient = useQueryClient();
   const { data: readings = [] } = useQuery({
     queryKey: ["readings"],
     queryFn: () => base44.entities.GrowReading.list("-created_date", 100),
@@ -52,7 +54,12 @@ export default function Summary() {
     { key: "ph", label: "Avg pH", unit: "", icon: FlaskConical, color: "from-pink-500/10 to-fuchsia-500/10" },
   ];
 
+  const handleRefresh = async () => {
+    await queryClient.invalidateQueries({ queryKey: ["readings"] });
+  };
+
   return (
+    <PullToRefresh onRefresh={handleRefresh}>
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-light text-white">Data Summary</h1>
@@ -122,5 +129,6 @@ export default function Summary() {
         </>
       )}
     </div>
+    </PullToRefresh>
   );
 }

@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import MobileSelect from "@/components/MobileSelect";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Award, TrendingUp, Droplets, Plus, Edit, Trash2 } from "lucide-react";
@@ -252,17 +252,18 @@ export default function HarvestTracker({ strainId, harvests, onCreateHarvest, on
               </div>
               <div>
                 <Label className="text-white/50 text-xs">Trichome Color</Label>
-                <Select value={form.trichome_color} onValueChange={(v) => setForm({ ...form, trichome_color: v })}>
-                  <SelectTrigger className="bg-white/5 border-white/10 text-white mt-1">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-zinc-800 border-white/10">
-                    <SelectItem value="clear">Clear</SelectItem>
-                    <SelectItem value="cloudy">Cloudy</SelectItem>
-                    <SelectItem value="amber">Amber</SelectItem>
-                    <SelectItem value="mixed">Mixed</SelectItem>
-                  </SelectContent>
-                </Select>
+                <MobileSelect
+                  value={form.trichome_color}
+                  onValueChange={(v) => setForm({ ...form, trichome_color: v })}
+                  options={[
+                    { value: "clear", label: "Clear" },
+                    { value: "cloudy", label: "Cloudy" },
+                    { value: "amber", label: "Amber" },
+                    { value: "mixed", label: "Mixed" }
+                  ]}
+                  placeholder="Select color"
+                  className="mt-1"
+                />
               </div>
             </div>
             <div>

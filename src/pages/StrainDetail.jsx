@@ -16,6 +16,7 @@ import StrainForm from "../components/grow/StrainForm";
 import StrainAnalytics from "../components/grow/StrainAnalytics";
 import FeedingPlanner from "../components/grow/FeedingPlanner";
 import HarvestTracker from "../components/grow/HarvestTracker";
+import PullToRefresh from "../components/PullToRefresh";
 import { Badge } from "@/components/ui/badge";
 
 export default function StrainDetail() {
@@ -356,6 +357,7 @@ export default function StrainDetail() {
   };
 
   return (
+    <PullToRefresh onRefresh={handleRefresh}>
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
