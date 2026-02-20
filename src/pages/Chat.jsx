@@ -4,8 +4,13 @@ import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Bot, Users, Send, Loader2 } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Bot, Users, Send, Loader2, Flag } from "lucide-react";
 import { format } from "date-fns";
+import { toast } from "sonner";
+import MobileSelect from "../components/MobileSelect";
 
 export default function Chat() {
   const [aiMessage, setAiMessage] = useState("");
@@ -13,6 +18,10 @@ export default function Chat() {
   const [selectedRoom, setSelectedRoom] = useState("general");
   const [aiLoading, setAiLoading] = useState(false);
   const [aiConversation, setAiConversation] = useState([]);
+  const [reportDialogOpen, setReportDialogOpen] = useState(false);
+  const [reportingMessage, setReportingMessage] = useState(null);
+  const [reportReason, setReportReason] = useState("spam");
+  const [reportDetails, setReportDetails] = useState("");
   const aiEndRef = useRef(null);
   const communityEndRef = useRef(null);
   const queryClient = useQueryClient();
@@ -44,6 +53,38 @@ export default function Chat() {
       queryClient.invalidateQueries({ queryKey: ["chat", selectedRoom] });
     },
   });
+
+  const reportMutation = useMutation({
+    mutationFn: (data) => base44.entities.ContentReport.create(data),
+    onSuccess: () => {
+      toast.success("Report submitted successfully");
+      setReportDialogOpen(false);
+      setReportingMessage(null);
+      setReportReason("spam");
+      setReportDetails("");
+    },
+    onError: () => {
+      toast.error("Failed to submit report");
+    },
+  });
+
+  const handleReportMessage = (msg) => {
+    setReportingMessage(msg);
+    setReportDialogOpen(true);
+  };
+
+  const handleSubmitReport = () => {
+    if (!reportingMessage) return;
+    
+    reportMutation.mutate({
+      message_id: reportingMessage.id,
+      message_content: reportingMessage.message,
+      message_author: reportingMessage.user_name,
+      reason: reportReason,
+      details: reportDetails || undefined,
+      room: selectedRoom,
+    });
+  };
 
   const handleAiSubmit = async (e) => {
     e.preventDefault();
@@ -181,10 +222,21 @@ export default function Chat() {
                 </div>
               )}
               {messages.slice().reverse().map((msg) => (
-                <div key={msg.id} className="bg-white/5 rounded-xl p-3 border border-white/10">
+                <div key={msg.id} className="bg-white/5 rounded-xl p-3 border border-white/10 group">
                   <div className="flex items-center justify-between mb-1">
                     <span className="text-emerald-400 text-sm font-medium">{msg.user_name}</span>
-                    <span className="text-white/30 text-xs">{format(new Date(msg.created_date), "MMM d, h:mm a")}</span>
+                    <div className="flex items-center gap-2">
+                      <span className="text-white/30 text-xs">{format(new Date(msg.created_date), "MMM d, h:mm a")}</span>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleReportMessage(msg)}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity h-6 w-6 p-0 hover:bg-red-500/20 hover:text-red-400"
+                        title="Report message"
+                      >
+                        <Flag className="w-3 h-3" />
+                      </Button>
+                    </div>
                   </div>
                   <p className="text-white text-sm">{msg.message}</p>
                 </div>
@@ -207,6 +259,75 @@ export default function Chat() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Report Dialog */}
+      <Dialog open={reportDialogOpen} onOpenChange={setReportDialogOpen}>
+        <DialogContent className="bg-zinc-900 border-white/10 text-white">
+          <DialogHeader>
+            <DialogTitle className="text-white">Report Content</DialogTitle>
+            <DialogDescription className="text-white/60">
+              Help us keep the community safe by reporting inappropriate content.
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            <div>
+              <Label className="text-white/70 text-sm">Reason for report *</Label>
+              <MobileSelect
+                value={reportReason}
+                onValueChange={setReportReason}
+                options={[
+                  { value: "spam", label: "Spam" },
+                  { value: "illegal_activity", label: "Illegal Activity" },
+                  { value: "nudity", label: "Nudity or Sexual Content" },
+                  { value: "harassment", label: "Harassment or Bullying" },
+                  { value: "violence", label: "Violence or Threats" },
+                  { value: "hate_speech", label: "Hate Speech" },
+                  { value: "other", label: "Other" },
+                ]}
+                placeholder="Select reason"
+                label="Report Reason"
+                className="mt-1 w-full"
+              />
+            </div>
+
+            <div>
+              <Label className="text-white/70 text-sm">Additional details (optional)</Label>
+              <Textarea
+                value={reportDetails}
+                onChange={(e) => setReportDetails(e.target.value)}
+                placeholder="Provide any additional context..."
+                className="mt-1 bg-white/5 border-white/10 text-white resize-none"
+                rows={3}
+              />
+            </div>
+
+            {reportingMessage && (
+              <div className="p-3 bg-white/5 rounded-lg border border-white/10">
+                <p className="text-white/40 text-xs mb-1">Reported message:</p>
+                <p className="text-white/70 text-sm">{reportingMessage.message}</p>
+              </div>
+            )}
+          </div>
+
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setReportDialogOpen(false)}
+              className="border-white/10 text-white hover:bg-white/5"
+            >
+              Cancel
+            </Button>
+            <Button
+              onClick={handleSubmitReport}
+              disabled={reportMutation.isPending}
+              className="bg-red-600 hover:bg-red-700 text-white"
+            >
+              {reportMutation.isPending ? "Submitting..." : "Submit Report"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
