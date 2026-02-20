@@ -4,7 +4,7 @@ import { useQuery, useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { User, Trash2, Crown, Mail, Calendar, Shield } from "lucide-react";
+import { User, Trash2, Crown, Mail, Calendar, Shield, FileText, ChevronDown } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { createPageUrl } from "../utils";
@@ -12,6 +12,7 @@ import { createPageUrl } from "../utils";
 export default function Settings() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
+  const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
 
   const { data: user } = useQuery({
     queryKey: ["user"],
@@ -131,6 +132,134 @@ export default function Settings() {
           </div>
         </Card>
       )}
+
+      {/* Privacy Policy */}
+      <Card className="bg-white/[0.02] border-white/5 p-6 space-y-4">
+        <button
+          onClick={() => setShowPrivacyPolicy(!showPrivacyPolicy)}
+          className="w-full flex items-center justify-between text-left"
+        >
+          <div className="flex items-center gap-3">
+            <FileText className="w-5 h-5 text-white/60" />
+            <div>
+              <h3 className="text-white font-medium">Privacy Policy</h3>
+              <p className="text-white/40 text-sm">How we handle your data</p>
+            </div>
+          </div>
+          <ChevronDown className={`w-5 h-5 text-white/40 transition-transform ${showPrivacyPolicy ? 'rotate-180' : ''}`} />
+        </button>
+
+        {showPrivacyPolicy && (
+          <div className="pt-4 border-t border-white/5 space-y-6 text-white/70 text-sm">
+            <div>
+              <p className="text-white/40 text-xs mb-4">Last Updated: February 20, 2026</p>
+              <p className="mb-4">
+                Dank Blossom is committed to protecting your privacy. This policy explains how we collect, use, and safeguard your personal and cultivation data.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-white font-medium mb-2">1. Information We Collect</h4>
+              <ul className="list-disc list-inside space-y-2 text-white/60">
+                <li><strong className="text-white/70">Account Information:</strong> Email address, full name, account creation date, and subscription status</li>
+                <li><strong className="text-white/70">Cultivation Data:</strong> Strain details, plant photos, environmental readings (temperature, humidity, PPFD, EC, VPD, pH), nutrient logs, watering schedules, feeding plans, and harvest records</li>
+                <li><strong className="text-white/70">Usage Data:</strong> Chat messages, app interactions, and feature usage patterns</li>
+                <li><strong className="text-white/70">Payment Information:</strong> Processed securely through Stripe (we do not store credit card numbers)</li>
+                <li><strong className="text-white/70">Device Information:</strong> Browser type, device identifiers, IP address, and operating system for security and functionality</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-medium mb-2">2. How We Use Your Data</h4>
+              <ul className="list-disc list-inside space-y-2 text-white/60">
+                <li>Provide and maintain grow tracking, analytics, and notification services</li>
+                <li>Process premium subscriptions and manage billing</li>
+                <li>Generate personalized insights and recommendations for your grows</li>
+                <li>Send watering reminders and growth stage notifications (if enabled)</li>
+                <li>Improve app performance, features, and user experience</li>
+                <li>Ensure account security and prevent unauthorized access</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-medium mb-2">3. Data Storage & Security</h4>
+              <p className="text-white/60 mb-2">
+                Your data is stored on secure cloud infrastructure with industry-standard encryption:
+              </p>
+              <ul className="list-disc list-inside space-y-2 text-white/60">
+                <li><strong className="text-white/70">Encryption:</strong> All data is encrypted in transit (TLS/SSL) and at rest</li>
+                <li><strong className="text-white/70">Access Control:</strong> Only you can view your cultivation data through your authenticated account</li>
+                <li><strong className="text-white/70">Photo Storage:</strong> Plant images are stored securely and linked only to your account</li>
+                <li><strong className="text-white/70">Payment Security:</strong> Processed by Stripe (PCI DSS Level 1 certified)</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-medium mb-2">4. Data Sharing & Disclosure</h4>
+              <p className="text-white/60 mb-2">We do NOT sell your personal data. Limited sharing occurs only for:</p>
+              <ul className="list-disc list-inside space-y-2 text-white/60">
+                <li><strong className="text-white/70">Service Providers:</strong> Stripe for payment processing, cloud hosting providers for data storage</li>
+                <li><strong className="text-white/70">Legal Compliance:</strong> When required by law, court order, or to protect rights and safety</li>
+                <li><strong className="text-white/70">Aggregated Data:</strong> Anonymous, aggregated analytics (no personal identifiers) may be used for research</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-medium mb-2">5. User Rights & Control</h4>
+              <ul className="list-disc list-inside space-y-2 text-white/60">
+                <li><strong className="text-white/70">Access & Export:</strong> View and download all your cultivation data at any time</li>
+                <li><strong className="text-white/70">Edit & Update:</strong> Modify or correct your account information and grow logs</li>
+                <li><strong className="text-white/70">Delete:</strong> Permanently remove your account and all associated data (see Danger Zone below)</li>
+                <li><strong className="text-white/70">Opt-Out:</strong> Disable notifications and promotional communications</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-medium mb-2">6. Cookies & Tracking</h4>
+              <p className="text-white/60">
+                We use essential cookies for authentication and app functionality. No third-party advertising or tracking cookies are used.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-white font-medium mb-2">7. Data Retention</h4>
+              <ul className="list-disc list-inside space-y-2 text-white/60">
+                <li>Active accounts: Data retained indefinitely while your account is active</li>
+                <li>Deleted accounts: All personal and cultivation data permanently removed within 30 days</li>
+                <li>Canceled subscriptions: Data remains accessible; you can delete your account separately</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="text-white font-medium mb-2">8. Children's Privacy</h4>
+              <p className="text-white/60">
+                Our service is intended for users 21+ years of age (or legal age in your jurisdiction). We do not knowingly collect data from minors.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-white font-medium mb-2">9. International Users</h4>
+              <p className="text-white/60">
+                Data is processed and stored in the United States. By using Dank Blossom, you consent to the transfer of your information to the U.S.
+              </p>
+            </div>
+
+            <div>
+              <h4 className="text-white font-medium mb-2">10. Changes to Privacy Policy</h4>
+              <p className="text-white/60">
+                We may update this policy periodically. Significant changes will be communicated via email or in-app notification.
+              </p>
+            </div>
+
+            <div className="pt-4 border-t border-white/5">
+              <h4 className="text-white font-medium mb-2">Contact Us</h4>
+              <p className="text-white/60">
+                Questions or concerns about your privacy? Contact us at support@dankblossom.com
+              </p>
+            </div>
+          </div>
+        )}
+      </Card>
 
       {/* Danger Zone */}
       <Card className="bg-red-950/20 border-red-500/20 p-6 space-y-4">
