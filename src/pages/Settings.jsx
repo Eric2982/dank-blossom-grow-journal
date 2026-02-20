@@ -283,24 +283,80 @@ export default function Settings() {
       </Card>
 
       {/* Danger Zone */}
-      <Card className="bg-red-950/20 border-red-500/20 p-6">
-        <a
-          href="https://doc-hosting.flycricket.io/dank-blossom-grow-journal-account-deletion/ea4d24c1-bada-45ce-9207-c97a9dffdcda/deletion"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center justify-between group"
-        >
-          <div className="flex items-center gap-3">
-            <Trash2 className="w-5 h-5 text-red-400" />
+      <Card className="bg-red-950/20 border-red-500/20 p-6 space-y-4">
+        <div>
+          <h3 className="text-red-400 font-medium mb-1 flex items-center gap-2">
+            <Trash2 className="w-4 h-4" />
+            Danger Zone
+          </h3>
+          <p className="text-white/60 text-sm">
+            Permanently delete your account and all associated data. This action cannot be undone.
+          </p>
+        </div>
+
+        <div className="pt-4 border-t border-red-500/20">
+          <h4 className="text-white font-medium mb-3">Account Deletion Process</h4>
+          <div className="space-y-4 text-white/70 text-sm">
             <div>
-              <h3 className="text-red-400 font-medium group-hover:text-red-300 transition-colors">Delete Account</h3>
-              <p className="text-white/60 text-sm">View account deletion process and request deletion</p>
+              <h5 className="text-white/90 font-medium mb-2">How to Request Deletion</h5>
+              <p className="text-white/60 mb-2">
+                To delete your account and all associated data maintained by Dank Blossom Inc., you can:
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-white/60 ml-2">
+                <li>Use the "Delete Account" button below for immediate self-service deletion</li>
+                <li>Email our support team at support@dankblossom.com with your account email address</li>
+              </ul>
+            </div>
+
+            <div>
+              <h5 className="text-white/90 font-medium mb-2">Data That Will Be Permanently Deleted</h5>
+              <ul className="list-disc list-inside space-y-1 text-white/60 ml-2">
+                <li><strong className="text-white/70">Account Information:</strong> Your email, name, and login credentials</li>
+                <li><strong className="text-white/70">Cultivation Data:</strong> All grow strains, plant photos, and grow journals</li>
+                <li><strong className="text-white/70">Environmental Records:</strong> Temperature, humidity, PPFD, EC, VPD, and pH readings</li>
+                <li><strong className="text-white/70">Nutrient Logs:</strong> All feeding schedules, nutrient applications, and plans</li>
+                <li><strong className="text-white/70">Watering Data:</strong> Schedules, reminders, and watering history</li>
+                <li><strong className="text-white/70">Harvest Records:</strong> Yield data, quality ratings, and harvest notes</li>
+                <li><strong className="text-white/70">Community Content:</strong> Chat messages and forum posts</li>
+              </ul>
+            </div>
+
+            <div>
+              <h5 className="text-white/90 font-medium mb-2">Data Retention Period</h5>
+              <p className="text-white/60">
+                Upon deletion request, your account and all personal data will be <strong className="text-white/70">permanently removed within 30 days</strong>. 
+                This allows time for backup cycles to complete. After 30 days, your data cannot be recovered.
+              </p>
+            </div>
+
+            <div>
+              <h5 className="text-white/90 font-medium mb-2">Data That May Be Retained</h5>
+              <p className="text-white/60 mb-2">
+                Dank Blossom Inc. may retain certain information as required by law or for legitimate business purposes:
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-white/60 ml-2">
+                <li>Transaction records for tax and accounting purposes (7 years)</li>
+                <li>Anonymized analytics data with no personal identifiers</li>
+                <li>Legal compliance records if required by law enforcement or regulatory agencies</li>
+              </ul>
+            </div>
+
+            <div className="pt-2">
+              <p className="text-white/50 text-xs">
+                For questions about account deletion, contact Dank Blossom Inc. at support@dankblossom.com
+              </p>
             </div>
           </div>
-          <svg className="w-5 h-5 text-white/40 group-hover:text-white/60 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
-        </a>
+        </div>
+
+        <Button
+          variant="destructive"
+          onClick={() => setShowDeleteDialog(true)}
+          className="w-full sm:w-auto bg-red-600 hover:bg-red-700"
+        >
+          <Trash2 className="w-4 h-4 mr-2" />
+          Delete Account
+        </Button>
       </Card>
 
       {/* Delete Confirmation Dialog */}
