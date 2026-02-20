@@ -293,25 +293,14 @@ export default function Settings() {
             Permanently delete your account and all associated data. This action cannot be undone.
           </p>
         </div>
-        <div className="space-y-3">
-          <Button
-            variant="destructive"
-            onClick={() => setShowDeleteDialog(true)}
-            className="w-full sm:w-auto bg-red-600 hover:bg-red-700"
-          >
-            <Trash2 className="w-4 h-4 mr-2" />
-            Delete Account
-          </Button>
-          <p className="text-white/40 text-xs">
-            Alternatively, you can request account deletion by emailing{" "}
-            <a 
-              href="mailto:support@dankblossom.com?subject=Account%20Deletion%20Request" 
-              className="text-red-400 hover:text-red-300 underline"
-            >
-              support@dankblossom.com
-            </a>
-          </p>
-        </div>
+        <Button
+          variant="destructive"
+          onClick={() => setShowDeleteDialog(true)}
+          className="w-full sm:w-auto bg-red-600 hover:bg-red-700"
+        >
+          <Trash2 className="w-4 h-4 mr-2" />
+          Delete Account
+        </Button>
       </Card>
 
       {/* Delete Confirmation Dialog */}
