@@ -261,6 +261,27 @@ export default function Settings() {
         )}
       </Card>
 
+      {/* Terms and Conditions */}
+      <Card className="bg-white/[0.02] border-white/5 p-6">
+        <a
+          href="https://doc-hosting.flycricket.io/dank-blossom-grow-journal-terms-of-use/133e87e4-50a4-431c-a96f-2fe3c9cbba63/terms"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center justify-between group"
+        >
+          <div className="flex items-center gap-3">
+            <FileText className="w-5 h-5 text-white/60" />
+            <div>
+              <h3 className="text-white font-medium group-hover:text-emerald-400 transition-colors">Terms and Conditions</h3>
+              <p className="text-white/40 text-sm">Review our terms of use</p>
+            </div>
+          </div>
+          <svg className="w-5 h-5 text-white/40 group-hover:text-white/60 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+          </svg>
+        </a>
+      </Card>
+
       {/* Danger Zone */}
       <Card className="bg-red-950/20 border-red-500/20 p-6 space-y-4">
         <div>
