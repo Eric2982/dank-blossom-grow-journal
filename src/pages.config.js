@@ -52,10 +52,10 @@ import Dashboard from './pages/Dashboard';
 import Learn from './pages/Learn';
 import Nutrients from './pages/Nutrients';
 import Premium from './pages/Premium';
-import Settings from './pages/Settings';
 import Store from './pages/Store';
 import StrainDetail from './pages/StrainDetail';
 import Summary from './pages/Summary';
+import Settings from './pages/Settings';
 import __Layout from './Layout.jsx';
 
 
@@ -65,10 +65,10 @@ export const PAGES = {
     "Learn": Learn,
     "Nutrients": Nutrients,
     "Premium": Premium,
-    "Settings": Settings,
     "Store": Store,
     "StrainDetail": StrainDetail,
     "Summary": Summary,
+    "Settings": Settings,
 }
 
 export const pagesConfig = {

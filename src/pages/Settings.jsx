@@ -293,6 +293,62 @@ export default function Settings() {
             Permanently delete your account and all associated data. This action cannot be undone.
           </p>
         </div>
+
+        <div className="pt-4 border-t border-red-500/20">
+          <h4 className="text-white font-medium mb-3">Account Deletion Process</h4>
+          <div className="space-y-4 text-white/70 text-sm">
+            <div>
+              <h5 className="text-white/90 font-medium mb-2">How to Request Deletion</h5>
+              <p className="text-white/60 mb-2">
+                To delete your account and all associated data maintained by Dank Blossom Inc., you can:
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-white/60 ml-2">
+                <li>Use the "Delete Account" button below for immediate self-service deletion</li>
+                <li>Email our support team at support@dankblossom.com with your account email address</li>
+              </ul>
+            </div>
+
+            <div>
+              <h5 className="text-white/90 font-medium mb-2">Data That Will Be Permanently Deleted</h5>
+              <ul className="list-disc list-inside space-y-1 text-white/60 ml-2">
+                <li><strong className="text-white/70">Account Information:</strong> Your email, name, and login credentials</li>
+                <li><strong className="text-white/70">Cultivation Data:</strong> All grow strains, plant photos, and grow journals</li>
+                <li><strong className="text-white/70">Environmental Records:</strong> Temperature, humidity, PPFD, EC, VPD, and pH readings</li>
+                <li><strong className="text-white/70">Nutrient Logs:</strong> All feeding schedules, nutrient applications, and plans</li>
+                <li><strong className="text-white/70">Watering Data:</strong> Schedules, reminders, and watering history</li>
+                <li><strong className="text-white/70">Harvest Records:</strong> Yield data, quality ratings, and harvest notes</li>
+                <li><strong className="text-white/70">Community Content:</strong> Chat messages and forum posts</li>
+              </ul>
+            </div>
+
+            <div>
+              <h5 className="text-white/90 font-medium mb-2">Data Retention Period</h5>
+              <p className="text-white/60">
+                Upon deletion request, your account and all personal data will be <strong className="text-white/70">permanently removed within 30 days</strong>. 
+                This allows time for backup cycles to complete. After 30 days, your data cannot be recovered.
+              </p>
+            </div>
+
+            <div>
+              <h5 className="text-white/90 font-medium mb-2">Data That May Be Retained</h5>
+              <p className="text-white/60 mb-2">
+                Dank Blossom Inc. may retain certain information as required by law or for legitimate business purposes:
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-white/60 ml-2">
+                <li>Transaction records for tax and accounting purposes (7 years)</li>
+                <li>Anonymized analytics data with no personal identifiers</li>
+                <li>Legal compliance records if required by law enforcement or regulatory agencies</li>
+              </ul>
+            </div>
+
+            <div className="pt-2">
+              <p className="text-white/50 text-xs">
+                For questions about account deletion, contact Dank Blossom Inc. at support@dankblossom.com
+              </p>
+            </div>
+          </div>
+        </div>
+
         <Button
           variant="destructive"
           onClick={() => setShowDeleteDialog(true)}
