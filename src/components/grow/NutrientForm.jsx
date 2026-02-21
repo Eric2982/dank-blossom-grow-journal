@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Plus, Trash2, Scan } from "lucide-react";
 import { base44 } from "@/api/base44Client";
+import MobileSelect from "../MobileSelect";
 
 const nutrientTypes = [
   { value: "base", label: "Base" },
@@ -176,16 +176,14 @@ export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient })
                 <div className="grid grid-cols-2 gap-3">
                   <div>
                     <Label className="text-white/50 text-xs">Type</Label>
-                    <Select value={nutrient.nutrient_type} onValueChange={(v) => updateNutrient(index, "nutrient_type", v)}>
-                      <SelectTrigger className="bg-white/5 border-white/10 text-white mt-1">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="bg-zinc-800 border-white/10">
-                        {nutrientTypes.map(t => (
-                          <SelectItem key={t.value} value={t.value}>{t.label}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <MobileSelect
+                      value={nutrient.nutrient_type}
+                      onValueChange={(v) => updateNutrient(index, "nutrient_type", v)}
+                      options={nutrientTypes}
+                      placeholder="Select type"
+                      label="Nutrient Type"
+                      className="mt-1 w-full"
+                    />
                   </div>
                   <div>
                     <Label className="text-white/50 text-xs">Amount (ml) *</Label>
@@ -223,17 +221,19 @@ export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient })
             </div>
             <div>
               <Label className="text-white/50 text-xs">Growth Stage</Label>
-              <Select value={growStage} onValueChange={setGrowStage}>
-                <SelectTrigger className="bg-white/5 border-white/10 text-white mt-1">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="bg-zinc-800 border-white/10">
-                  <SelectItem value="seedling">Seedling</SelectItem>
-                  <SelectItem value="vegetative">Vegetative</SelectItem>
-                  <SelectItem value="flowering">Flowering</SelectItem>
-                  <SelectItem value="harvest">Harvest</SelectItem>
-                </SelectContent>
-              </Select>
+              <MobileSelect
+                value={growStage}
+                onValueChange={setGrowStage}
+                options={[
+                  { value: "seedling", label: "🌱 Seedling" },
+                  { value: "vegetative", label: "🌿 Vegetative" },
+                  { value: "flowering", label: "🌸 Flowering" },
+                  { value: "harvest", label: "🌾 Harvest" },
+                ]}
+                placeholder="Select stage"
+                label="Growth Stage"
+                className="mt-1 w-full"
+              />
             </div>
           </div>
 
