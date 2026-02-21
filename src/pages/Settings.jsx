@@ -326,6 +326,73 @@ export default function Settings() {
         </Card>
       )}
 
+      {/* About Section */}
+      <Card className="bg-white/[0.02] border-white/5 p-6 space-y-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
+            <Leaf className="w-5 h-5 text-white" />
+          </div>
+          <div>
+            <h3 className="text-white font-medium">About Dank Blossom</h3>
+            <p className="text-white/40 text-sm">Your complete cannabis cultivation companion</p>
+          </div>
+        </div>
+
+        <div className="pt-4 border-t border-white/5 space-y-4 text-white/70 text-sm">
+          <div>
+            <h4 className="text-white font-medium mb-2">What is Dank Blossom?</h4>
+            <p className="text-white/60">
+              Dank Blossom is a comprehensive grow journal and cultivation tracking application designed specifically for cannabis growers of all experience levels. Whether you're a first-time grower or a seasoned cultivator, Dank Blossom provides the tools you need to document, analyze, and optimize every aspect of your grows.
+            </p>
+          </div>
+
+          <div>
+            <h4 className="text-white font-medium mb-2">Our Purpose</h4>
+            <p className="text-white/60 mb-2">
+              We believe that successful cultivation comes from careful observation, consistent documentation, and data-driven decisions. Dank Blossom was created to help growers:
+            </p>
+            <ul className="list-disc list-inside space-y-1 text-white/60 ml-2">
+              <li>Track environmental conditions (temperature, humidity, PPFD, VPD, EC, pH)</li>
+              <li>Log nutrient feeding schedules and calculate optimal ratios</li>
+              <li>Monitor plant health and growth stages from seed to harvest</li>
+              <li>Document watering schedules and automate reminders</li>
+              <li>Capture and organize grow photos chronologically</li>
+              <li>Analyze harvest results and improve future grows</li>
+              <li>Connect with a community of passionate cultivators</li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-white font-medium mb-2">Our Goal</h4>
+            <p className="text-white/60">
+              Our mission is to empower growers with the knowledge and tools to consistently produce high-quality cannabis. By providing detailed tracking, intelligent insights, and a supportive community, we aim to help you learn from each grow cycle, troubleshoot problems early, and achieve better yields with every harvest. Whether you're growing for personal use, medicinal purposes, or commercial production, Dank Blossom is your partner in cultivation excellence.
+            </p>
+          </div>
+
+          <div>
+            <h4 className="text-white font-medium mb-2">User-Friendly Design</h4>
+            <p className="text-white/60 mb-2">
+              We've designed Dank Blossom with simplicity and accessibility in mind:
+            </p>
+            <ul className="list-disc list-inside space-y-1 text-white/60 ml-2">
+              <li><strong className="text-white/70">Intuitive Interface:</strong> Clean, modern design that's easy to navigate on any device</li>
+              <li><strong className="text-white/70">Mobile-First:</strong> Optimized for mobile use so you can log data right from your grow room</li>
+              <li><strong className="text-white/70">Quick Entry:</strong> Log readings, nutrients, and photos in seconds</li>
+              <li><strong className="text-white/70">Visual Analytics:</strong> Charts and graphs that make your data easy to understand</li>
+              <li><strong className="text-white/70">Smart Reminders:</strong> Never miss a watering or feeding with automated notifications</li>
+              <li><strong className="text-white/70">Educational Resources:</strong> Built-in knowledge base for deficiencies, pests, and best practices</li>
+              <li><strong className="text-white/70">Community Support:</strong> Chat with other growers and share experiences</li>
+            </ul>
+          </div>
+
+          <div className="pt-4 border-t border-white/5">
+            <p className="text-white/50 text-xs">
+              Dank Blossom is continuously evolving based on user feedback. We're committed to building the best cultivation tracking experience possible. Happy growing! 🌱
+            </p>
+          </div>
+        </div>
+      </Card>
+
       {/* Privacy Policy */}
       <Card className="bg-white/[0.02] border-white/5 p-6 space-y-4">
         <button
