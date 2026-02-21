@@ -3,17 +3,23 @@ import { base44 } from "@/api/base44Client";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
-import { User, Trash2, Crown, Mail, Calendar, Shield, FileText, ChevronDown } from "lucide-react";
+import { User, Trash2, Crown, Mail, Calendar, Shield, FileText, ChevronDown, Camera, Edit2, Leaf } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { createPageUrl } from "../utils";
 import PullToRefresh from "../components/PullToRefresh";
+import { format } from "date-fns";
 
 export default function Settings() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [editBio, setEditBio] = useState("");
+  const [uploadingPhoto, setUploadingPhoto] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: user } = useQuery({
@@ -27,12 +33,71 @@ export default function Settings() {
     enabled: !!user?.email,
   });
 
+  const { data: strains = [] } = useQuery({
+    queryKey: ["strains", user?.email],
+    queryFn: () => base44.entities.Strain.list("-created_date"),
+    enabled: !!user?.email,
+  });
+
   const isPremium = subscription?.[0]?.status === "active";
+
+  const updateProfileMutation = useMutation({
+    mutationFn: (data) => base44.auth.updateMe(data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["user"] });
+      setIsEditingProfile(false);
+      toast.success("Profile updated");
+    },
+  });
 
   const handleRefresh = async () => {
     await queryClient.invalidateQueries({ queryKey: ["user"] });
     await queryClient.invalidateQueries({ queryKey: ["subscription"] });
+    await queryClient.invalidateQueries({ queryKey: ["strains"] });
   };
+
+  const handlePhotoUpload = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingPhoto(true);
+    try {
+      const { file_url } = await base44.integrations.Core.UploadFile({ file });
+      await updateProfileMutation.mutateAsync({ profile_picture: file_url });
+      toast.success("Profile picture updated");
+    } catch (error) {
+      toast.error("Failed to upload photo");
+    } finally {
+      setUploadingPhoto(false);
+    }
+  };
+
+  const handleSaveBio = async () => {
+    await updateProfileMutation.mutateAsync({ bio: editBio });
+  };
+
+  const startEditingBio = () => {
+    setEditBio(user?.bio || "");
+    setIsEditingProfile(true);
+  };
+
+  const getGrowStage = (strain) => {
+    if (strain.status === "harvested") return "🌾 Harvested";
+    if (strain.flipped_to_flower_date) return "🌸 Flowering";
+    if (strain.planted_date) return "🌿 Vegetative";
+    return "🌱 Seedling";
+  };
+
+  const getDaysGrowing = (strain) => {
+    if (!strain.planted_date) return null;
+    const start = new Date(strain.planted_date);
+    const end = strain.harvest_date ? new Date(strain.harvest_date) : new Date();
+    const days = Math.floor((end - start) / (1000 * 60 * 60 * 24));
+    return days;
+  };
+
+  const activeGrows = strains.filter(s => s.status === "active");
+  const completedGrows = strains.filter(s => s.status === "harvested");
 
   const handleDeleteAccount = async () => {
     if (deleteConfirmText.toLowerCase() !== "delete") {
@@ -87,44 +152,164 @@ export default function Settings() {
       <div className="max-w-2xl mx-auto space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-light text-white">Settings</h1>
-        <p className="text-white/40 text-sm mt-1">Manage your account and preferences</p>
+        <h1 className="text-2xl font-light text-white">Profile & Settings</h1>
+        <p className="text-white/40 text-sm mt-1">Manage your account and showcase your grows</p>
       </div>
 
-      {/* Account Info Card */}
-      <Card className="bg-white/[0.02] border-white/5 p-6 space-y-4">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
-            <User className="w-6 h-6 text-white" />
+      {/* Profile Card */}
+      <Card className="bg-white/[0.02] border-white/5 p-6 space-y-6">
+        <div className="flex items-start gap-4">
+          <div className="relative">
+            <div className="w-20 h-20 rounded-full overflow-hidden bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
+              {user.profile_picture ? (
+                <img src={user.profile_picture} alt="Profile" className="w-full h-full object-cover" />
+              ) : (
+                <User className="w-10 h-10 text-white" />
+              )}
+            </div>
+            <label className="absolute bottom-0 right-0 w-7 h-7 rounded-full bg-emerald-600 hover:bg-emerald-500 flex items-center justify-center cursor-pointer transition-colors">
+              <input type="file" accept="image/*" className="hidden" onChange={handlePhotoUpload} disabled={uploadingPhoto} />
+              <Camera className="w-3.5 h-3.5 text-white" />
+            </label>
           </div>
           <div className="flex-1">
-            <h2 className="text-white font-medium">{user.full_name || "User"}</h2>
-            <p className="text-white/40 text-sm">{user.email}</p>
+            <div className="flex items-center justify-between mb-2">
+              <h2 className="text-white font-medium text-lg">{user.full_name || "User"}</h2>
+              {isPremium && (
+                <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 gap-1">
+                  <Crown className="w-3 h-3" /> Premium
+                </Badge>
+              )}
+            </div>
+            <p className="text-white/40 text-sm mb-3">{user.email}</p>
+            
+            {isEditingProfile ? (
+              <div className="space-y-2">
+                <Textarea
+                  value={editBio}
+                  onChange={(e) => setEditBio(e.target.value)}
+                  placeholder="Tell us about your growing journey..."
+                  className="bg-white/5 border-white/10 text-white resize-none"
+                  rows={3}
+                />
+                <div className="flex gap-2">
+                  <Button size="sm" onClick={handleSaveBio} className="bg-emerald-600 hover:bg-emerald-500">
+                    Save
+                  </Button>
+                  <Button size="sm" variant="outline" onClick={() => setIsEditingProfile(false)} className="border-white/10 text-white hover:bg-white/5">
+                    Cancel
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <div>
+                <p className="text-white/70 text-sm mb-2">
+                  {user.bio || "No bio yet. Click edit to add one!"}
+                </p>
+                <Button size="sm" variant="ghost" onClick={startEditingBio} className="text-white/40 hover:text-white h-8 px-2">
+                  <Edit2 className="w-3 h-3 mr-1" /> Edit Bio
+                </Button>
+              </div>
+            )}
           </div>
-          {isPremium ? (
-            <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 gap-1">
-              <Crown className="w-3 h-3" /> Premium
-            </Badge>
-          ) : (
-            <Badge variant="outline" className="text-white/50 border-white/20">Free</Badge>
-          )}
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-4 border-t border-white/5">
-          <div className="flex items-center gap-2 text-sm">
-            <Mail className="w-4 h-4 text-white/40" />
-            <span className="text-white/60">Email verified</span>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 border-t border-white/5">
+          <div className="text-center">
+            <div className="text-2xl font-semibold text-emerald-400">{strains.length}</div>
+            <div className="text-white/40 text-xs">Total Grows</div>
           </div>
-          <div className="flex items-center gap-2 text-sm">
-            <Calendar className="w-4 h-4 text-white/40" />
-            <span className="text-white/60">Joined {new Date(user.created_date).toLocaleDateString()}</span>
+          <div className="text-center">
+            <div className="text-2xl font-semibold text-white">{activeGrows.length}</div>
+            <div className="text-white/40 text-xs">Active</div>
           </div>
-          <div className="flex items-center gap-2 text-sm">
-            <Shield className="w-4 h-4 text-white/40" />
-            <span className="text-white/60">Role: {user.role}</span>
+          <div className="text-center">
+            <div className="text-2xl font-semibold text-white">{completedGrows.length}</div>
+            <div className="text-white/40 text-xs">Completed</div>
+          </div>
+          <div className="text-center">
+            <div className="text-2xl font-semibold text-white/60">{user.role}</div>
+            <div className="text-white/40 text-xs">Role</div>
           </div>
         </div>
       </Card>
+
+      {/* Active Grows Showcase */}
+      {activeGrows.length > 0 && (
+        <Card className="bg-white/[0.02] border-white/5 p-6 space-y-4">
+          <h3 className="text-white font-medium flex items-center gap-2">
+            <Leaf className="w-5 h-5 text-emerald-400" />
+            Active Grows
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {activeGrows.map(strain => (
+              <div key={strain.id} className="rounded-lg bg-white/5 border border-white/10 overflow-hidden hover:border-emerald-500/30 transition-colors">
+                <div className="h-32 bg-gradient-to-br from-emerald-900/30 to-green-900/30 relative overflow-hidden">
+                  {strain.photos?.[0] ? (
+                    <img src={strain.photos[0]} alt={strain.name} className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="flex items-center justify-center h-full">
+                      <Leaf className="w-12 h-12 text-white/10" />
+                    </div>
+                  )}
+                  <div className="absolute top-2 right-2">
+                    <Badge className="bg-black/50 text-white border-0 backdrop-blur-sm">
+                      {getGrowStage(strain)}
+                    </Badge>
+                  </div>
+                </div>
+                <div className="p-4">
+                  <h4 className="text-white font-medium mb-1">{strain.name}</h4>
+                  <p className="text-white/40 text-xs mb-3">{strain.type} • {strain.plant_type || "photoperiod"}</p>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-white/50">
+                      Started {strain.planted_date ? format(new Date(strain.planted_date), "MMM d, yyyy") : "—"}
+                    </span>
+                    {getDaysGrowing(strain) && (
+                      <span className="text-emerald-400 font-medium">Day {getDaysGrowing(strain)}</span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
+
+      {/* Completed Grows Showcase */}
+      {completedGrows.length > 0 && (
+        <Card className="bg-white/[0.02] border-white/5 p-6 space-y-4">
+          <h3 className="text-white font-medium">Completed Grows 🏆</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {completedGrows.slice(0, 4).map(strain => (
+              <div key={strain.id} className="rounded-lg bg-white/5 border border-white/10 overflow-hidden hover:border-amber-500/30 transition-colors">
+                <div className="h-24 bg-gradient-to-br from-amber-900/20 to-orange-900/20 relative overflow-hidden">
+                  {strain.photos?.[0] ? (
+                    <img src={strain.photos[0]} alt={strain.name} className="w-full h-full object-cover opacity-70" />
+                  ) : (
+                    <div className="flex items-center justify-center h-full">
+                      <Leaf className="w-10 h-10 text-white/10" />
+                    </div>
+                  )}
+                </div>
+                <div className="p-3">
+                  <h4 className="text-white font-medium text-sm mb-1">{strain.name}</h4>
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="text-white/40">
+                      {getDaysGrowing(strain) ? `${getDaysGrowing(strain)} days` : "—"}
+                    </span>
+                    {strain.harvest_date && (
+                      <span className="text-white/50">
+                        {format(new Date(strain.harvest_date), "MMM yyyy")}
+                      </span>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </Card>
+      )}
 
       {/* Subscription Card */}
       {isPremium && (
