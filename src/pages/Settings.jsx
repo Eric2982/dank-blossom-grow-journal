@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
@@ -8,11 +8,13 @@ import { User, Trash2, Crown, Mail, Calendar, Shield, FileText, ChevronDown } fr
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { createPageUrl } from "../utils";
+import PullToRefresh from "../components/PullToRefresh";
 
 export default function Settings() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const queryClient = useQueryClient();
 
   const { data: user } = useQuery({
     queryKey: ["user"],
@@ -26,6 +28,11 @@ export default function Settings() {
   });
 
   const isPremium = subscription?.[0]?.status === "active";
+
+  const handleRefresh = async () => {
+    await queryClient.invalidateQueries({ queryKey: ["user"] });
+    await queryClient.invalidateQueries({ queryKey: ["subscription"] });
+  };
 
   const handleDeleteAccount = async () => {
     if (deleteConfirmText.toLowerCase() !== "delete") {
@@ -76,7 +83,8 @@ export default function Settings() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto space-y-6">
+    <PullToRefresh onRefresh={handleRefresh}>
+      <div className="max-w-2xl mx-auto space-y-6">
       {/* Header */}
       <div>
         <h1 className="text-2xl font-light text-white">Settings</h1>
@@ -415,6 +423,7 @@ export default function Settings() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+      </div>
+    </PullToRefresh>
   );
 }

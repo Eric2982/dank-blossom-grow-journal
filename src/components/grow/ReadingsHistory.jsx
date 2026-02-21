@@ -21,7 +21,7 @@ export default function ReadingsHistory({ readings, onDelete, onEdit }) {
 
   return (
     <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto touch-pan-x">
         <table className="w-full text-sm">
           <thead>
             <tr className="border-b border-white/5">
@@ -49,11 +49,11 @@ export default function ReadingsHistory({ readings, onDelete, onEdit }) {
                 <td className="text-right px-3 py-3 text-white/70 tabular-nums">{r.ph ?? "—"}</td>
                 <td className="px-3 py-3">
                   <div className="flex gap-1">
-                    <Button variant="ghost" size="icon" className="h-6 w-6 text-white/40 hover:text-white" onClick={() => onEdit(r)}>
-                      <Edit className="w-3 h-3" />
+                    <Button variant="ghost" size="icon" className="min-w-[44px] min-h-[44px] w-11 h-11 text-white/40 hover:text-white" onClick={() => onEdit(r)}>
+                      <Edit className="w-4 h-4" />
                     </Button>
-                    <Button variant="ghost" size="icon" className="h-6 w-6 text-white/20 hover:text-red-400" onClick={() => onDelete(r.id)}>
-                      <Trash2 className="w-3 h-3" />
+                    <Button variant="ghost" size="icon" className="min-w-[44px] min-h-[44px] w-11 h-11 text-white/20 hover:text-red-400" onClick={() => onDelete(r.id)}>
+                      <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>
                 </td>

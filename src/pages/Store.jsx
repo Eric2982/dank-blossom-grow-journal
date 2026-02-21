@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { base44 } from "@/api/base44Client";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ShoppingBag, Search, Loader2 } from "lucide-react";
 import StoreCard from "../components/grow/StoreCard";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import PullToRefresh from "../components/PullToRefresh";
 
 const categories = [
   { value: "all", label: "All" },
@@ -24,11 +25,16 @@ export default function Store() {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState(null);
   const [searching, setSearching] = useState(false);
+  const queryClient = useQueryClient();
 
   const { data: items = [] } = useQuery({
     queryKey: ["store"],
     queryFn: () => base44.entities.StoreItem.list("-created_date", 100),
   });
+
+  const handleRefresh = async () => {
+    await queryClient.invalidateQueries({ queryKey: ["store"] });
+  };
 
   const filtered = activeCategory === "all" ? items : items.filter(i => i.category === activeCategory);
 
@@ -68,7 +74,8 @@ export default function Store() {
   };
 
   return (
-    <div className="space-y-8">
+    <PullToRefresh onRefresh={handleRefresh}>
+      <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-light text-white">Grow Shop</h1>
         <p className="text-white/30 text-sm mt-1">Recommended equipment & supplies</p>
@@ -140,6 +147,7 @@ export default function Store() {
           </div>
         )}
       </div>
-    </div>
+      </div>
+    </PullToRefresh>
   );
 }

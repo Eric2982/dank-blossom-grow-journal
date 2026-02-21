@@ -98,9 +98,9 @@ export default function Nutrients() {
                 </div>
                 {log.notes && <p className="text-white/30 text-xs mt-2">{log.notes}</p>}
               </div>
-              <Button variant="ghost" size="icon" className="h-7 w-7 text-white/15 hover:text-red-400 shrink-0"
+              <Button variant="ghost" size="icon" className="min-w-[44px] min-h-[44px] w-11 h-11 text-white/15 hover:text-red-400 shrink-0"
                 onClick={() => deleteMutation.mutate(log.id)}>
-                <Trash2 className="w-3.5 h-3.5" />
+                <Trash2 className="w-4 h-4" />
               </Button>
             </div>
           ))}
