@@ -542,31 +542,14 @@ export default function Settings() {
           </div>
         </div>
 
-        <div className="flex flex-col sm:flex-row gap-3">
-          <Button
-            variant="destructive"
-            onClick={() => setShowDeleteDialog(true)}
-            className="flex-1 sm:flex-initial bg-red-600 hover:bg-red-700"
-          >
-            <Trash2 className="w-4 h-4 mr-2" />
-            Delete Account
-          </Button>
-          
-          <a
-            href="https://doc-hosting.flycricket.io/dank-blossom-grow-journal-account-deletion/133e87e4-50a4-431c-a96f-2fe3c9cbba63/deletion"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex-1 sm:flex-initial"
-          >
-            <Button
-              variant="outline"
-              className="w-full border-red-500/50 text-red-400 hover:bg-red-500/10 hover:text-red-300"
-            >
-              <FileText className="w-4 h-4 mr-2" />
-              Account Deletion Help
-            </Button>
-          </a>
-        </div>
+        <Button
+          variant="destructive"
+          onClick={() => setShowDeleteDialog(true)}
+          className="bg-red-600 hover:bg-red-700"
+        >
+          <Trash2 className="w-4 h-4 mr-2" />
+          Delete Account
+        </Button>
       </Card>
 
       {/* Delete Confirmation Dialog */}
