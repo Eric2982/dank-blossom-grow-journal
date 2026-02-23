@@ -69,11 +69,11 @@ export default function Challenges() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-light text-slate-900 flex items-center gap-2">
+            <h1 className="text-2xl font-light text-white flex items-center gap-2">
               <Trophy className="w-7 h-7 text-amber-500" />
               Community Challenges
             </h1>
-            <p className="text-slate-600 text-sm mt-1">Compete with growers worldwide</p>
+            <p className="text-white/40 text-sm mt-1">Compete with growers worldwide</p>
           </div>
         </div>
 
@@ -82,7 +82,7 @@ export default function Challenges() {
           <Card className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border-amber-500/20 p-4">
             <div className="flex items-center gap-3 flex-wrap">
               <Award className="w-5 h-5 text-amber-500" />
-              <span className="text-slate-800 text-sm font-medium">Your Badges:</span>
+              <span className="text-white/80 text-sm font-medium">Your Badges:</span>
               <div className="flex gap-2 flex-wrap">
                 {user.badges.map((badge, idx) => (
                   <Badge key={idx} className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0">
@@ -96,50 +96,50 @@ export default function Challenges() {
 
         {/* Stats Overview */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          <Card className="bg-white/50 border-slate-200 p-4">
+          <Card className="bg-white/[0.02] border-white/5 p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-emerald-500" />
+                <TrendingUp className="w-5 h-5 text-emerald-400" />
               </div>
               <div>
-                <div className="text-2xl font-semibold text-slate-900">{activeChallenges.length}</div>
-                <div className="text-slate-600 text-xs">Active</div>
+                <div className="text-2xl font-semibold text-white">{activeChallenges.length}</div>
+                <div className="text-white/40 text-xs">Active</div>
               </div>
             </div>
           </Card>
 
-          <Card className="bg-white/50 border-slate-200 p-4">
+          <Card className="bg-white/[0.02] border-white/5 p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                <Users className="w-5 h-5 text-blue-500" />
+                <Users className="w-5 h-5 text-blue-400" />
               </div>
               <div>
-                <div className="text-2xl font-semibold text-slate-900">{myEntries.length}</div>
-                <div className="text-slate-600 text-xs">My Entries</div>
+                <div className="text-2xl font-semibold text-white">{myEntries.length}</div>
+                <div className="text-white/40 text-xs">My Entries</div>
               </div>
             </div>
           </Card>
 
-          <Card className="bg-white/50 border-slate-200 p-4">
+          <Card className="bg-white/[0.02] border-white/5 p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
-                <Calendar className="w-5 h-5 text-purple-500" />
+                <Calendar className="w-5 h-5 text-purple-400" />
               </div>
               <div>
-                <div className="text-2xl font-semibold text-slate-900">{votingChallenges.length}</div>
-                <div className="text-slate-600 text-xs">Voting</div>
+                <div className="text-2xl font-semibold text-white">{votingChallenges.length}</div>
+                <div className="text-white/40 text-xs">Voting</div>
               </div>
             </div>
           </Card>
 
-          <Card className="bg-white/50 border-slate-200 p-4">
+          <Card className="bg-white/[0.02] border-white/5 p-4">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                <Trophy className="w-5 h-5 text-amber-500" />
+                <Trophy className="w-5 h-5 text-amber-400" />
               </div>
               <div>
-                <div className="text-2xl font-semibold text-slate-900">{user?.badges?.length || 0}</div>
-                <div className="text-slate-600 text-xs">Badges</div>
+                <div className="text-2xl font-semibold text-white">{user?.badges?.length || 0}</div>
+                <div className="text-white/40 text-xs">Badges</div>
               </div>
             </div>
           </Card>
@@ -147,24 +147,24 @@ export default function Challenges() {
 
         {/* Challenges Tabs */}
         <Tabs defaultValue="active" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 bg-white/70 border border-slate-200">
-            <TabsTrigger value="active" className="data-[state=active]:bg-emerald-600 text-slate-700">
+          <TabsList className="grid w-full grid-cols-3 bg-white/5 border border-white/10">
+            <TabsTrigger value="active" className="data-[state=active]:bg-emerald-600">
               Active ({activeChallenges.length})
             </TabsTrigger>
-            <TabsTrigger value="voting" className="data-[state=active]:bg-purple-600 text-slate-700">
+            <TabsTrigger value="voting" className="data-[state=active]:bg-purple-600">
               Voting ({votingChallenges.length})
             </TabsTrigger>
-            <TabsTrigger value="completed" className="data-[state=active]:bg-slate-500 text-slate-700">
+            <TabsTrigger value="completed" className="data-[state=active]:bg-white/10">
               Completed ({completedChallenges.length})
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="active" className="space-y-4 mt-6">
             {activeChallenges.length === 0 ? (
-              <Card className="bg-white/50 border-slate-200 p-12 text-center">
-                <Trophy className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-                <p className="text-slate-600">No active challenges at the moment</p>
-                <p className="text-slate-500 text-sm mt-2">Check back soon for new contests!</p>
+              <Card className="bg-white/[0.02] border-white/5 p-12 text-center">
+                <Trophy className="w-12 h-12 text-white/20 mx-auto mb-4" />
+                <p className="text-white/40">No active challenges at the moment</p>
+                <p className="text-white/30 text-sm mt-2">Check back soon for new contests!</p>
               </Card>
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -77,17 +77,17 @@ export default function Store() {
     <PullToRefresh onRefresh={handleRefresh}>
       <div className="space-y-8">
       <div>
-        <h1 className="text-2xl font-light text-slate-900">Grow Shop</h1>
-        <p className="text-slate-600 text-sm mt-1">Recommended equipment & supplies</p>
+        <h1 className="text-2xl font-light text-white">Grow Shop</h1>
+        <p className="text-white/30 text-sm mt-1">Recommended equipment & supplies</p>
       </div>
 
-      <form onSubmit={handleSearchExternal} className="rounded-xl border border-slate-200 bg-white/50 p-4">
+      <form onSubmit={handleSearchExternal} className="rounded-xl border border-white/5 bg-white/[0.02] p-4">
         <div className="flex gap-2">
           <Input
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search products and compare prices..."
-            className="bg-white border-slate-300 text-slate-900"
+            className="bg-white/5 border-white/10 text-white"
           />
           <Button type="submit" disabled={searching} className="bg-emerald-600 hover:bg-emerald-500">
             {searching ? <Loader2 className="w-4 h-4 animate-spin" /> : <Search className="w-4 h-4" />}
@@ -96,22 +96,22 @@ export default function Store() {
       </form>
 
       {searchResults && (
-        <div className="rounded-2xl border border-slate-200 bg-white/50 p-6">
-          <h3 className="text-slate-900 font-medium mb-4">External Price Comparison</h3>
+        <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
+          <h3 className="text-white font-medium mb-4">External Price Comparison</h3>
           {searchResults.length === 0 ? (
-            <p className="text-slate-600 text-sm">No external results found</p>
+            <p className="text-white/30 text-sm">No external results found</p>
           ) : (
             <div className="space-y-3">
               {searchResults.map((product, idx) => (
-                <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-white border border-slate-200">
+                <div key={idx} className="flex items-center justify-between p-3 rounded-lg bg-white/5 border border-white/10">
                   <div>
-                    <div className="text-slate-900 text-sm">{product.name}</div>
-                    <div className="text-slate-600 text-xs">{product.retailer}</div>
+                    <div className="text-white text-sm">{product.name}</div>
+                    <div className="text-white/40 text-xs">{product.retailer}</div>
                   </div>
                   <div className="flex items-center gap-3">
-                    <div className="text-emerald-600 font-medium">{product.price}</div>
+                    <div className="text-emerald-400 font-medium">{product.price}</div>
                     <a href={product.link} target="_blank" rel="noopener noreferrer">
-                      <Button size="sm" variant="outline" className="border-slate-300 text-slate-700 hover:bg-slate-50 text-xs">
+                      <Button size="sm" variant="outline" className="border-white/10 text-white hover:bg-white/5 text-xs">
                         View
                       </Button>
                     </a>
@@ -124,12 +124,12 @@ export default function Store() {
       )}
 
       <div>
-        <h3 className="text-slate-900 font-medium mb-4">Our Store</h3>
+        <h3 className="text-white font-medium mb-4">Our Store</h3>
         <Tabs defaultValue="all" onValueChange={setActiveCategory}>
-          <TabsList className="bg-white/70 border border-slate-200 flex-wrap h-auto gap-1 p-1">
+          <TabsList className="bg-white/5 border border-white/5 flex-wrap h-auto gap-1 p-1">
             {categories.map(c => (
               <TabsTrigger key={c.value} value={c.value}
-                className="text-xs data-[state=active]:bg-emerald-600 data-[state=active]:text-white text-slate-600">
+                className="text-xs data-[state=active]:bg-emerald-600 data-[state=active]:text-white text-white/40">
                 {c.label}
               </TabsTrigger>
             ))}
@@ -137,9 +137,9 @@ export default function Store() {
         </Tabs>
 
         {filtered.length === 0 ? (
-          <div className="rounded-2xl border border-slate-200 bg-white/50 p-16 text-center mt-6">
-            <ShoppingBag className="w-10 h-10 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-600 text-sm">No products listed yet. Check back soon!</p>
+          <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-16 text-center mt-6">
+            <ShoppingBag className="w-10 h-10 text-white/10 mx-auto mb-4" />
+            <p className="text-white/30 text-sm">No products listed yet. Check back soon!</p>
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-6">
