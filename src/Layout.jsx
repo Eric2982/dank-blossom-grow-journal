@@ -119,7 +119,7 @@ export default function Layout({ children, currentPageName }) {
             {!isRootPage ? (
               <button
                 onClick={() => navigate(-1)}
-                className="flex items-center gap-2 text-emerald-700/70 hover:text-emerald-900 transition-colors select-none min-w-[44px] min-h-[44px] -ml-2 justify-center md:justify-start"
+                className="flex items-center gap-2 text-slate-700 hover:text-slate-900 transition-colors select-none min-w-[44px] min-h-[44px] -ml-2 justify-center md:justify-start"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span className="hidden md:inline">Back</span>
@@ -129,7 +129,7 @@ export default function Layout({ children, currentPageName }) {
                 <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
                   <Leaf className="w-4 h-4 text-white" />
                 </div>
-                <span className="text-emerald-900 font-semibold tracking-tight text-lg hidden sm:block">Dank Blossom</span>
+                <span className="text-slate-900 font-semibold tracking-tight text-lg hidden sm:block">Dank Blossom</span>
               </Link>
             )}
             
@@ -145,7 +145,7 @@ export default function Layout({ children, currentPageName }) {
                     className={`nav-item flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all min-w-[44px] min-h-[44px] ${
                       isActive
                         ? "bg-emerald-600 text-white"
-                        : "text-emerald-700/60 hover:text-emerald-900 hover:bg-emerald-50"
+                        : "text-slate-700 hover:text-slate-900 hover:bg-emerald-50"
                     }`}
                   >
                     <Icon className="w-4 h-4" />
@@ -155,7 +155,7 @@ export default function Layout({ children, currentPageName }) {
               })}
               <Link
                 to={createPageUrl("Settings")}
-                className="nav-item flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all min-w-[44px] min-h-[44px] text-emerald-700/60 hover:text-emerald-900 hover:bg-emerald-50"
+                className="nav-item flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all min-w-[44px] min-h-[44px] text-slate-700 hover:text-slate-900 hover:bg-emerald-50"
               >
                 <Settings className="w-4 h-4" />
               </Link>
@@ -209,7 +209,7 @@ export default function Layout({ children, currentPageName }) {
                 key={item.page}
                 to={createPageUrl(item.page)}
                 className={`nav-item flex flex-col items-center justify-center gap-1 py-2 rounded-lg transition-colors min-h-[56px] ${
-                  isActive ? "text-emerald-600" : "text-emerald-700/50"
+                  isActive ? "text-emerald-600" : "text-slate-600"
                 }`}
               >
                 <Icon className="w-5 h-5" />
