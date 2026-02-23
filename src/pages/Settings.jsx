@@ -18,6 +18,9 @@ export default function Settings() {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const [deleteConfirmText, setDeleteConfirmText] = useState("");
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
+  const [showRegulatory, setShowRegulatory] = useState(false);
+  const [showDangerZone, setShowDangerZone] = useState(false);
   const [isEditingProfile, setIsEditingProfile] = useState(false);
   const [editBio, setEditBio] = useState("");
   const [uploadingPhoto, setUploadingPhoto] = useState(false);
@@ -329,18 +332,25 @@ export default function Settings() {
       )}
 
       {/* About Section */}
-      <Card className="bg-white/[0.02] border-white/5 p-6 space-y-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
-            <Leaf className="w-5 h-5 text-white" />
+      <Card className="bg-white/[0.02] border-white/5 p-6">
+        <button
+          onClick={() => setShowAbout(!showAbout)}
+          className="w-full flex items-center justify-between text-left"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
+              <Leaf className="w-5 h-5 text-white" />
+            </div>
+            <div>
+              <h3 className="text-white font-medium">About Dank Blossom</h3>
+              <p className="text-white/40 text-sm">Your complete cannabis cultivation companion</p>
+            </div>
           </div>
-          <div>
-            <h3 className="text-white font-medium">About Dank Blossom</h3>
-            <p className="text-white/40 text-sm">Your complete cannabis cultivation companion</p>
-          </div>
-        </div>
+          <ChevronDown className={`w-5 h-5 text-white/40 transition-transform ${showAbout ? 'rotate-180' : ''}`} />
+        </button>
 
-        <div className="pt-4 border-t border-white/5 space-y-4 text-white/70 text-sm">
+        {showAbout && (
+        <div className="pt-4 border-t border-white/5 mt-4 space-y-4 text-white/70 text-sm">
           <div>
             <h4 className="text-white font-medium mb-2">What is Dank Blossom?</h4>
             <p className="text-white/60">
@@ -393,6 +403,7 @@ export default function Settings() {
             </p>
           </div>
         </div>
+        )}
       </Card>
 
       {/* Privacy Policy */}
