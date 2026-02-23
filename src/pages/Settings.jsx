@@ -719,16 +719,15 @@ export default function Settings() {
               </p>
             </div>
           </div>
-        </div>
 
-        <Button
-          variant="destructive"
-          onClick={() => setShowDeleteDialog(true)}
-          className="bg-red-600 hover:bg-red-700"
-        >
-          <Trash2 className="w-4 h-4 mr-2" />
-          Delete Account
-        </Button>
+          <Button
+            variant="destructive"
+            onClick={() => setShowDeleteDialog(true)}
+            className="bg-red-600 hover:bg-red-700"
+          >
+            <Trash2 className="w-4 h-4 mr-2" />
+            Delete Account
+          </Button>
         </div>
         )}
       </Card>
