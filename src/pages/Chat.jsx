@@ -138,26 +138,26 @@ export default function Chat() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-light text-white">Chat</h1>
-        <p className="text-white/40 text-sm mt-1">Get AI advice or chat with the community</p>
+        <h1 className="text-2xl font-light text-slate-900">Chat</h1>
+        <p className="text-slate-600 text-sm mt-1">Get AI advice or chat with the community</p>
       </div>
 
       <Tabs defaultValue="ai" className="w-full">
-        <TabsList className="bg-white/5 border border-white/10">
-          <TabsTrigger value="ai" className="data-[state=active]:bg-emerald-600">
+        <TabsList className="bg-white/70 border border-slate-200">
+          <TabsTrigger value="ai" className="data-[state=active]:bg-emerald-600 text-slate-700">
             <Bot className="w-4 h-4 mr-2" /> AI Assistant
           </TabsTrigger>
-          <TabsTrigger value="community" className="data-[state=active]:bg-emerald-600">
+          <TabsTrigger value="community" className="data-[state=active]:bg-emerald-600 text-slate-700">
             <Users className="w-4 h-4 mr-2" /> Community
           </TabsTrigger>
         </TabsList>
 
         <TabsContent value="ai" className="mt-4">
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] flex flex-col h-[600px]">
+          <div className="rounded-2xl border border-slate-200 bg-white/50 flex flex-col h-[600px]">
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {aiConversation.length === 0 && (
-                <div className="text-center text-white/30 mt-20">
-                  <Bot className="w-12 h-12 mx-auto mb-4 text-emerald-400" />
+                <div className="text-center text-slate-600 mt-20">
+                  <Bot className="w-12 h-12 mx-auto mb-4 text-emerald-500" />
                   <p>Ask me anything about growing cannabis!</p>
                 </div>
               )}
@@ -166,7 +166,7 @@ export default function Chat() {
                   <div className={`max-w-[80%] rounded-xl px-4 py-2 ${
                     msg.role === "user" 
                       ? "bg-emerald-600 text-white" 
-                      : "bg-white/5 text-white border border-white/10"
+                      : "bg-white text-slate-900 border border-slate-200"
                   }`}>
                     <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
                   </div>
@@ -174,20 +174,20 @@ export default function Chat() {
               ))}
               {aiLoading && (
                 <div className="flex justify-start">
-                  <div className="bg-white/5 rounded-xl px-4 py-2 border border-white/10">
-                    <Loader2 className="w-4 h-4 animate-spin text-emerald-400" />
+                  <div className="bg-white rounded-xl px-4 py-2 border border-slate-200">
+                    <Loader2 className="w-4 h-4 animate-spin text-emerald-500" />
                   </div>
                 </div>
               )}
               <div ref={aiEndRef} />
             </div>
-            <form onSubmit={handleAiSubmit} className="p-4 border-t border-white/5">
+            <form onSubmit={handleAiSubmit} className="p-4 border-t border-slate-200">
               <div className="flex gap-2">
                 <Input
                   value={aiMessage}
                   onChange={(e) => setAiMessage(e.target.value)}
                   placeholder="Ask about nutrients, lighting, problems..."
-                  className="bg-white/5 border-white/10 text-white"
+                  className="bg-white border-slate-300 text-slate-900"
                   disabled={aiLoading}
                 />
                 <Button type="submit" disabled={aiLoading} className="bg-emerald-600 hover:bg-emerald-500">
@@ -206,27 +206,27 @@ export default function Chat() {
                 onClick={() => setSelectedRoom(room.id)}
                 variant={selectedRoom === room.id ? "default" : "outline"}
                 size="sm"
-                className={selectedRoom === room.id ? "bg-emerald-600" : "border-white/10 text-white hover:bg-white/5"}
+                className={selectedRoom === room.id ? "bg-emerald-600" : "border-slate-300 text-slate-700 hover:bg-slate-50"}
               >
                 {room.label}
               </Button>
             ))}
           </div>
 
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] flex flex-col h-[600px]">
+          <div className="rounded-2xl border border-slate-200 bg-white/50 flex flex-col h-[600px]">
             <div className="flex-1 overflow-y-auto p-4 space-y-3">
               {messages.length === 0 && (
-                <div className="text-center text-white/30 mt-20">
-                  <Users className="w-12 h-12 mx-auto mb-4 text-emerald-400" />
+                <div className="text-center text-slate-600 mt-20">
+                  <Users className="w-12 h-12 mx-auto mb-4 text-emerald-500" />
                   <p>No messages yet. Start the conversation!</p>
                 </div>
               )}
               {messages.slice().reverse().map((msg) => (
-                <div key={msg.id} className="bg-white/5 rounded-xl p-3 border border-white/10 group">
+                <div key={msg.id} className="bg-white rounded-xl p-3 border border-slate-200 group">
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-emerald-400 text-sm font-medium">{msg.user_name}</span>
+                    <span className="text-emerald-600 text-sm font-medium">{msg.user_name}</span>
                     <div className="flex items-center gap-2">
-                      <span className="text-white/30 text-xs">{format(new Date(msg.created_date), "MMM d, h:mm a")}</span>
+                      <span className="text-slate-500 text-xs">{format(new Date(msg.created_date), "MMM d, h:mm a")}</span>
                       <Button
                         variant="ghost"
                         size="sm"
@@ -238,18 +238,18 @@ export default function Chat() {
                       </Button>
                     </div>
                   </div>
-                  <p className="text-white text-sm">{msg.message}</p>
+                  <p className="text-slate-900 text-sm">{msg.message}</p>
                 </div>
               ))}
               <div ref={communityEndRef} />
             </div>
-            <form onSubmit={handleCommunitySubmit} className="p-4 border-t border-white/5">
+            <form onSubmit={handleCommunitySubmit} className="p-4 border-t border-slate-200">
               <div className="flex gap-2">
                 <Input
                   value={communityMessage}
                   onChange={(e) => setCommunityMessage(e.target.value)}
                   placeholder="Type your message..."
-                  className="bg-white/5 border-white/10 text-white"
+                  className="bg-white border-slate-300 text-slate-900"
                 />
                 <Button type="submit" className="bg-emerald-600 hover:bg-emerald-500">
                   <Send className="w-4 h-4" />

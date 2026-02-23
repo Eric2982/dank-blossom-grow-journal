@@ -14,8 +14,8 @@ export default function Learn() {
     <PullToRefresh onRefresh={handleRefresh}>
       <div className="space-y-8">
         <div>
-          <h1 className="text-2xl font-light text-white">Grow Knowledge Base</h1>
-          <p className="text-white/30 text-sm mt-1">Deficiencies, environmental guides & best practices</p>
+          <h1 className="text-2xl font-light text-slate-900">Grow Knowledge Base</h1>
+          <p className="text-slate-600 text-sm mt-1">Deficiencies, environmental guides & best practices</p>
         </div>
         <LearnSection />
       </div>

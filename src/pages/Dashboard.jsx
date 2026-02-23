@@ -51,15 +51,15 @@ export default function Dashboard() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div>
-            <h1 className="text-2xl font-light text-white">Dashboard</h1>
-            <p className="text-white/40 text-sm mt-1">Manage your grow strains and track progress</p>
+            <h1 className="text-2xl font-light text-slate-900">Dashboard</h1>
+            <p className="text-slate-600 text-sm mt-1">Manage your grow strains and track progress</p>
           </div>
           {subscription?.[0]?.status === "active" ? (
             <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 gap-1">
               <Crown className="w-3 h-3" /> Premium
             </Badge>
           ) : (
-            <Badge variant="outline" className="text-white/50 border-white/20">Free</Badge>
+            <Badge variant="outline" className="text-slate-600 border-slate-300">Free</Badge>
           )}
         </div>
         <Button onClick={() => setShowStrainForm(true)} className="bg-emerald-600 hover:bg-emerald-500 text-white gap-2">
@@ -69,10 +69,10 @@ export default function Dashboard() {
 
       {/* Strains Section */}
       {strains.length === 0 ? (
-        <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-12 text-center">
-          <Leaf className="w-12 h-12 text-white/10 mx-auto mb-4" />
-          <h3 className="text-white text-lg mb-2">No strains yet</h3>
-          <p className="text-white/30 text-sm mb-4">Start tracking your grows by adding a strain</p>
+        <div className="rounded-2xl border border-slate-200 bg-white/50 p-12 text-center">
+          <Leaf className="w-12 h-12 text-slate-300 mx-auto mb-4" />
+          <h3 className="text-slate-900 text-lg mb-2">No strains yet</h3>
+          <p className="text-slate-600 text-sm mb-4">Start tracking your grows by adding a strain</p>
           <Button onClick={() => setShowStrainForm(true)} className="bg-emerald-600 hover:bg-emerald-500 text-white">
             <Plus className="w-4 h-4 mr-2" /> Add Your First Strain
           </Button>
