@@ -3,6 +3,8 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import { createPageUrl } from "./utils";
 import { LayoutDashboard, ShoppingBag, BookOpen, Leaf, BarChart3, MessageSquare, Crown, ArrowLeft, Settings, Trophy } from "lucide-react";
 import { motion } from "framer-motion";
+import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 
 const rootPages = ["Dashboard", "Summary", "Chat", "Store", "Learn", "Premium", "Challenges"];
 
@@ -22,6 +24,24 @@ export default function Layout({ children, currentPageName }) {
   const isRootPage = rootPages.includes(currentPageName);
   const [pageCache, setPageCache] = React.useState({});
   const [renderedPages, setRenderedPages] = React.useState(new Set());
+  const [showAgeVerification, setShowAgeVerification] = React.useState(false);
+
+  // Check age verification on mount
+  React.useEffect(() => {
+    const isVerified = localStorage.getItem('ageVerified');
+    if (!isVerified) {
+      setShowAgeVerification(true);
+    }
+  }, []);
+
+  const handleAgeConfirm = () => {
+    localStorage.setItem('ageVerified', 'true');
+    setShowAgeVerification(false);
+  };
+
+  const handleAgeDeny = () => {
+    window.location.href = 'https://www.google.com';
+  };
 
   // Cache page content and track rendered pages
   React.useEffect(() => {
@@ -178,6 +198,38 @@ export default function Layout({ children, currentPageName }) {
           })}
         </div>
       </nav>
-    </div>
-  );
-}
+
+      {/* Age Verification Dialog */}
+      <AlertDialog open={showAgeVerification}>
+        <AlertDialogContent className="bg-zinc-900 border-white/10 max-w-md">
+          <AlertDialogHeader>
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
+                <Leaf className="w-8 h-8 text-white" />
+              </div>
+            </div>
+            <AlertDialogTitle className="text-white text-center text-2xl">Age Verification Required</AlertDialogTitle>
+            <AlertDialogDescription className="text-white/70 text-center text-base">
+              You must be 21 years or older to access this website. This site contains information about cannabis cultivation.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-col sm:flex-row gap-3">
+            <Button
+              onClick={handleAgeDeny}
+              variant="outline"
+              className="w-full border-white/20 bg-white/5 text-white hover:bg-white/10"
+            >
+              I am under 21
+            </Button>
+            <Button
+              onClick={handleAgeConfirm}
+              className="w-full bg-emerald-600 hover:bg-emerald-500 text-white"
+            >
+              I am 21 or older
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      </div>
+      );
+      }
