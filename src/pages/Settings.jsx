@@ -546,15 +546,22 @@ export default function Settings() {
 
       {/* Regulatory Compliance */}
       <Card className="bg-white/[0.02] border-white/5 p-6">
-        <div className="flex items-start gap-3 mb-4">
-          <Shield className="w-5 h-5 text-blue-400 mt-0.5" />
-          <div>
-            <h3 className="text-white font-medium mb-1">Regulatory Compliance</h3>
-            <p className="text-white/60 text-sm">Legal framework and compliance standards</p>
+        <button
+          onClick={() => setShowRegulatory(!showRegulatory)}
+          className="w-full flex items-center justify-between text-left"
+        >
+          <div className="flex items-center gap-3">
+            <Shield className="w-5 h-5 text-blue-400" />
+            <div>
+              <h3 className="text-white font-medium">Regulatory Compliance</h3>
+              <p className="text-white/40 text-sm">Legal framework and compliance standards</p>
+            </div>
           </div>
-        </div>
+          <ChevronDown className={`w-5 h-5 text-white/40 transition-transform ${showRegulatory ? 'rotate-180' : ''}`} />
+        </button>
         
-        <div className="space-y-4 text-sm">
+        {showRegulatory && (
+        <div className="space-y-4 text-sm pt-4 border-t border-white/5 mt-4">
           {/* Government Regulations */}
           <div>
             <h4 className="text-white font-medium mb-2">Federal & Government Regulations</h4>
@@ -626,21 +633,29 @@ export default function Settings() {
             </p>
           </div>
         </div>
+        )}
       </Card>
 
       {/* Danger Zone */}
-      <Card className="bg-red-950/20 border-red-500/20 p-6 space-y-4">
-        <div>
-          <h3 className="text-red-400 font-medium mb-1 flex items-center gap-2">
-            <Trash2 className="w-4 h-4" />
-            Danger Zone
-          </h3>
-          <p className="text-white/60 text-sm">
-            Permanently delete your account and all associated data. This action cannot be undone.
-          </p>
-        </div>
+      <Card className="bg-red-950/20 border-red-500/20 p-6">
+        <button
+          onClick={() => setShowDangerZone(!showDangerZone)}
+          className="w-full flex items-center justify-between text-left"
+        >
+          <div>
+            <h3 className="text-red-400 font-medium mb-1 flex items-center gap-2">
+              <Trash2 className="w-4 h-4" />
+              Danger Zone
+            </h3>
+            <p className="text-white/60 text-sm">
+              Permanently delete your account and all associated data. This action cannot be undone.
+            </p>
+          </div>
+          <ChevronDown className={`w-5 h-5 text-white/40 transition-transform ${showDangerZone ? 'rotate-180' : ''}`} />
+        </button>
 
-        <div className="pt-4 border-t border-red-500/20">
+        {showDangerZone && (
+        <div className="pt-4 border-t border-red-500/20 mt-4 space-y-4">
           <h4 className="text-white font-medium mb-3">Account Deletion Process</h4>
           <div className="space-y-4 text-white/70 text-sm">
             <div>
@@ -703,6 +718,8 @@ export default function Settings() {
           <Trash2 className="w-4 h-4 mr-2" />
           Delete Account
         </Button>
+        </div>
+        )}
       </Card>
 
       {/* Delete Confirmation Dialog */}
