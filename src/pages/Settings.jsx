@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { User, Trash2, Crown, Mail, Calendar, Shield, FileText, ChevronDown, Camera, Edit2, Leaf } from "lucide-react";
+import CancelSubscriptionButton from "../components/settings/CancelSubscriptionButton";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { createPageUrl } from "../utils";
@@ -318,9 +319,10 @@ export default function Settings() {
             <Crown className="w-5 h-5 text-amber-500 mt-0.5" />
             <div className="flex-1">
               <h3 className="text-white font-medium mb-1">Premium Subscription</h3>
-              <p className="text-white/60 text-sm">
+              <p className="text-white/60 text-sm mb-4">
                 Active until {new Date(subscription[0].current_period_end).toLocaleDateString()}
               </p>
+              <CancelSubscriptionButton />
             </div>
           </div>
         </Card>

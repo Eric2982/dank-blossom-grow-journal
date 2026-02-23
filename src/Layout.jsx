@@ -1,14 +1,15 @@
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { LayoutDashboard, ShoppingBag, BookOpen, Leaf, BarChart3, MessageSquare, Crown, ArrowLeft, Settings } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, BookOpen, Leaf, BarChart3, MessageSquare, Crown, ArrowLeft, Settings, Trophy } from "lucide-react";
 import { motion } from "framer-motion";
 
-const rootPages = ["Dashboard", "Summary", "Chat", "Store", "Learn", "Premium"];
+const rootPages = ["Dashboard", "Summary", "Chat", "Store", "Learn", "Premium", "Challenges"];
 
 const navItems = [
   { name: "Dashboard", icon: LayoutDashboard, page: "Dashboard" },
   { name: "Summary", icon: BarChart3, page: "Summary" },
+  { name: "Challenges", icon: Trophy, page: "Challenges" },
   { name: "Chat", icon: MessageSquare, page: "Chat" },
   { name: "Shop", icon: ShoppingBag, page: "Store" },
   { name: "Learn", icon: BookOpen, page: "Learn" },
@@ -159,7 +160,7 @@ export default function Layout({ children, currentPageName }) {
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         <div className="grid grid-cols-5 gap-1 px-2 pt-2">
-          {navItems.slice(0, 5).map((item) => {
+          {[navItems[0], navItems[1], navItems[2], navItems[3], navItems[5]].map((item) => {
             const isActive = currentPageName === item.page;
             const Icon = item.icon;
             return (
