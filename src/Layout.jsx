@@ -32,7 +32,7 @@ export default function Layout({ children, currentPageName }) {
   }, [currentPageName, children, isRootPage]);
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pb-20 md:pb-0">
+    <div className="min-h-screen bg-zinc-900 text-white pb-20 md:pb-0">
       <style>{`
         :root {
           --background: 0 0% 4%;
@@ -55,7 +55,7 @@ export default function Layout({ children, currentPageName }) {
         }
         
         body { 
-          background: #09090b;
+          background: #18181b;
           overscroll-behavior-y: none;
           -webkit-overflow-scrolling: touch;
         }
@@ -72,7 +72,7 @@ export default function Layout({ children, currentPageName }) {
       `}</style>
 
       {/* Top Header */}
-      <header className="sticky top-0 z-50 border-b border-white/5 bg-zinc-950/80 backdrop-blur-xl" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
+      <header className="sticky top-0 z-50 border-b border-white/5 bg-zinc-900/80 backdrop-blur-xl" style={{ paddingTop: 'env(safe-area-inset-top)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6">
           <div className="flex items-center justify-between h-16">
             {!isRootPage ? (
@@ -156,7 +156,7 @@ export default function Layout({ children, currentPageName }) {
 
       {/* Mobile Bottom Navigation */}
       <nav 
-        className="md:hidden fixed bottom-0 left-0 right-0 z-50 border-t border-white/5 bg-zinc-950/95 backdrop-blur-xl"
+        className="md:hidden fixed bottom-0 left-0 right-0 z-50 border-t border-white/5 bg-zinc-900/95 backdrop-blur-xl"
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         <div className="grid grid-cols-5 gap-1 px-2 pt-2">
