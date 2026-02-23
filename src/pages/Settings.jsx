@@ -544,6 +544,90 @@ export default function Settings() {
         </a>
       </Card>
 
+      {/* Regulatory Compliance */}
+      <Card className="bg-white/[0.02] border-white/5 p-6">
+        <div className="flex items-start gap-3 mb-4">
+          <Shield className="w-5 h-5 text-blue-400 mt-0.5" />
+          <div>
+            <h3 className="text-white font-medium mb-1">Regulatory Compliance</h3>
+            <p className="text-white/60 text-sm">Legal framework and compliance standards</p>
+          </div>
+        </div>
+        
+        <div className="space-y-4 text-sm">
+          {/* Government Regulations */}
+          <div>
+            <h4 className="text-white font-medium mb-2">Federal & Government Regulations</h4>
+            <p className="text-white/70 mb-2">
+              Dank Blossom is an informational and tracking tool only. Users are solely responsible for 
+              ensuring their activities comply with all applicable federal, state, and local laws.
+            </p>
+            <ul className="space-y-1.5 text-white/60 text-xs">
+              <li>• Content is educational and does not constitute legal advice</li>
+              <li>• Cannabis cultivation laws vary by jurisdiction</li>
+              <li>• Users must verify local regulations before cultivation</li>
+              <li>• Platform does not facilitate illegal activities</li>
+            </ul>
+          </div>
+
+          {/* State Regulations */}
+          <div>
+            <h4 className="text-white font-medium mb-2">State & Local Compliance</h4>
+            <p className="text-white/70 mb-2">
+              Cannabis cultivation is regulated at state and local levels with varying requirements 
+              for licensing, plant counts, and permitted activities.
+            </p>
+            <ul className="space-y-1.5 text-white/60 text-xs">
+              <li>• Verify cultivation is legal in your jurisdiction</li>
+              <li>• Comply with plant count limits where applicable</li>
+              <li>• Obtain required permits and licenses</li>
+              <li>• Follow state-specific cultivation regulations</li>
+            </ul>
+          </div>
+
+          {/* Platform Compliance */}
+          <div>
+            <h4 className="text-white font-medium mb-2">App Store & Platform Regulations</h4>
+            <p className="text-white/70 mb-2">
+              Our application complies with Apple App Store and Google Play Store content policies 
+              regarding cannabis-related applications.
+            </p>
+            <ul className="space-y-1.5 text-white/60 text-xs">
+              <li>• Content is educational and horticultural in nature</li>
+              <li>• No facilitation of illegal transactions</li>
+              <li>• Age verification required (21+ or local minimum age)</li>
+              <li>• Geographic restrictions applied where necessary</li>
+            </ul>
+          </div>
+
+          {/* Global Standards */}
+          <div>
+            <h4 className="text-white font-medium mb-2">Global Compliance Standards</h4>
+            <p className="text-white/70 mb-2">
+              We adhere to international data protection and privacy standards to ensure user 
+              information is handled responsibly and securely.
+            </p>
+            <ul className="space-y-1.5 text-white/60 text-xs">
+              <li>• GDPR compliance for EU users</li>
+              <li>• CCPA compliance for California residents</li>
+              <li>• Data encryption and secure storage</li>
+              <li>• User data deletion rights honored</li>
+              <li>• Transparent privacy practices</li>
+            </ul>
+          </div>
+
+          {/* Disclaimer */}
+          <div className="pt-2 border-t border-white/5">
+            <p className="text-white/50 text-xs italic">
+              Disclaimer: This application is intended for legal use only in jurisdictions where 
+              cannabis cultivation is permitted. Users assume full responsibility for compliance 
+              with all applicable laws and regulations. Dank Blossom makes no representations 
+              regarding the legality of any activities conducted using this platform.
+            </p>
+          </div>
+        </div>
+      </Card>
+
       {/* Danger Zone */}
       <Card className="bg-red-950/20 border-red-500/20 p-6 space-y-4">
         <div>
