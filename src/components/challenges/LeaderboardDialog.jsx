@@ -34,37 +34,61 @@ export default function LeaderboardDialog({ challenge, open, onClose }) {
 
   const voteMutation = useMutation({
     mutationFn: async (entryId) => {
-      // Check if already voted
       const existingVote = myVotes.find(v => v.entry_id === entryId);
-      
       if (existingVote) {
-        // Unvote
         await base44.entities.ChallengeVote.delete(existingVote.id);
-        // Decrement vote count
         const entry = entries.find(e => e.id === entryId);
         await base44.entities.ChallengeEntry.update(entryId, {
           vote_count: Math.max(0, (entry.vote_count || 0) - 1)
         });
       } else {
-        // Vote
         await base44.entities.ChallengeVote.create({
           entry_id: entryId,
           challenge_id: challenge.id,
           voter_email: user.email,
         });
-        // Increment vote count
         const entry = entries.find(e => e.id === entryId);
         await base44.entities.ChallengeEntry.update(entryId, {
           vote_count: (entry.vote_count || 0) + 1
         });
       }
     },
+    onMutate: async (entryId) => {
+      await queryClient.cancelQueries({ queryKey: ["challengeEntries", challenge.id] });
+      await queryClient.cancelQueries({ queryKey: ["myVotes", challenge.id, user?.email] });
+
+      const prevEntries = queryClient.getQueryData(["challengeEntries", challenge.id]);
+      const prevVotes = queryClient.getQueryData(["myVotes", challenge.id, user?.email]);
+
+      const existingVote = myVotes.find(v => v.entry_id === entryId);
+      // Optimistically toggle vote count
+      queryClient.setQueryData(["challengeEntries", challenge.id], (old = []) =>
+        old.map(e => e.id === entryId
+          ? { ...e, vote_count: Math.max(0, (e.vote_count || 0) + (existingVote ? -1 : 1)) }
+          : e
+        )
+      );
+      // Optimistically toggle vote record
+      if (existingVote) {
+        queryClient.setQueryData(["myVotes", challenge.id, user?.email], (old = []) =>
+          old.filter(v => v.entry_id !== entryId)
+        );
+      } else {
+        queryClient.setQueryData(["myVotes", challenge.id, user?.email], (old = []) => [
+          ...old,
+          { entry_id: entryId, challenge_id: challenge.id, voter_email: user.email, id: `optimistic-${Date.now()}` }
+        ]);
+      }
+      return { prevEntries, prevVotes };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.prevEntries) queryClient.setQueryData(["challengeEntries", challenge.id], ctx.prevEntries);
+      if (ctx?.prevVotes) queryClient.setQueryData(["myVotes", challenge.id, user?.email], ctx.prevVotes);
+      toast.error("Failed to register vote");
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["challengeEntries"] });
       queryClient.invalidateQueries({ queryKey: ["myVotes"] });
-    },
-    onError: () => {
-      toast.error("Failed to register vote");
     },
   });
 
@@ -90,7 +114,19 @@ export default function LeaderboardDialog({ challenge, open, onClose }) {
 
         <div className="space-y-4 mt-4">
           {isLoading ? (
-            <p className="text-white/40 text-center py-8">Loading entries...</p>
+            <div className="space-y-4">
+              {[1, 2, 3].map(i => (
+                <div key={i} className="flex gap-4 p-4 rounded-xl border border-white/5">
+                  <Skeleton className="w-12 h-12 rounded-lg bg-white/5" />
+                  <Skeleton className="w-24 h-24 rounded-lg bg-white/5" />
+                  <div className="flex-1 space-y-2 pt-1">
+                    <Skeleton className="h-4 w-1/3 bg-white/5" />
+                    <Skeleton className="h-3 w-1/4 bg-white/5" />
+                    <Skeleton className="h-3 w-2/3 bg-white/5" />
+                  </div>
+                </div>
+              ))}
+            </div>
           ) : entries.length === 0 ? (
             <Card className="bg-white/[0.02] border-white/5 p-8 text-center">
               <p className="text-white/40">No entries yet. Be the first!</p>

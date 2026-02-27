@@ -133,7 +133,19 @@ export default function Community() {
 
         {/* Posts */}
         {isLoading ? (
-          <div className="text-center py-12 text-white/40">Loading...</div>
+          <div className="space-y-3">
+            {[1,2,3].map(i => (
+              <div key={i} className="rounded-2xl border border-white/5 p-4 space-y-3">
+                <div className="flex items-center gap-3">
+                  <Skeleton className="h-4 w-16 bg-white/5" />
+                  <Skeleton className="h-4 w-24 bg-white/5" />
+                </div>
+                <Skeleton className="h-5 w-3/4 bg-white/5" />
+                <Skeleton className="h-3 w-full bg-white/5" />
+                <Skeleton className="h-3 w-2/3 bg-white/5" />
+              </div>
+            ))}
+          </div>
         ) : filtered.length === 0 ? (
           <Card className="bg-white/[0.02] border-white/5 p-12 text-center">
             <MessageSquare className="w-12 h-12 text-white/10 mx-auto mb-3" />
