@@ -83,7 +83,7 @@ export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient: e
       return;
     }
 
-    if (nutrient) {
+    if (editingNutrient) {
       // Single nutrient edit
       onSubmit({
         nutrient_name: validNutrients[0].nutrient_name,
@@ -109,7 +109,7 @@ export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient: e
       });
     }
 
-    if (!nutrient) {
+    if (!editingNutrient) {
       setNutrients([{ nutrient_name: "", brand: "", volume_ml: "", nutrient_type: "base" }]);
       setWaterVolume("");
       setGrowStage("vegetative");
