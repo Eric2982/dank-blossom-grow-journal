@@ -60,28 +60,18 @@ export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient })
     setNutrients(updated);
   };
 
-  const handleBarcodeScan = async (index) => {
-    setScanningIndex(index);
-    try {
-      const result = await base44.integrations.Core.InvokeLLM({
-        prompt: "Extract the product name and brand from this barcode or product. Return as JSON with fields: product_name, brand",
-        response_json_schema: {
-          type: "object",
-          properties: {
-            product_name: { type: "string" },
-            brand: { type: "string" }
-          }
-        }
-      });
-      if (result.product_name) {
-        updateNutrient(index, "nutrient_name", result.product_name);
-        updateNutrient(index, "brand", result.brand || "");
-      }
-    } catch (error) {
-      alert("Barcode scanning not available. Please enter manually.");
-    } finally {
-      setScanningIndex(null);
+  const handleBarcodeScan = (index) => {
+    setPendingScanIndex(index);
+    setBarcodeScanOpen(true);
+  };
+
+  const handleBarcodeResult = (data) => {
+    if (pendingScanIndex !== null) {
+      updateNutrient(pendingScanIndex, "nutrient_name", data.nutrient_name);
+      updateNutrient(pendingScanIndex, "brand", data.brand);
+      updateNutrient(pendingScanIndex, "nutrient_type", data.nutrient_type || "other");
     }
+    setPendingScanIndex(null);
   };
 
   const handleSubmit = (e) => {
