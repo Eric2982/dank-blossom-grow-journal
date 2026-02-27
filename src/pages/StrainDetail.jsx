@@ -251,7 +251,23 @@ export default function StrainDetail() {
       alert("Failed to upload photo");
     } finally {
       setUploading(false);
+      e.target.value = "";
     }
+  };
+
+  // Group nutrients by date for collapsible view
+  const nutrientsByDate = React.useMemo(() => {
+    const groups = {};
+    nutrients.forEach(n => {
+      const dateKey = format(new Date(n.created_date), "MMM d, yyyy");
+      if (!groups[dateKey]) groups[dateKey] = [];
+      groups[dateKey].push(n);
+    });
+    return groups;
+  }, [nutrients]);
+
+  const toggleNutrientDate = (dateKey) => {
+    setCollapsedNutrientDates(prev => ({ ...prev, [dateKey]: !prev[dateKey] }));
   };
 
   const handleDeletePhoto = async (photoUrl) => {
