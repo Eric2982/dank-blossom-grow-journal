@@ -13,8 +13,8 @@ export default function StrainForm({ open, onOpenChange, onSubmit, strain }) {
   });
 
   React.useEffect(() => {
-    if (strain) setForm(strain);
-  }, [strain]);
+    if (strain) setForm({ ...strain, harvest_date: strain.harvest_date || "" });
+  }, [strain?.id]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
