@@ -4,9 +4,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Trash2, Scan } from "lucide-react";
-import { base44 } from "@/api/base44Client";
+import { Plus, Trash2, ScanBarcode } from "lucide-react";
 import MobileSelect from "../MobileSelect";
+import BarcodeScanner from "./BarcodeScanner";
 
 const nutrientTypes = [
   { value: "base", label: "Base" },
