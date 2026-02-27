@@ -33,18 +33,18 @@ export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient: e
   const [pendingScanIndex, setPendingScanIndex] = useState(null);
 
   useEffect(() => {
-    if (nutrient) {
+    if (editingNutrient) {
       setNutrients([{
-        nutrient_name: nutrient.nutrient_name || "",
-        brand: nutrient.brand || "",
-        volume_ml: nutrient.volume_ml?.toString() || "",
-        nutrient_type: nutrient.nutrient_type || "base"
+        nutrient_name: editingNutrient.nutrient_name || "",
+        brand: editingNutrient.brand || "",
+        volume_ml: editingNutrient.volume_ml?.toString() || "",
+        nutrient_type: editingNutrient.nutrient_type || "base"
       }]);
-      setWaterVolume(nutrient.water_volume_liters?.toString() || "");
-      setGrowStage(nutrient.grow_stage || "vegetative");
-      setNotes(nutrient.notes || "");
+      setWaterVolume(editingNutrient.water_volume_liters?.toString() || "");
+      setGrowStage(editingNutrient.grow_stage || "vegetative");
+      setNotes(editingNutrient.notes || "");
     }
-  }, [nutrient]);
+  }, [editingNutrient]);
 
   const addNutrient = () => {
     setNutrients([...nutrients, { nutrient_name: "", brand: "", volume_ml: "", nutrient_type: "base" }]);
