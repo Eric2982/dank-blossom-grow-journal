@@ -21,7 +21,7 @@ const nutrientTypes = [
   { value: "other", label: "Other" },
 ];
 
-export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient }) {
+export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient: editingNutrient }) {
   const [nutrients, setNutrients] = useState([{
     nutrient_name: "", brand: "", volume_ml: "", nutrient_type: "base"
   }]);
