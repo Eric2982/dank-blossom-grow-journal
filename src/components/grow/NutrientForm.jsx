@@ -247,5 +247,6 @@ export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient })
         </form>
       </DialogContent>
     </Dialog>
+    </>
   );
 }
