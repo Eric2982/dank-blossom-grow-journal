@@ -10,6 +10,7 @@ import { format, isAfter, isBefore } from "date-fns";
 import ChallengeCard from "../components/challenges/ChallengeCard";
 import EntrySubmitDialog from "../components/challenges/EntrySubmitDialog";
 import LeaderboardDialog from "../components/challenges/LeaderboardDialog";
+import ChallengesInfoDialog from "../components/challenges/ChallengesInfoDialog";
 import PullToRefresh from "../components/PullToRefresh";
 
 export default function Challenges() {
