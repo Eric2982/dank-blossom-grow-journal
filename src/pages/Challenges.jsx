@@ -17,6 +17,7 @@ export default function Challenges() {
   const [selectedChallenge, setSelectedChallenge] = useState(null);
   const [showSubmitDialog, setShowSubmitDialog] = useState(false);
   const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [showInfoDialog, setShowInfoDialog] = useState(false);
   const queryClient = useQueryClient();
 
   const { data: user } = useQuery({
