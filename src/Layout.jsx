@@ -132,7 +132,7 @@ export default function Layout({ children, currentPageName }) {
               })}
               <Link
                 to={createPageUrl("Settings")}
-                className="nav-item flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all min-w-[44px] min-h-[44px] text-white/40 hover:text-white/70 hover:bg-white/5"
+                className={`nav-item flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all min-w-[44px] min-h-[44px] ${currentPageName === "Settings" ? "bg-white/10 text-white" : "text-white/40 hover:text-white/70 hover:bg-white/5"}`}
               >
                 <Settings className="w-4 h-4" />
               </Link>
