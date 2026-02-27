@@ -103,9 +103,7 @@ export default function Layout({ children, currentPageName }) {
               </button>
             ) : (
               <Link to={createPageUrl("Dashboard")} className="flex items-center gap-2.5 select-none">
-                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
-                  <Leaf className="w-4 h-4 text-white" />
-                </div>
+                <img src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/6994e0c98fb6b9d1d4521dbd/4d3e591fc_IMG_1280.jpeg" alt="Dank Blossom" className="w-8 h-8 rounded-lg object-cover" />
                 <span className="text-white font-semibold tracking-tight text-lg hidden sm:block">Dank Blossom</span>
               </Link>
             )}

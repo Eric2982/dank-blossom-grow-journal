@@ -49,6 +49,7 @@
  */
 import Challenges from './pages/Challenges';
 import Chat from './pages/Chat';
+import Community from './pages/Community';
 import Dashboard from './pages/Dashboard';
 import Learn from './pages/Learn';
 import Nutrients from './pages/Nutrients';
@@ -57,13 +58,13 @@ import Settings from './pages/Settings';
 import Store from './pages/Store';
 import StrainDetail from './pages/StrainDetail';
 import Summary from './pages/Summary';
-import Community from './pages/Community';
 import __Layout from './Layout.jsx';
 
 
 export const PAGES = {
     "Challenges": Challenges,
     "Chat": Chat,
+    "Community": Community,
     "Dashboard": Dashboard,
     "Learn": Learn,
     "Nutrients": Nutrients,
@@ -72,7 +73,6 @@ export const PAGES = {
     "Store": Store,
     "StrainDetail": StrainDetail,
     "Summary": Summary,
-    "Community": Community,
 }
 
 export const pagesConfig = {
