@@ -79,9 +79,18 @@ export default function Summary() {
   return (
     <PullToRefresh onRefresh={handleRefresh}>
     <div className="space-y-8">
-      <div>
-        <h1 className="text-2xl font-light text-white">Data Summary</h1>
-        <p className="text-white/30 text-sm mt-1">Overview of your environment trends</p>
+      <div className="flex items-center gap-3">
+        {strainId && (
+          <Link to={createPageUrl(`StrainDetail?id=${strainId}`)}>
+            <Button variant="ghost" size="icon" className="text-white/40 hover:text-white">
+              <ArrowLeft className="w-4 h-4" />
+            </Button>
+          </Link>
+        )}
+        <div>
+          <h1 className="text-2xl font-light text-white">Data Summary{strain ? ` — ${strain.name}` : ""}</h1>
+          <p className="text-white/30 text-sm mt-1">Overview of your environment trends</p>
+        </div>
       </div>
 
       {readings.length === 0 ? (
