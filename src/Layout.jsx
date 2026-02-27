@@ -178,7 +178,7 @@ export default function Layout({ children, currentPageName }) {
         style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
       >
         <div className="grid grid-cols-5 gap-1 px-2 pt-2">
-          {[navItems[0], navItems[1], navItems[2], navItems[3], navItems[5]].map((item) => {
+          {[navItems[0], navItems[1], navItems[2], navItems[3], navItems[4]].map((item) => {
             const isActive = currentPageName === item.page;
             const Icon = item.icon;
             return (
