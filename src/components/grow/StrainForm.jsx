@@ -123,19 +123,37 @@ export default function StrainForm({ open, onOpenChange, onSubmit, strain }) {
           <div className="grid grid-cols-2 gap-3">
             <div>
               <Label className="text-white/50 text-xs">Planted Date</Label>
-              <Input type="date" value={form.planted_date} onChange={(e) => setForm({ ...form, planted_date: e.target.value })}
-                className="bg-white/5 border-white/10 text-white mt-1" />
+              <div className="relative mt-1">
+                <Input type="date" value={form.planted_date || ""} onChange={(e) => setForm({ ...form, planted_date: e.target.value })}
+                  className="bg-white/5 border-white/10 text-white pr-8" />
+                {form.planted_date && (
+                  <button type="button" onClick={() => setForm({ ...form, planted_date: "" })}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/70 text-lg leading-none">×</button>
+                )}
+              </div>
             </div>
             <div>
               <Label className="text-white/50 text-xs">Flipped to Flower</Label>
-              <Input type="date" value={form.flipped_to_flower_date} onChange={(e) => setForm({ ...form, flipped_to_flower_date: e.target.value })}
-                className="bg-white/5 border-white/10 text-white mt-1" />
+              <div className="relative mt-1">
+                <Input type="date" value={form.flipped_to_flower_date || ""} onChange={(e) => setForm({ ...form, flipped_to_flower_date: e.target.value })}
+                  className="bg-white/5 border-white/10 text-white pr-8" />
+                {form.flipped_to_flower_date && (
+                  <button type="button" onClick={() => setForm({ ...form, flipped_to_flower_date: "" })}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/70 text-lg leading-none">×</button>
+                )}
+              </div>
             </div>
           </div>
           <div>
             <Label className="text-white/50 text-xs">Harvest Date</Label>
-            <Input type="date" value={form.harvest_date} onChange={(e) => setForm({ ...form, harvest_date: e.target.value })}
-              className="bg-white/5 border-white/10 text-white mt-1" />
+            <div className="relative mt-1">
+              <Input type="date" value={form.harvest_date || ""} onChange={(e) => setForm({ ...form, harvest_date: e.target.value })}
+                className="bg-white/5 border-white/10 text-white pr-8" />
+              {form.harvest_date && (
+                <button type="button" onClick={() => setForm({ ...form, harvest_date: "" })}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/70 text-lg leading-none">×</button>
+              )}
+            </div>
           </div>
           <div>
             <Label className="text-white/50 text-xs">Notes</Label>
