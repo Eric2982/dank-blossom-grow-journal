@@ -29,6 +29,8 @@ export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient })
   const [growStage, setGrowStage] = useState("vegetative");
   const [notes, setNotes] = useState("");
   const [scanningIndex, setScanningIndex] = useState(null);
+  const [barcodeScanOpen, setBarcodeScanOpen] = useState(false);
+  const [pendingScanIndex, setPendingScanIndex] = useState(null);
 
   useEffect(() => {
     if (nutrient) {
