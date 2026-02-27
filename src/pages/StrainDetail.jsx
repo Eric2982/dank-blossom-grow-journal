@@ -424,12 +424,18 @@ export default function StrainDetail() {
         <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-6">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-white font-medium">Photos</h3>
-            <label>
-              <input type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
-              <Button type="button" size="sm" variant="outline" className="border-white/10 text-white hover:bg-white/5" asChild>
-                <span className="cursor-pointer"><Upload className="w-3 h-3 mr-2" /> Upload</span>
+            <div className="flex gap-2">
+              <input ref={galleryInputRef} type="file" accept="image/*" onChange={handlePhotoUpload} className="hidden" />
+              <input ref={cameraInputRef} type="file" accept="image/*" capture="environment" onChange={handlePhotoUpload} className="hidden" />
+              <Button type="button" size="sm" variant="outline" className="border-white/10 text-white hover:bg-white/5"
+                onClick={() => galleryInputRef.current?.click()} disabled={uploading}>
+                <Image className="w-3 h-3 mr-2" /> Gallery
               </Button>
-            </label>
+              <Button type="button" size="sm" variant="outline" className="border-white/10 text-white hover:bg-white/5"
+                onClick={() => cameraInputRef.current?.click()} disabled={uploading}>
+                <Camera className="w-3 h-3 mr-2" /> Camera
+              </Button>
+            </div>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {strain.photos?.map((photo, idx) => (
