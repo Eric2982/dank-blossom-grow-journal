@@ -123,79 +123,9 @@ export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient: e
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-zinc-900 border-white/10 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle className="text-white font-light text-xl">{nutrient ? "Edit" : "Log"} Nutrients</DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-3">
-            {nutrients.map((nutrient, index) => (
-              <div key={index} className="p-4 rounded-lg bg-white/5 border border-white/10 space-y-3">
-                <div className="flex items-center justify-between">
-                  <Label className="text-white/70 text-sm">Nutrient #{index + 1}</Label>
-                  <div className="flex gap-2">
-                    <Button type="button" size="sm" variant="ghost" 
-                      onClick={() => handleBarcodeScan(index)}
-                      className="text-emerald-400 hover:text-emerald-300 h-7 px-2">
-                      <ScanBarcode className="w-3 h-3 mr-1" /> Scan
-                    </Button>
-                    {nutrients.length > 1 && (
-                      <Button type="button" size="sm" variant="ghost"
-                        onClick={() => removeNutrient(index)}
-                        className="text-red-400 hover:text-red-300 h-7 px-2">
-                        <Trash2 className="w-3 h-3" />
-                      </Button>
-                    )}
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <Label className="text-white/50 text-xs">Product Name *</Label>
-                    <Input
-                      value={nutrient.nutrient_name}
-                      onChange={(e) => updateNutrient(index, "nutrient_name", e.target.value)}
-                      className="bg-white/5 border-white/10 text-white mt-1"
-                      placeholder="e.g. Tiger Bloom"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-white/50 text-xs">Brand</Label>
-                    <Input
-                      value={nutrient.brand}
-                      onChange={(e) => updateNutrient(index, "brand", e.target.value)}
-                      className="bg-white/5 border-white/10 text-white mt-1"
-                      placeholder="e.g. Fox Farm"
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <Label className="text-white/50 text-xs">Type</Label>
-                    <MobileSelect
-                      value={nutrient.nutrient_type}
-                      onValueChange={(v) => updateNutrient(index, "nutrient_type", v)}
-                      options={nutrientTypes}
-                      placeholder="Select type"
-                      label="Nutrient Type"
-                      className="mt-1 w-full"
-                    />
-                  </div>
-                  <div>
-                    <Label className="text-white/50 text-xs">Amount (ml) *</Label>
-                    <Input
-                      type="number"
-                      step="0.1"
-                      value={nutrient.volume_ml}
-                      onChange={(e) => updateNutrient(index, "volume_ml", e.target.value)}
-                      className="bg-white/5 border-white/10 text-white mt-1"
-                      required
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {!nutrient && (
+          <DialogTitle className="text-white font-light text-xl">{editingNutrient ? "Edit" : "Log"} Nutrients</DialogTitle>
+...
+          {!editingNutrient && (
             <Button type="button" onClick={addNutrient} variant="outline" size="sm"
               className="border-white/10 text-white hover:bg-white/5 w-full">
               <Plus className="w-3 h-3 mr-2" /> Add Another Nutrient
