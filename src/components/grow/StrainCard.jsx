@@ -35,8 +35,7 @@ export default function StrainCard({ strain }) {
     : null;
 
   return (
-    <Link to={createPageUrl(`StrainDetail?id=${strain.id}`)} 
-      className="block rounded-2xl border border-white/5 bg-white/[0.02] p-5 hover:border-emerald-500/30 hover:bg-white/[0.04] transition-all">
+    <div className="block rounded-2xl border border-white/5 bg-white/[0.02] hover:border-emerald-500/30 hover:bg-white/[0.04] transition-all overflow-hidden">
       <div className="flex items-start justify-between mb-3">
         <div className="flex-1 min-w-0">
           <h3 className="text-white font-medium text-base truncate">{strain.name}</h3>
