@@ -93,6 +93,7 @@ export default function AddReadingDialog({ open, onOpenChange, onSubmit, reading
               value={form.grow_stage}
               onValueChange={(v) => setForm({ ...form, grow_stage: v })}
               options={[
+                { value: "germination", label: "🥚 Germination" },
                 { value: "seedling", label: "🌱 Seedling" },
                 { value: "vegetative", label: "🌿 Vegetative" },
                 { value: "flowering", label: "🌸 Flowering" },
