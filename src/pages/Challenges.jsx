@@ -77,6 +77,15 @@ export default function Challenges() {
             </h1>
             <p className="text-white/40 text-sm mt-1">Compete with growers worldwide</p>
           </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setShowInfoDialog(true)}
+            className="border-white/10 text-white/60 hover:text-white hover:bg-white/5 gap-2"
+          >
+            <HelpCircle className="w-4 h-4" />
+            How it works
+          </Button>
         </div>
 
         {/* User Badges */}
