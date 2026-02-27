@@ -61,7 +61,11 @@ export default function Dashboard() {
               <Crown className="w-3 h-3" /> Premium
             </Badge>
           ) : (
-            <Badge variant="outline" className="text-white/50 border-white/20">Free</Badge>
+            <Link to={createPageUrl("Premium")}>
+              <Badge className="bg-gradient-to-r from-emerald-600 to-emerald-500 text-white border-0 gap-1 cursor-pointer hover:opacity-90 transition-opacity">
+                <Sparkles className="w-3 h-3" /> Upgrade
+              </Badge>
+            </Link>
           )}
         </div>
         <Button onClick={() => setShowStrainForm(true)} className="bg-emerald-600 hover:bg-emerald-500 text-white gap-2">
