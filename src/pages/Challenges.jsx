@@ -257,6 +257,8 @@ export default function Challenges() {
             }}
           />
         )}
+
+        <ChallengesInfoDialog open={showInfoDialog} onClose={() => setShowInfoDialog(false)} />
       </div>
     </PullToRefresh>
   );
