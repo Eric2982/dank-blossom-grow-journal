@@ -1,15 +1,33 @@
 import React from "react";
 import { base44 } from "@/api/base44Client";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { Thermometer, Droplets, Sun, Zap, Wind, FlaskConical, Activity } from "lucide-react";
+import { Thermometer, Droplets, Sun, Zap, Wind, FlaskConical, Activity, ArrowLeft } from "lucide-react";
 import StatCard from "../components/grow/StatCard";
 import PullToRefresh from "../components/PullToRefresh";
+import { Link } from "react-router-dom";
+import { createPageUrl } from "../utils";
+import { Button } from "@/components/ui/button";
 
 export default function Summary() {
   const queryClient = useQueryClient();
+  const urlParams = new URLSearchParams(window.location.search);
+  const strainId = urlParams.get("strain_id");
+
+  const { data: strain } = useQuery({
+    queryKey: ["strain", strainId],
+    queryFn: async () => {
+      if (!strainId) return null;
+      const results = await base44.entities.Strain.filter({ id: strainId });
+      return results[0] || null;
+    },
+    enabled: !!strainId,
+  });
+
   const { data: readings = [] } = useQuery({
-    queryKey: ["readings"],
-    queryFn: () => base44.entities.GrowReading.list("-created_date", 100),
+    queryKey: ["readings", strainId || "all"],
+    queryFn: () => strainId
+      ? base44.entities.GrowReading.filter({ strain_id: strainId }, "-created_date", 100)
+      : base44.entities.GrowReading.list("-created_date", 100),
   });
 
   const calculateStats = () => {
