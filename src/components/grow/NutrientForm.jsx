@@ -133,7 +133,7 @@ export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient })
                     <Button type="button" size="sm" variant="ghost" 
                       onClick={() => handleBarcodeScan(index)}
                       className="text-emerald-400 hover:text-emerald-300 h-7 px-2">
-                      <Scan className="w-3 h-3 mr-1" /> Scan
+                      <ScanBarcode className="w-3 h-3 mr-1" /> Scan
                     </Button>
                     {nutrients.length > 1 && (
                       <Button type="button" size="sm" variant="ghost"
