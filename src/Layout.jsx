@@ -181,10 +181,19 @@ export default function Layout({ children, currentPageName }) {
           {[navItems[0], navItems[1], navItems[2], navItems[3], navItems[4]].map((item) => {
             const isActive = currentPageName === item.page;
             const Icon = item.icon;
+            const handleNavClick = (e) => {
+              if (isActive) {
+                e.preventDefault();
+                // Reset page state by navigating to root URL of the page
+                window.history.pushState({}, "", createPageUrl(item.page));
+                window.dispatchEvent(new PopStateEvent("popstate"));
+              }
+            };
             return (
               <Link
                 key={item.page}
                 to={createPageUrl(item.page)}
+                onClick={handleNavClick}
                 className={`nav-item flex flex-col items-center justify-center gap-1 py-2 rounded-lg transition-colors min-h-[56px] ${
                   isActive ? "text-emerald-500" : "text-white/40"
                 }`}

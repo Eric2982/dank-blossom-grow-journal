@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Trophy, Calendar, Users, TrendingUp, Award, Plus, HelpCircle } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import { format, isAfter, isBefore } from "date-fns";
 import ChallengeCard from "../components/challenges/ChallengeCard";
 import EntrySubmitDialog from "../components/challenges/EntrySubmitDialog";

@@ -7,6 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Plus, Search, MessageSquare, BookOpen, Star, Newspaper } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 import PullToRefresh from "../components/PullToRefresh";
 import ForumPostCard from "../components/community/ForumPostCard";
 import NewPostDialog from "../components/community/NewPostDialog";
