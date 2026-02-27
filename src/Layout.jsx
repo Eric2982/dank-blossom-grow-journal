@@ -1,21 +1,19 @@
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { createPageUrl } from "./utils";
-import { LayoutDashboard, ShoppingBag, BookOpen, Leaf, BarChart3, MessageSquare, Crown, ArrowLeft, Settings, Trophy } from "lucide-react";
+import { LayoutDashboard, ShoppingBag, BookOpen, Leaf, BarChart3, MessageSquare, Crown, ArrowLeft, Settings, Trophy, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 
-const rootPages = ["Dashboard", "Summary", "Chat", "Store", "Learn", "Premium", "Challenges"];
+const rootPages = ["Dashboard", "Summary", "Chat", "Store", "Learn", "Premium", "Challenges", "Community"];
 
 const navItems = [
   { name: "Dashboard", icon: LayoutDashboard, page: "Dashboard" },
-  { name: "Summary", icon: BarChart3, page: "Summary" },
   { name: "Challenges", icon: Trophy, page: "Challenges" },
+  { name: "Community", icon: Users, page: "Community" },
   { name: "Chat", icon: MessageSquare, page: "Chat" },
   { name: "Shop", icon: ShoppingBag, page: "Store" },
-  { name: "Learn", icon: BookOpen, page: "Learn" },
-  { name: "Premium", icon: Crown, page: "Premium" },
 ];
 
 export default function Layout({ children, currentPageName }) {
