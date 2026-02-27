@@ -13,8 +13,9 @@ export default function StrainForm({ open, onOpenChange, onSubmit, strain }) {
   });
 
   React.useEffect(() => {
-    if (strain) setForm({ ...strain, harvest_date: strain.harvest_date || "" });
-  }, [strain?.id]);
+    if (open && strain) setForm({ ...strain, harvest_date: strain.harvest_date || "", planted_date: strain.planted_date || "", flipped_to_flower_date: strain.flipped_to_flower_date || "" });
+    if (open && !strain) setForm({ name: "", type: "hybrid", plant_type: "photoperiod", breeder: "", thc_percentage: "", cbd_percentage: "", flowering_time_weeks: "", planted_date: "", flipped_to_flower_date: "", harvest_date: "", status: "active", notes: "" });
+  }, [open]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
