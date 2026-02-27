@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import MobileSelect from "../MobileSelect";
 
-export default function StrainForm({ open, onOpenChange, onSubmit, strain }) {
+export default function StrainForm({ open, onOpenChange, onSubmit, strain, key }) {
   const [form, setForm] = useState(strain || {
     name: "", type: "hybrid", plant_type: "photoperiod", breeder: "", thc_percentage: "", cbd_percentage: "",
     flowering_time_weeks: "", planted_date: "", flipped_to_flower_date: "", harvest_date: "", status: "active", notes: ""
