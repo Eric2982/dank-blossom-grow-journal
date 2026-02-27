@@ -32,6 +32,9 @@ export default function StrainDetail() {
   const [editingReading, setEditingReading] = useState(null);
   const [editingNutrient, setEditingNutrient] = useState(null);
   const [editingWatering, setEditingWatering] = useState(null);
+  const [collapsedNutrientDates, setCollapsedNutrientDates] = useState({});
+  const galleryInputRef = React.useRef();
+  const cameraInputRef = React.useRef();
   
   const queryClient = useQueryClient();
 
