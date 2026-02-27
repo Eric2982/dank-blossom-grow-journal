@@ -525,44 +525,61 @@ export default function StrainDetail() {
             <p className="text-white/30 text-sm">No nutrients logged yet</p>
           </div>
         ) : (
-          <div className="rounded-2xl border border-white/5 bg-white/[0.02] overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="border-b border-white/5">
-                  <tr className="text-white/40 text-xs">
-                    <th className="text-left p-3 font-normal">Date</th>
-                    <th className="text-left p-3 font-normal">Nutrient</th>
-                    <th className="text-left p-3 font-normal">Type</th>
-                    <th className="text-left p-3 font-normal">Amount</th>
-                    <th className="text-left p-3 font-normal">Stage</th>
-                    <th className="text-left p-3 font-normal">Actions</th>
-                  </tr>
-                </thead>
-                <tbody className="text-white text-sm">
-                  {nutrients.map((n) => (
-                    <tr key={n.id} className="border-b border-white/5 hover:bg-white/[0.02]">
-                      <td className="p-3">{format(new Date(n.created_date), "MMM d, yyyy")}</td>
-                      <td className="p-3">{n.nutrient_name} {n.brand && `(${n.brand})`}</td>
-                      <td className="p-3">{n.nutrient_type}</td>
-                      <td className="p-3">{n.volume_ml}ml</td>
-                      <td className="p-3">{n.grow_stage}</td>
-                      <td className="p-3">
-                        <div className="flex gap-2">
-                          <Button onClick={() => { setEditingNutrient(n); setShowNutrientForm(true); }} 
-                            size="sm" variant="ghost" className="h-7 px-2 text-white/40 hover:text-white">
-                            <Edit className="w-3 h-3" />
-                          </Button>
-                          <Button onClick={() => deleteNutrientMutation.mutate(n.id)} 
-                            size="sm" variant="ghost" className="h-7 px-2 text-white/20 hover:text-red-400">
-                            <Trash2 className="w-3 h-3" />
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+          <div className="space-y-2">
+            {Object.entries(nutrientsByDate).map(([dateKey, items]) => {
+              const isCollapsed = collapsedNutrientDates[dateKey];
+              return (
+                <div key={dateKey} className="rounded-xl border border-white/5 bg-white/[0.02] overflow-hidden">
+                  <button
+                    onClick={() => toggleNutrientDate(dateKey)}
+                    className="w-full flex items-center justify-between px-4 py-3 hover:bg-white/5 transition-colors"
+                  >
+                    <div className="flex items-center gap-2">
+                      <span className="text-white/70 text-sm font-medium">{dateKey}</span>
+                      <span className="text-white/30 text-xs">{items.length} nutrient{items.length > 1 ? "s" : ""}</span>
+                    </div>
+                    {isCollapsed ? <ChevronDown className="w-4 h-4 text-white/30" /> : <ChevronUp className="w-4 h-4 text-white/30" />}
+                  </button>
+                  {!isCollapsed && (
+                    <div className="border-t border-white/5 overflow-x-auto">
+                      <table className="w-full">
+                        <thead className="border-b border-white/5">
+                          <tr className="text-white/40 text-xs">
+                            <th className="text-left p-3 font-normal">Nutrient</th>
+                            <th className="text-left p-3 font-normal">Type</th>
+                            <th className="text-left p-3 font-normal">Amount</th>
+                            <th className="text-left p-3 font-normal">Stage</th>
+                            <th className="text-left p-3 font-normal">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="text-white text-sm">
+                          {items.map((n) => (
+                            <tr key={n.id} className="border-b border-white/5 hover:bg-white/[0.02]">
+                              <td className="p-3">{n.nutrient_name} {n.brand && <span className="text-white/40">({n.brand})</span>}</td>
+                              <td className="p-3">{n.nutrient_type}</td>
+                              <td className="p-3">{n.volume_ml}ml</td>
+                              <td className="p-3">{n.grow_stage}</td>
+                              <td className="p-3">
+                                <div className="flex gap-2">
+                                  <Button onClick={() => { setEditingNutrient(n); setShowNutrientForm(true); }}
+                                    size="sm" variant="ghost" className="h-7 px-2 text-white/40 hover:text-white">
+                                    <Edit className="w-3 h-3" />
+                                  </Button>
+                                  <Button onClick={() => deleteNutrientMutation.mutate(n.id)}
+                                    size="sm" variant="ghost" className="h-7 px-2 text-white/20 hover:text-red-400">
+                                    <Trash2 className="w-3 h-3" />
+                                  </Button>
+                                </div>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
