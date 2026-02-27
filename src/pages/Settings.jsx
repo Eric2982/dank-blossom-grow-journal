@@ -332,6 +332,36 @@ export default function Settings() {
         </Card>
       )}
 
+      {/* Learn & Premium Links */}
+      <div className="grid grid-cols-2 gap-3">
+        <Link to={createPageUrl("Learn")}>
+          <Card className="bg-white/[0.02] border-white/5 p-4 hover:border-white/10 hover:bg-white/[0.04] transition-all cursor-pointer h-full">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                <BookOpen className="w-4 h-4 text-blue-400" />
+              </div>
+              <div>
+                <p className="text-white text-sm font-medium">Learn</p>
+                <p className="text-white/40 text-xs">Knowledge base</p>
+              </div>
+            </div>
+          </Card>
+        </Link>
+        <Link to={createPageUrl("Premium")}>
+          <Card className="bg-gradient-to-br from-amber-500/10 to-orange-500/10 border-amber-500/20 p-4 hover:border-amber-500/30 transition-all cursor-pointer h-full">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                <Crown className="w-4 h-4 text-amber-400" />
+              </div>
+              <div>
+                <p className="text-white text-sm font-medium">Premium</p>
+                <p className="text-white/40 text-xs">Unlock all features</p>
+              </div>
+            </div>
+          </Card>
+        </Link>
+      </div>
+
       {/* About Section */}
       <Card className="bg-white/[0.02] border-white/5 p-6">
         <button
