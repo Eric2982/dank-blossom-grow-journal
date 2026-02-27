@@ -39,9 +39,19 @@ export default function Community() {
 
   const createPostMutation = useMutation({
     mutationFn: (data) => base44.entities.ForumPost.create(data),
+    onMutate: async (newPost) => {
+      await queryClient.cancelQueries({ queryKey: ["forumPosts"] });
+      const prev = queryClient.getQueryData(["forumPosts"]);
+      const optimistic = { ...newPost, id: `optimistic-${Date.now()}`, created_date: new Date().toISOString(), vote_count: 0, reply_count: 0 };
+      queryClient.setQueryData(["forumPosts"], (old = []) => [optimistic, ...old]);
+      setShowNewPost(false);
+      return { prev };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.prev) queryClient.setQueryData(["forumPosts"], ctx.prev);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["forumPosts"] });
-      setShowNewPost(false);
     },
   });
 

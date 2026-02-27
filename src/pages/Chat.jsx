@@ -49,8 +49,18 @@ export default function Chat() {
 
   const sendCommunityMutation = useMutation({
     mutationFn: (data) => base44.entities.ChatMessage.create(data),
-    onSuccess: () => {
+    onMutate: async (newMsg) => {
+      await queryClient.cancelQueries({ queryKey: ["chat", selectedRoom] });
+      const prev = queryClient.getQueryData(["chat", selectedRoom]);
+      const optimistic = { ...newMsg, id: `optimistic-${Date.now()}`, created_date: new Date().toISOString() };
+      queryClient.setQueryData(["chat", selectedRoom], (old = []) => [optimistic, ...old]);
       setCommunityMessage("");
+      return { prev };
+    },
+    onError: (_err, _vars, ctx) => {
+      if (ctx?.prev) queryClient.setQueryData(["chat", selectedRoom], ctx.prev);
+    },
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["chat", selectedRoom] });
     },
   });
