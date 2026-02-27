@@ -118,6 +118,8 @@ export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient })
   };
 
   return (
+    <>
+    <BarcodeScanner open={barcodeScanOpen} onOpenChange={setBarcodeScanOpen} onResult={handleBarcodeResult} />
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="bg-zinc-900 border-white/10 text-white max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
