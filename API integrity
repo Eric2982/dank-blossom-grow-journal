@@ -1,0 +1,41 @@
+{
+  "requestDetails": {
+    "requestPackageName": "com.base6994e0c98fb6b9d1d4521dbd.app",
+    "timestampMillis": "1617893780",
+    "nonce": "aGVsbG8gd29scmQgdGhlcmU"
+  },
+  "appIntegrity": {
+    "appRecognitionVerdict": "PLAY_RECOGNIZED",
+    "packageName": "com.base6994e0c98fb6b9d1d4521dbd.app",
+    "certificateSha256Digest": [
+      "B3:3F:FC:80:DB:13:17:AA:B3:1C:EF:64:30:2A:DE:32:A7:6F:17:CD:85:D6:7E:9D:19:CA:1A:B5:AB:F5:F0:B5"
+    ],
+    "versionCode": "42"
+  },
+  "deviceIntegrity": {
+    "deviceRecognitionVerdict": [
+      "MEETS_BASIC_INTEGRITY",
+      "MEETS_DEVICE_INTEGRITY",
+      "MEETS_STRONG_INTEGRITY"
+    ],
+    "recentDeviceActivity": {
+      "deviceActivityLevel": "LEVEL_3"
+    },
+    "deviceAttributes": {
+      "sdkVersion": 32
+    }
+  },
+  "accountDetails": {
+    "appLicensingVerdict": "LICENSED"
+  },
+  "environmentDetails": {
+    "playProtectVerdict": "NO_ISSUES",
+    "appAccessRiskVerdict": {
+      "appsDetected": [
+        "KNOWN_INSTALLED",
+        "UNKNOWN_INSTALLED",
+        "UNKNOWN_CAPTURING"
+      ]
+    }
+  }
+}
