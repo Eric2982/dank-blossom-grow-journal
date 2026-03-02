@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "dank-blossom-grow-journal",
+  "private_key_id": "21cc98e0ffbe83bcc120d48c088d9e56ed708d40",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDRFmlnMYlNxT6y\natsYNSZl3lhtlxkccF3gF2P+CHm6cKI7I36hK5qKlhewTMguPoQ4KqYpG57d/1hZ\nRHYnmhiVltAt3R9EnywNeSKqkP1ViMhuWRDDY82TdqHPphi/Jp2ZWBRgGDGClC4V\nDSu5y5TyCfr3Y7sxpVKNxTBgC87aHtauO+PrKqK2IwN0aaMEsCM9wt38QuZOMFbJ\nDXMso5hj+7IIe3s+aNzWuH+ZeP6IGwGPxxZ2lifPuCQpVSETM1cF362sH0Orclc7\nQ26wlDhoAaOHwLzxM0g7Tg8JNl2cmsOF/H+mesIabkFi1lLSRKaO6y/5PTTUitY4\n5N0+vwExAgMBAAECggEACxDZFj2Qaz3HsjCmlNLnS9fnLTGkghVOWphSUfUH4D6q\nz19zCbuhi7ki2tFNfOkRHVngfmd4Un57ognWCQWGTJB1RyAfUgXskm/5TjarObYq\nCXEMSpMDI81RBgjf4Wn9SErZlTZilGscPz/5svUb1m2By0sLcraxtlAb3dFyKqgD\nrlyaK0ARkboflTfBEtxKtenVuRDo6yf5cTKpmM7a1k5vaMx4P53G0BmupKBmkB81\n1q9fXDYZIEILHXFJepCRuQc/MXhpvpYGRQHMKUgWop3J/i1eUDK4RO1h2aYo5N4z\n5byNRwtIVvsR7ihXD7rheXN8QD15CXgW9Sog1yfQawKBgQDoM3Zf7sHBeNfocmaX\niGVB1m/HGlww7p6bNcISXNgNLy0d+YRoK+c8V03jiqEgSLU6Tg14nLDnmjTI1pWL\njQwjZG2Pvy7twlDwLkcjjYQsSEGXzP9ZKyn3zBs5zH7JJh2IrUpHmQK0DDRWIDqk\nRbytaal7xSZye9CXqApGuZFrcwKBgQDmhH5ApdpyBvUGBX4rqC5GZLzrMigaTLgt\n0OppJ3HSDJlPguNdUN8b4BqolRhckR5o5u09yPW4yJkjowVWbg0zSpO4PX3O1/zE\nmVMm7cFpeZQ7tOXjWCKYdZJbFYZY73OwbPp5n4dg4ncclVzkiJ+mdQIaqwM3e5eP\negET+Ky/ywKBgQCKlFQckvjuB7oLz2LtIwkTjvAtCs1korTj+uR1YxXKYJJzpjvg\nk/swZwZkO5NIGjyWrIibqCBoSP8hsfeUTrykzsYYmUhfu63keioYzNfKOeFzwHPQ\n+tLUQespxqMQV4Ae1xVSv73+SJ5fnGKDMd+WO05cQOBeSQjHyhE//nYMgwKBgG6U\nNDQy211DtRpUXDf5D2m5PV7dypsDHn7r7ubOgy0t2gVoVkUXXE9065TfILaW7q2H\nyVqQIj+oCr4rn43ccPyf08jXxpgIyDpPCrJr7xH3voH9vyGVz9Ku46xJ4Q6cnzSM\nsoLRYhG50UWm6M7AM0WYb4/3ZS2iXgv3jLjV25iNAoGAGXQZfW/3R3q72f3W0wS9\nk3Eb00TRj1Dr5v4FcFZ6LYU7SnUcyTlRsWI4uO1nQ8iMbdwEKljsvTqXxy8RJlSb\nmlsj3j9lDBkRmtsrTvX8rvF2pjmGjkb4Xu3Mw7dGk27uZyOqITj+c4YARNFjPMdp\nJYomknlv/i/4AIssAypo+Eg=\n-----END PRIVATE KEY-----\n",
+  "client_email": "app-screens@dank-blossom-grow-journal.iam.gserviceaccount.com",
+  "client_id": "111821607377920265579",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/app-screens%40dank-blossom-grow-journal.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
