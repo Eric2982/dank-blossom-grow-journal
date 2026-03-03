@@ -235,6 +235,6 @@ export default function Layout({ children, currentPageName }) {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      </div>
-      );
-      }
+    </div>
+  );
+}
