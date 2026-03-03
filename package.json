@@ -9,8 +9,8 @@
     "lint": "eslint . --quiet",
     "lint:fix": "eslint . --fix",
     "typecheck": "tsc -p ./jsconfig.json",
-    "preview": "vite preview"
-    "test": "vitest"
+    "preview": "vite preview",
+    "test": "vitest",
     "vitest": "echo \"No tests specified\" && exit 0"
   },
   "dependencies": {
