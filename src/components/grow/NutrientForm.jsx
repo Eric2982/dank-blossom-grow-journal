@@ -113,20 +113,13 @@ export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient: e
                 <div key={index} className="p-4 rounded-lg bg-white/5 border border-white/10 space-y-3">
                   <div className="flex items-center justify-between">
                     <Label className="text-white/70 text-sm">Nutrient #{index + 1}</Label>
-                    <div className="flex gap-2">
+                    {nutrients.length > 1 && (
                       <Button type="button" size="sm" variant="ghost"
-                        onClick={() => handleBarcodeScan(index)}
-                        className="text-emerald-400 hover:text-emerald-300 h-7 px-2">
-                        <ScanBarcode className="w-3 h-3 mr-1" /> Scan
+                        onClick={() => removeNutrient(index)}
+                        className="text-red-400 hover:text-red-300 h-7 px-2">
+                        <Trash2 className="w-3 h-3" />
                       </Button>
-                      {nutrients.length > 1 && (
-                        <Button type="button" size="sm" variant="ghost"
-                          onClick={() => removeNutrient(index)}
-                          className="text-red-400 hover:text-red-300 h-7 px-2">
-                          <Trash2 className="w-3 h-3" />
-                        </Button>
-                      )}
-                    </div>
+                    )}
                   </div>
                   <div className="grid grid-cols-2 gap-3">
                     <div>
