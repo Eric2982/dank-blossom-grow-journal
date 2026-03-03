@@ -58,19 +58,6 @@ export default function NutrientForm({ open, onOpenChange, onSubmit, nutrient: e
     setNutrients(updated);
   };
 
-  const handleBarcodeScan = (index) => {
-    setPendingScanIndex(index);
-    setBarcodeScanOpen(true);
-  };
-
-  const handleBarcodeResult = (data) => {
-    if (pendingScanIndex !== null) {
-      updateNutrient(pendingScanIndex, "nutrient_name", data.nutrient_name);
-      updateNutrient(pendingScanIndex, "brand", data.brand);
-      updateNutrient(pendingScanIndex, "nutrient_type", data.nutrient_type || "other");
-    }
-    setPendingScanIndex(null);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
