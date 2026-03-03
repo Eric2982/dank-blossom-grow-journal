@@ -8,45 +8,9 @@ import { base44 } from "@/api/base44Client";
 export default function BarcodeScanner({ open, onOpenChange, onResult }) {
   const videoRef = useRef(null);
   const readerRef = useRef(null);
-  const [status, setStatus] = useState("idle"); // idle | scanning | loading | error
+  const [status, setStatus] = useState("idle"); // idle | manual | loading | error
   const [errorMsg, setErrorMsg] = useState("");
-
-  useEffect(() => {
-    if (!open) {
-      stopScanner();
-      setStatus("idle");
-      setErrorMsg("");
-      return;
-    }
-    startScanner();
-    return () => stopScanner();
-  }, [open]);
-
-  const startScanner = async () => {
-    setStatus("scanning");
-    try {
-      const reader = new BrowserMultiFormatReader();
-      readerRef.current = reader;
-      await reader.decodeFromVideoDevice(null, videoRef.current, async (result, err) => {
-        if (result) {
-          stopScanner();
-          setStatus("loading");
-          const barcode = result.getText();
-          await lookupBarcode(barcode);
-        }
-      });
-    } catch (e) {
-      setStatus("error");
-      setErrorMsg("Camera access denied or not available.");
-    }
-  };
-
-  const stopScanner = () => {
-    if (readerRef.current) {
-      readerRef.current.reset();
-      readerRef.current = null;
-    }
-  };
+  const [manualBarcode, setManualBarcode] = useState("");
 
   const lookupBarcode = async (barcode) => {
     try {
