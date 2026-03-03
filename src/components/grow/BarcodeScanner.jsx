@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
-import { BrowserMultiFormatReader } from "@zxing/library";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { X, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import { base44 } from "@/api/base44Client";
 
 export default function BarcodeScanner({ open, onOpenChange, onResult }) {
