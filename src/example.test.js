@@ -6,3 +6,4 @@ describe('sample test', () => {
     expect(1 + 1).toBe(2);
   });
 });
+npm i baseline-browser-mapping@latest -D
