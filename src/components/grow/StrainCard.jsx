@@ -1,6 +1,6 @@
 import React from "react";
 import { Badge } from "@/components/ui/badge";
-import { Calendar, Sprout, Flower, BarChart3 } from "lucide-react";
+import { Sprout, Flower, BarChart3 } from "lucide-react";
 import { differenceInDays } from "date-fns";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../../utils";

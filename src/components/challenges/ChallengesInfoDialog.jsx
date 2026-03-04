@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Trophy, Users, Star, Award, CheckCircle, HelpCircle, Zap } from "lucide-react";
+import { Trophy, Users, Star, Zap } from "lucide-react";
 
 const challengeTypes = [
   { type: "biggest_flower", icon: "🌸", name: "Biggest Flower", desc: "Submit photos of your largest, most impressive flowers. Judged by size, density, and overall appearance.", level: "All Levels" },

@@ -7,7 +7,6 @@ import MobileSelect from "@/components/MobileSelect";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Check, Plus, Trash2, Edit } from "lucide-react";
-import { format } from "date-fns";
 
 export default function FeedingPlanner({ strainId, plans, onCreatePlan, onUpdatePlan, onDeletePlan }) {
   const [showForm, setShowForm] = useState(false);
