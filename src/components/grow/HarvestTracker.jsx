@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import MobileSelect from "@/components/MobileSelect";
 import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
-import { Award, TrendingUp, Droplets, Plus, Edit, Trash2 } from "lucide-react";
+import { Award, Plus, Edit, Trash2 } from "lucide-react";
 import { format } from "date-fns";
 
 const effects = ["Relaxed", "Happy", "Euphoric", "Energetic", "Focused", "Creative", "Sleepy", "Hungry", "Uplifted"];
