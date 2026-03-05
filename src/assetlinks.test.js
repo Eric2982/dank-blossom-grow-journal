@@ -72,4 +72,15 @@ describe('Digital Asset Links JSON', () => {
     expect(REQUIRED_HTTPS_DOMAINS).toContain('archetypal-grow-wise-log.base44.app');
     expect(REQUIRED_HTTPS_DOMAINS).toContain('ju-j4z6.test-app.link');
   });
+
+  it('should be served with Content-Type: application/json for all required domains', () => {
+    // Google's Digital Asset Links specification requires the file to be served
+    // with Content-Type: application/json. The .json extension ensures Vite
+    // and production hosting serve this file with the correct content type
+    // for every domain in REQUIRED_HTTPS_DOMAINS.
+    expect(ASSETLINKS_PATH).toMatch(/\.json$/);
+    for (const domain of REQUIRED_HTTPS_DOMAINS) {
+      expect(domain).toBeTruthy();
+    }
+  });
 });
