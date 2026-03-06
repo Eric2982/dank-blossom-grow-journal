@@ -9,6 +9,7 @@ const ASSETLINKS_PATH = resolve(process.cwd(), 'public/.well-known/assetlinks.js
 const REQUIRED_HTTPS_DOMAINS = [
   'archetypal-grow-wise-log.base44.app',
   'ju-j4z6.test-app.link',
+  'dankblossominc.com',
 ];
 
 describe('Digital Asset Links JSON', () => {
@@ -64,14 +65,16 @@ describe('Digital Asset Links JSON', () => {
     }
   });
 
-  it('should be located in public/ so it is served over HTTPS on archetypal-grow-wise-log.base44.app and ju-j4z6.test-app.link', () => {
+  it('should be located in public/ so it is served over HTTPS on archetypal-grow-wise-log.base44.app, ju-j4z6.test-app.link, and dankblossominc.com', () => {
     // Files in public/ are served at the root path by Vite.
     // This ensures the file is accessible at:
     //   https://archetypal-grow-wise-log.base44.app/.well-known/assetlinks.json
     //   https://ju-j4z6.test-app.link/.well-known/assetlinks.json
+    //   https://dankblossominc.com/.well-known/assetlinks.json
     expect(ASSETLINKS_PATH).toContain('public/.well-known/assetlinks.json');
     expect(REQUIRED_HTTPS_DOMAINS).toContain('archetypal-grow-wise-log.base44.app');
     expect(REQUIRED_HTTPS_DOMAINS).toContain('ju-j4z6.test-app.link');
+    expect(REQUIRED_HTTPS_DOMAINS).toContain('dankblossominc.com');
   });
 
   it('should be served with Content-Type: application/json for all required domains', () => {
