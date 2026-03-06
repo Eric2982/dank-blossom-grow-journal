@@ -24,6 +24,24 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+    - name: Verify GITHUB_ACTOR
+      run: |
+        if [ -z "$GITHUB_ACTOR" ]; then
+          echo "ERROR: GITHUB_ACTOR is not set"
+          exit 1
+        fi
+        echo "GITHUB_ACTOR is set to: $GITHUB_ACTOR"
+      env:
+        GITHUB_ACTOR: ${{ github.actor }}
+    - name: Verify GITHUB_TOKEN
+      run: |
+        if [ -z "$GITHUB_TOKEN" ]; then
+          echo "ERROR: GITHUB_TOKEN is not set"
+          exit 1
+        fi
+        echo "GITHUB_TOKEN is set and recognized"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Log commit SHA
       run: echo "Running CI on commit ${{ github.sha }} (ref ${{ github.ref }})"
     - name: Use Node.js ${{ matrix.node-version }}
