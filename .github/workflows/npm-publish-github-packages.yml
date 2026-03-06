@@ -6,6 +6,7 @@ name: Node.js Package
 on:
   release:
     types: [created]
+  workflow_dispatch:
 
 permissions: {}
 
@@ -40,6 +41,7 @@ jobs:
         run: |
           npm pkg set name="@eric2982/dank-blossom-grow-journal"
           npm pkg set publishConfig.registry="https://npm.pkg.github.com/"
+          npm pkg delete private
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
