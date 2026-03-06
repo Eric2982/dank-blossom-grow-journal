@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { readFileSync, existsSync } from 'fs';
 import { resolve } from 'path';
+import isValidHostname from 'is-valid-hostname';
 
 const ASSETLINKS_PATH = resolve(process.cwd(), 'public/.well-known/assetlinks.json');
 
@@ -81,6 +82,12 @@ describe('Digital Asset Links JSON', () => {
     expect(ASSETLINKS_PATH).toMatch(/\.json$/);
     for (const domain of REQUIRED_HTTPS_DOMAINS) {
       expect(domain).toBeTruthy();
+    }
+  });
+
+  it('should have valid hostnames in REQUIRED_HTTPS_DOMAINS', () => {
+    for (const domain of REQUIRED_HTTPS_DOMAINS) {
+      expect(isValidHostname(domain)).toBe(true);
     }
   });
 });
