@@ -36,6 +36,10 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: '@eric2982'
       - run: npm ci
+      - name: Ensure correct package config for GitHub Packages
+        run: |
+          npm pkg set name="@eric2982/dank-blossom-grow-journal"
+          npm pkg set publishConfig.registry="https://npm.pkg.github.com/"
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
