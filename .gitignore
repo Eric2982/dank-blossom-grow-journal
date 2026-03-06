@@ -29,3 +29,13 @@ dist-ssr
 *.sw?
 
 .env
+
+# Sensitive credential files - should never be committed
+client_secret_*.json
+*-service-account*.json
+service account
+credential-sharing
+API integrity
+assetlinks*.json
+*-21cc98e0ffbe.json
+*.apps.googleusercontent.com*.json
