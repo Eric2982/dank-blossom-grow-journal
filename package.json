@@ -1,7 +1,9 @@
 {
-  "name": "base44-app",
-  "private": true,
+  "name": "@eric2982/dank-blossom-grow-journal",
   "version": "0.0.0",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "type": "module",
   "scripts": {
     "dev": "vite",
