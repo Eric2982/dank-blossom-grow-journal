@@ -15,7 +15,7 @@ describe('Google Site Verification HTML', () => {
 
   it('should contain the correct Google site verification token', () => {
     const content = readFileSync(VERIFICATION_PATH, 'utf-8').trim();
-    expect(content).toBe(`google-site-verification: ${VERIFICATION_FILE}`);
+    expect(content).toBe('google-site-verification: google94bb1998a186c489');
   });
 
   it('should be located in public/ so it is served over HTTPS on ju-j4z6.test-app.link', () => {
