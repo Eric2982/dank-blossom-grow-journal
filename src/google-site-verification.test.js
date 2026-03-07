@@ -2,7 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync, existsSync } from 'fs';
 import { resolve } from 'path';
 
-const VERIFICATION_FILE = 'google94bb1998a186c489.html';
+const VERIFICATION_TOKEN = 'google94bb1998a186c489';
+const VERIFICATION_FILE = `${VERIFICATION_TOKEN}.html`;
 const VERIFICATION_PATH = resolve(process.cwd(), `public/${VERIFICATION_FILE}`);
 
 // Domain that must serve this file over HTTPS at /<filename>
@@ -15,7 +16,7 @@ describe('Google Site Verification HTML', () => {
 
   it('should contain the correct Google site verification token', () => {
     const content = readFileSync(VERIFICATION_PATH, 'utf-8').trim();
-    expect(content).toBe('google-site-verification: google94bb1998a186c489');
+    expect(content).toBe(`google-site-verification: ${VERIFICATION_TOKEN}`);
   });
 
   it('should be located in public/ so it is served over HTTPS on ju-j4z6.test-app.link', () => {
