@@ -43,6 +43,22 @@ jobs:
           npm pkg set name="@eric2982/dank-blossom-grow-journal"
           npm pkg set publishConfig.registry="https://npm.pkg.github.com/"
           npm pkg delete private
+      - name: Set version from release tag
+        run: |
+          TAG="${{ github.event.release.tag_name }}"
+          if [ -n "$TAG" ]; then
+            VERSION=$(echo "$TAG" | grep -oE '[0-9]+\.[0-9]+\.[0-9]+(-[a-zA-Z0-9.]+)?' | head -1 || true)
+            if [ -n "$VERSION" ]; then
+              echo "Setting package version to: $VERSION"
+              npm version "$VERSION" --no-git-tag-version
+            else
+              echo "ERROR: Could not extract a valid semver from release tag '$TAG'."
+              echo "Please use a tag format like 'v1.2.3' or 'DBGJv1.2.3'."
+              exit 1
+            fi
+          else
+            echo "No release tag found (workflow_dispatch). Publishing with existing package.json version."
+          fi
       - run: npm publish --registry https://npm.pkg.github.com/
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
