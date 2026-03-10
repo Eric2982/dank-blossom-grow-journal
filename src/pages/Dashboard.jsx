@@ -50,6 +50,7 @@ export default function Dashboard() {
       queryClient.invalidateQueries({ queryKey: ["strains"] }),
       queryClient.invalidateQueries({ queryKey: ["user"] }),
       queryClient.invalidateQueries({ queryKey: ["subscription", user?.email] }),
+      queryClient.invalidateQueries({ queryKey: ["latestReadings"] }),
     ]);
   };
 
