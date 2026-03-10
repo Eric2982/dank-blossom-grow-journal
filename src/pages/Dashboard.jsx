@@ -20,6 +20,12 @@ export default function Dashboard() {
     queryFn: () => base44.entities.Strain.list("-created_date", 50),
   });
 
+  // Fetch latest reading across all active strains for indoor comparison
+  const { data: latestReadings = [] } = useQuery({
+    queryKey: ["latestReadings"],
+    queryFn: () => base44.entities.GrowReading.list("-created_date", 1),
+  });
+
   const { data: user } = useQuery({
     queryKey: ["user"],
     queryFn: () => base44.auth.me(),
