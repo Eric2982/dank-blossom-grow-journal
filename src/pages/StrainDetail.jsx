@@ -413,6 +413,14 @@ export default function StrainDetail() {
             className="border-white/10 text-white hover:bg-white/5">
             <Edit className="w-3 h-3 mr-2" /> Edit
           </Button>
+          <ExportPDFButton
+            strain={strain}
+            readings={readings}
+            nutrients={nutrients}
+            wateringActions={wateringActions}
+            harvests={harvests}
+            feedingPlans={feedingPlans}
+          />
           <Button onClick={() => deleteStrainMutation.mutate()} variant="outline" size="sm"
             className="border-red-500/20 text-red-400 hover:bg-red-500/10">
             <Trash2 className="w-3 h-3 mr-2" /> Delete
