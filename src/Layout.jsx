@@ -24,19 +24,9 @@ export default function Layout({ children, currentPageName }) {
   const [renderedPages, setRenderedPages] = React.useState(new Set());
   const [showAgeVerification, setShowAgeVerification] = React.useState(false);
 
-  // Sync Tailwind dark mode with system preference
+  // Always force dark mode
   React.useEffect(() => {
-    const applyColorScheme = (e) => {
-      if (e.matches) {
-        document.documentElement.classList.add('dark');
-      } else {
-        document.documentElement.classList.remove('dark');
-      }
-    };
-    const mq = window.matchMedia('(prefers-color-scheme: dark)');
-    applyColorScheme(mq);
-    mq.addEventListener('change', applyColorScheme);
-    return () => mq.removeEventListener('change', applyColorScheme);
+    document.documentElement.classList.add('dark');
   }, []);
 
   // Check age verification on mount
