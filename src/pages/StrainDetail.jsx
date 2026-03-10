@@ -499,7 +499,7 @@ export default function StrainDetail() {
       </div>
 
       {/* Analytics */}
-      <StrainAnalytics readings={readings} />
+      <StrainAnalytics readings={readings} strain={strain} />
 
       {/* Grow Readings */}
       <div>
