@@ -14,7 +14,7 @@ export default defineConfig({
     hmrNotifier: true,
     navigationNotifier: true,
     visualEditAgent: true
-  }), react(), cloudflare()],
+  }), react(), ...(process.env.NODE_ENV === 'test' ? [] : [cloudflare()])],
   test: {
     environment: 'node',
     include: ['src/**/*.{test,spec}.{js,ts,jsx,tsx}'],
