@@ -19,8 +19,9 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x, 20.x, 22.x]
+        node-version: [20.x, 22.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        # Node 18.x removed: undici@7.18.2 and wrangler@4.72.0 require Node >=20
 
     steps:
     - uses: actions/checkout@v4
