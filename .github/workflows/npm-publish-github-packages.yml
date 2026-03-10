@@ -27,7 +27,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
       packages: write
     steps:
       - uses: actions/checkout@v4
@@ -57,7 +57,11 @@ jobs:
               exit 1
             fi
           else
-            echo "No release tag found (workflow_dispatch). Publishing with existing package.json version."
+            echo "No release tag found (workflow_dispatch). Auto-bumping patch version to avoid 409 conflict."
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            npm version patch -m "chore: bump version to %s [skip ci]"
+            git push
           fi
       - run: npm publish --registry https://npm.pkg.github.com/
         env:
