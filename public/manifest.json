@@ -1,0 +1,21 @@
+{
+  "name": "Dank Blossom Grow Journal",
+  "short_name": "Dank Blossom",
+  "description": "Track and manage your cannabis grows with detailed logs, analytics, and reminders.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#16a34a",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["lifestyle", "health", "utilities"],
+  "icons": [
+    {
+      "src": "https://base44.com/logo_v2.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
