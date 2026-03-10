@@ -77,6 +77,6 @@ function App() {
       </QueryClientProvider>
     </AuthProvider>
   )
-}
+} 
 
 export default App
