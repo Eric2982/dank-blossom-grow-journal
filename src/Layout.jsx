@@ -24,6 +24,21 @@ export default function Layout({ children, currentPageName }) {
   const [renderedPages, setRenderedPages] = React.useState(new Set());
   const [showAgeVerification, setShowAgeVerification] = React.useState(false);
 
+  // Sync Tailwind dark mode with system preference
+  React.useEffect(() => {
+    const applyColorScheme = (e) => {
+      if (e.matches) {
+        document.documentElement.classList.add('dark');
+      } else {
+        document.documentElement.classList.remove('dark');
+      }
+    };
+    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+    applyColorScheme(mq);
+    mq.addEventListener('change', applyColorScheme);
+    return () => mq.removeEventListener('change', applyColorScheme);
+  }, []);
+
   // Check age verification on mount
   React.useEffect(() => {
     const isVerified = localStorage.getItem('ageVerified');
@@ -50,7 +65,7 @@ export default function Layout({ children, currentPageName }) {
   }, [currentPageName, children, isRootPage]);
 
   return (
-    <div className="min-h-screen bg-zinc-900 text-white pb-20 md:pb-0">
+    <div className="min-h-screen bg-gray-50 dark:bg-zinc-900 text-gray-900 dark:text-white pb-20 md:pb-0">
       <style>{`
         :root {
           --background: 0 0% 4%;
@@ -75,6 +90,7 @@ export default function Layout({ children, currentPageName }) {
         body { 
           background: #18181b;
           overscroll-behavior-y: none;
+          /* dark mode handled via Tailwind dark: classes */
           -webkit-overflow-scrolling: touch;
         }
         

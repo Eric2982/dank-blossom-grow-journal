@@ -7,9 +7,48 @@ import { base44 } from "@/api/base44Client";
 export default function BarcodeScanner({ open, onOpenChange, onResult }) {
   const videoRef = useRef(null);
   const readerRef = useRef(null);
-  const [status, setStatus] = useState("idle"); // idle | manual | loading | error
+  const streamRef = useRef(null);
+  const [status, setStatus] = useState("idle"); // idle | scanning | loading | error
   const [errorMsg, setErrorMsg] = useState("");
   const [manualBarcode, setManualBarcode] = useState("");
+
+  const stopStream = () => {
+    if (streamRef.current) {
+      streamRef.current.getTracks().forEach(track => track.stop());
+      streamRef.current = null;
+    }
+  };
+
+  const startScanner = async () => {
+    setStatus("scanning");
+    setErrorMsg("");
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+      streamRef.current = stream;
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream;
+        videoRef.current.play();
+      }
+    } catch (e) {
+      setStatus("error");
+      setErrorMsg("Camera access denied. Please enter barcode manually.");
+    }
+  };
+
+  // Cleanup stream when dialog closes
+  React.useEffect(() => {
+    if (!open) {
+      stopStream();
+      setStatus("idle");
+      setErrorMsg("");
+      setManualBarcode("");
+    }
+  }, [open]);
+
+  const handleOpenChange = (val) => {
+    if (!val) stopStream();
+    onOpenChange(val);
+  };
 
   const lookupBarcode = async (barcode) => {
     try {
@@ -44,7 +83,7 @@ export default function BarcodeScanner({ open, onOpenChange, onResult }) {
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="bg-zinc-900 border-white/10 text-white max-w-sm">
         <DialogHeader>
           <DialogTitle className="text-white font-light text-lg">Scan Barcode</DialogTitle>

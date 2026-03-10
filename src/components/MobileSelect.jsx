@@ -4,9 +4,20 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from 
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 
-export default function MobileSelect({ value, onValueChange, options, placeholder, label, className }) {
+export default function MobileSelect({ value, onChange, onValueChange, options, placeholder, label, className }) {
   const [open, setOpen] = React.useState(false);
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+  const [isMobile, setIsMobile] = React.useState(typeof window !== "undefined" && window.innerWidth < 768);
+
+  React.useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleChange = (val) => {
+    if (onValueChange) onValueChange(val);
+    if (onChange) onChange(val);
+  };
 
   const selectedOption = options.find(opt => opt.value === value);
 
@@ -30,7 +41,7 @@ export default function MobileSelect({ value, onValueChange, options, placeholde
               <button
                 key={option.value}
                 onClick={() => {
-                  onValueChange(option.value);
+                  handleChange(option.value);
                   setOpen(false);
                 }}
                 className={`w-full flex items-center justify-between px-4 py-3 rounded-lg transition-colors ${
@@ -50,7 +61,7 @@ export default function MobileSelect({ value, onValueChange, options, placeholde
   }
 
   return (
-    <Select value={value} onValueChange={onValueChange}>
+    <Select value={value} onValueChange={handleChange}>
       <SelectTrigger className={`bg-white/5 border-white/10 text-white ${className}`}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
