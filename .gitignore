@@ -39,3 +39,9 @@ API integrity
 assetlinks*.json
 *-21cc98e0ffbe.json
 *.apps.googleusercontent.com*.json
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
