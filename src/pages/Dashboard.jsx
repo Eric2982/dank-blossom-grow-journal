@@ -80,6 +80,12 @@ export default function Dashboard() {
         </Button>
       </div>
 
+      {/* Weather Widget */}
+      <WeatherWidget
+        indoorTemp={latestReadings[0]?.temperature}
+        indoorHumidity={latestReadings[0]?.humidity}
+      />
+
       {/* Strains Section */}
       {strains.length === 0 ? (
         <div className="rounded-2xl border border-white/5 bg-white/[0.02] p-12 text-center">
