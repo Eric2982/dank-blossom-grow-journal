@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Loader2 } from "lucide-react";
@@ -36,7 +36,7 @@ export default function BarcodeScanner({ open, onOpenChange, onResult }) {
   };
 
   // Cleanup stream when dialog closes
-  React.useEffect(() => {
+  useEffect(() => {
     if (!open) {
       stopStream();
       setStatus("idle");
