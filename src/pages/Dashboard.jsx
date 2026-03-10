@@ -9,6 +9,7 @@ import StrainForm from "../components/grow/StrainForm";
 import PullToRefresh from "../components/PullToRefresh";
 import { Link } from "react-router-dom";
 import { createPageUrl } from "../utils";
+import WeatherWidget from "../components/dashboard/WeatherWidget";
 
 export default function Dashboard() {
   const [showStrainForm, setShowStrainForm] = useState(false);
