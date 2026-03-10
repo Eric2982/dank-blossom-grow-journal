@@ -69,18 +69,9 @@ export default function Layout({ children, currentPageName }) {
           }
         }
         
-        @media (prefers-color-scheme: light) {
-          :root {
-            --background: 0 0% 98%;
-            --foreground: 0 0% 10%;
-          }
-          body { background: #fafafa !important; }
-        }
-        
         body { 
           background: #18181b;
           overscroll-behavior-y: none;
-          /* dark mode handled via Tailwind dark: classes */
           -webkit-overflow-scrolling: touch;
         }
         
