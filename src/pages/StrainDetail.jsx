@@ -18,6 +18,7 @@ import FeedingPlanner from "../components/grow/FeedingPlanner";
 import HarvestTracker from "../components/grow/HarvestTracker";
 import PullToRefresh from "../components/PullToRefresh";
 import { Badge } from "@/components/ui/badge";
+import ExportPDFButton from "../components/grow/ExportPDFButton";
 
 export default function StrainDetail() {
   const urlParams = new URLSearchParams(window.location.search);
