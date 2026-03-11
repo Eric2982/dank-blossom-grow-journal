@@ -23,6 +23,8 @@ jobs:
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
         # Node 18.x removed: undici@7.18.2 and wrangler@4.72.0 require Node >=20
 
+    env:
+      WRANGLER_SEND_METRICS: "false"
     steps:
     - uses: actions/checkout@v4
     - name: Verify GITHUB_ACTOR
