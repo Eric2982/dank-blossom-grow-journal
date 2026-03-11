@@ -5,6 +5,7 @@ const { google } = require('googleapis');
 const crypto = require('crypto');
 const express = require('express');
 const session = require('express-session');
+const { generalLimiter, authLimiter } = require('./rateLimiter');
 
 /**
  * To use OAuth2 authentication, we need access to a CLIENT_ID, CLIENT_SECRET, AND REDIRECT_URI.
@@ -35,6 +36,8 @@ let userCredential = null;
 async function main() {
   const app = express();
 
+  app.use(generalLimiter);
+
   app.use(session({
     secret: 'your_secure_secret_key', // Replace with a strong secret
     resave: false,
@@ -43,7 +46,7 @@ async function main() {
   }));
 
   // Example on redirecting user to Google's OAuth 2.0 server.
-  app.get('/', async (req, res) => {
+  app.get('/', authLimiter, async (req, res) => {
     // Generate a secure random state value.
     const state = crypto.randomBytes(32).toString('hex');
     // Store state in the session
@@ -66,7 +69,7 @@ async function main() {
   });
 
   // Receive the callback from Google's OAuth 2.0 server.
-  app.get('/oauth2callback', async (req, res) => {
+  app.get('/oauth2callback', authLimiter, async (req, res) => {
     // Handle the OAuth 2.0 server response
     let q = url.parse(req.url, true).query;
 
