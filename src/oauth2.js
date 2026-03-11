@@ -38,3 +38,5 @@ const authorizationUrl = oauth2Client.generateAuthUrl({
   // Include the state parameter to reduce the risk of CSRF attacks.
   state: state
 });
+
+res.redirect(authorizationUrl);
