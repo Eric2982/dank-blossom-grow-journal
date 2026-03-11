@@ -5,7 +5,7 @@ import { defineConfig } from 'vitest/config'
 import { cloudflare } from "@cloudflare/vite-plugin";
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ command }) => ({
   logLevel: 'error', // Suppress warnings, only show errors
   plugins: [base44({
     // Support for legacy code that imports the base44 SDK with @/integrations, @/entities, etc.
@@ -14,9 +14,9 @@ export default defineConfig({
     hmrNotifier: true,
     navigationNotifier: true,
     visualEditAgent: true
-  }), react(), ...(process.env.NODE_ENV === 'test' ? [] : [cloudflare()])],
+  }), react(), ...(command === 'serve' && process.env.NODE_ENV !== 'test' ? [cloudflare()] : [])],
   test: {
     environment: 'node',
     include: ['src/**/*.{test,spec}.{js,ts,jsx,tsx}'],
   },
-});
+}));
