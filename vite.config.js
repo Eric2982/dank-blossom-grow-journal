@@ -6,7 +6,6 @@ import { cloudflare } from "@cloudflare/vite-plugin";
 
 // https://vite.dev/config/
 export default defineConfig(() => ({
-  logLevel: 'error', // Suppress warnings, only show errors
   plugins: [base44({
     // Support for legacy code that imports the base44 SDK with @/integrations, @/entities, etc.
     // can be removed if the code has been updated to use the new SDK imports from @base44/sdk
@@ -15,6 +14,13 @@ export default defineConfig(() => ({
     navigationNotifier: true,
     visualEditAgent: true
   }), react(), ...(process.env.NODE_ENV !== 'test' ? [cloudflare()] : [])],
+  build: {
+    rollupOptions: {
+      output: {
+        format: 'esm',
+      },
+    },
+  },
   test: {
     environment: 'node',
     include: ['src/**/*.{test,spec}.{js,ts,jsx,tsx}'],
