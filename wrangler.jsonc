@@ -1,7 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "dbgj-assetlinks-worker",
-  "main": "./src/main.jsx",
   "compatibility_date": "2026-03-12",
   "send_metrics": false,
   "observability": {
