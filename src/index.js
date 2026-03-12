@@ -1,8 +1,10 @@
 export default {
-  async fetch(request, env, ctx) {
-    if (!env.ASSETS) {
-      return new Response('Assets binding not configured', { status: 500 });
-    }
-    return env.ASSETS.fetch(request);
-  }
+  fetch(request) {
+    const base = "https://example.com";
+    const statusCode = 301;
+
+    const source = new URL(request.url);
+    const destination = new URL(source.pathname, base);
+    return Response.redirect(destination.toString(), statusCode);
+  },
 };
