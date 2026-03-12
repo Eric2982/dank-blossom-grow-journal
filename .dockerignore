@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build output (rebuilt inside Docker)
+dist/
+dist-ssr/
+
+# Environment files - exclude secrets but keep .env.local (committed app config)
+.env
+.env.production
+.env.development
+.dev.vars*
+
+# Wrangler local state
+.wrangler/
+
+# Git metadata
+.git/
+.github/
+
+# Editor / OS artifacts
+.vscode/
+.idea/
+.DS_Store
+*.suo
+*.sw?
+
+# Logs
+*.log
+npm-debug.log*
