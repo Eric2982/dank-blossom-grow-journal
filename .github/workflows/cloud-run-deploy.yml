@@ -1,0 +1,143 @@
+# Deploy to Google Cloud Run and configure custom audiences for OIDC verification.
+#
+# Required repository secrets:
+#   GCP_PROJECT_ID          – Google Cloud project ID
+#   GCP_SA_KEY              – JSON key for a service account with the following roles:
+#                               roles/run.admin
+#                               roles/iam.serviceAccountUser
+#                               roles/storage.admin (if pushing to GCR/Artifact Registry)
+#   CLOUD_RUN_CUSTOM_AUDIENCE – The audience string(s) to register, e.g.
+#                               "https://dankblossominc.com"
+#
+# Required repository variables (Settings → Variables → Actions):
+#   CLOUD_RUN_SERVICE       – Cloud Run service name, e.g. "dank-blossom-app"
+#   CLOUD_RUN_REGION        – GCP region, e.g. "us-central1"
+#   DOCKER_IMAGE            – Artifact Registry image path, e.g.
+#                             "us-central1-docker.pkg.dev/PROJECT/REPO/app"
+
+name: Deploy to Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Build, push, and deploy
+    runs-on: ubuntu-latest
+    env:
+      WRANGLER_SEND_METRICS: "false"
+
+    steps:
+      # -----------------------------------------------------------------------
+      # 1. Checkout source
+      # -----------------------------------------------------------------------
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # -----------------------------------------------------------------------
+      # 2. Authenticate with Google Cloud
+      # -----------------------------------------------------------------------
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+
+      # -----------------------------------------------------------------------
+      # 3. Build and push Docker image
+      # -----------------------------------------------------------------------
+      - name: Configure Docker to use gcloud credentials
+        run: |
+          # Extract registry hostname (e.g. us-central1-docker.pkg.dev) from the image path.
+          REGISTRY=$(echo "${{ vars.DOCKER_IMAGE }}" | cut -d'/' -f1)
+          gcloud auth configure-docker "$REGISTRY" --quiet
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            --build-arg VITE_BASE44_APP_ID="${{ secrets.VITE_BASE44_APP_ID }}" \
+            --build-arg VITE_BASE44_APP_BASE_URL="${{ secrets.VITE_BASE44_APP_BASE_URL }}" \
+            --build-arg VITE_GOOGLE_API_KEY="${{ secrets.VITE_GOOGLE_API_KEY }}" \
+            --tag "${{ vars.DOCKER_IMAGE }}:${{ github.sha }}" \
+            --tag "${{ vars.DOCKER_IMAGE }}:latest" \
+            .
+
+      - name: Push Docker image
+        run: |
+          docker push "${{ vars.DOCKER_IMAGE }}:${{ github.sha }}"
+          docker push "${{ vars.DOCKER_IMAGE }}:latest"
+
+      # -----------------------------------------------------------------------
+      # 4. Deploy to Cloud Run
+      # -----------------------------------------------------------------------
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy "${{ vars.CLOUD_RUN_SERVICE }}" \
+            --image "${{ vars.DOCKER_IMAGE }}:${{ github.sha }}" \
+            --region "${{ vars.CLOUD_RUN_REGION }}" \
+            --platform managed \
+            --quiet
+
+      # -----------------------------------------------------------------------
+      # 5. Set custom audience(s) on the service
+      #
+      #    gcloud run services update SERVICE --add-custom-audiences=AUDIENCE
+      #
+      #    This registers the given string as an accepted value for the `aud`
+      #    claim in OIDC ID tokens presented to the service.  Any service
+      #    account that needs to call this Cloud Run service must obtain an ID
+      #    token with this audience.
+      # -----------------------------------------------------------------------
+      - name: Set custom audience on Cloud Run service
+        run: |
+          gcloud run services update "${{ vars.CLOUD_RUN_SERVICE }}" \
+            --region "${{ vars.CLOUD_RUN_REGION }}" \
+            --platform managed \
+            --add-custom-audiences="${{ secrets.CLOUD_RUN_CUSTOM_AUDIENCE }}" \
+            --quiet
+
+      # -----------------------------------------------------------------------
+      # 6. Verify the custom audience is configured
+      #
+      #    Reads back the service description and confirms the expected audience
+      #    string appears in the custom-audiences list.  The step fails if it
+      #    is missing, providing early detection of configuration drift.
+      # -----------------------------------------------------------------------
+      - name: Verify custom audience is configured
+        run: |
+          AUDIENCE="${{ secrets.CLOUD_RUN_CUSTOM_AUDIENCE }}"
+          echo "Expected audience: $AUDIENCE"
+
+          CONFIGURED=$(gcloud run services describe "${{ vars.CLOUD_RUN_SERVICE }}" \
+            --region "${{ vars.CLOUD_RUN_REGION }}" \
+            --platform managed \
+            --format="value(spec.template.metadata.annotations['run.googleapis.com/custom-audiences'])")
+
+          echo "Configured audiences: $CONFIGURED"
+
+          if echo "$CONFIGURED" | grep -qF "$AUDIENCE"; then
+            echo "✅ Custom audience '$AUDIENCE' is correctly configured."
+          else
+            echo "❌ Custom audience '$AUDIENCE' was NOT found in the service configuration."
+            exit 1
+          fi
+
+      # -----------------------------------------------------------------------
+      # 7. Print the service URL
+      # -----------------------------------------------------------------------
+      - name: Get Cloud Run service URL
+        run: |
+          gcloud run services describe "${{ vars.CLOUD_RUN_SERVICE }}" \
+            --region "${{ vars.CLOUD_RUN_REGION }}" \
+            --platform managed \
+            --format="value(status.url)"
