@@ -1,5 +1,8 @@
 export default {
   async fetch(request, env, ctx) {
-    return new Response("Hello World!", { status: 200 });
+    if (!env.ASSETS) {
+      return new Response('Assets binding not configured', { status: 500 });
+    }
+    return env.ASSETS.fetch(request);
   }
 };

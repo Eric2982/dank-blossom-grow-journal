@@ -5,7 +5,9 @@ import { defineConfig } from 'vitest/config'
 import { cloudflare } from "@cloudflare/vite-plugin";
 
 // https://vite.dev/config/
-export default defineConfig(() => ({
+// Use Vite's `mode` (not process.env.NODE_ENV) so @cloudflare/vite-plugin is always
+// included during production builds, regardless of any externally set NODE_ENV.
+export default defineConfig(({ mode }) => ({
   plugins: [base44({
     // Support for legacy code that imports the base44 SDK with @/integrations, @/entities, etc.
     // can be removed if the code has been updated to use the new SDK imports from @base44/sdk
@@ -13,7 +15,7 @@ export default defineConfig(() => ({
     hmrNotifier: true,
     navigationNotifier: true,
     visualEditAgent: true
-  }), react(), ...(process.env.NODE_ENV !== 'test' ? [cloudflare()] : [])],
+  }), react(), ...(mode !== 'test' ? [cloudflare()] : [])],
   build: {
     rollupOptions: {
       output: {
