@@ -30,8 +30,6 @@ jobs:
   deploy:
     name: Build, push, and deploy
     runs-on: ubuntu-latest
-    env:
-      WRANGLER_SEND_METRICS: "false"
 
     steps:
       # -----------------------------------------------------------------------
@@ -41,7 +39,30 @@ jobs:
         uses: actions/checkout@v4
 
       # -----------------------------------------------------------------------
-      # 2. Authenticate with Google Cloud
+      # 2. Validate required secrets are present before attempting authentication
+      # -----------------------------------------------------------------------
+      - name: Validate required secrets
+        run: |
+          TRIMMED="${GCP_SA_KEY// /}"
+          if [ -z "$TRIMMED" ]; then
+            echo "ERROR: GCP_SA_KEY secret is not set."
+            echo "Please add the GCP_SA_KEY secret to your repository under"
+            echo "Settings → Secrets and variables → Actions → Secrets."
+            echo "The value must be the full JSON contents of your Google Cloud service account key file."
+            exit 1
+          fi
+          if [[ "$GCP_SA_KEY" != "{"* ]]; then
+            echo "ERROR: GCP_SA_KEY does not appear to be a valid JSON object."
+            echo "The value must be the full JSON contents of your Google Cloud service account key file."
+            exit 1
+          fi
+          echo "GCP_SA_KEY secret is present and appears to be valid JSON."
+        env:
+          GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+
+      # -----------------------------------------------------------------------
+      # 3. Authenticate with Google Cloud using only credentials_json.
+      #    Do NOT specify workload_identity_provider at the same time.
       # -----------------------------------------------------------------------
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -54,7 +75,7 @@ jobs:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
 
       # -----------------------------------------------------------------------
-      # 3. Build and push Docker image
+      # 4. Build and push Docker image
       # -----------------------------------------------------------------------
       - name: Configure Docker to use gcloud credentials
         run: |
@@ -78,7 +99,7 @@ jobs:
           docker push "${{ vars.DOCKER_IMAGE }}:latest"
 
       # -----------------------------------------------------------------------
-      # 4. Deploy to Cloud Run
+      # 5. Deploy to Cloud Run
       # -----------------------------------------------------------------------
       - name: Deploy to Cloud Run
         run: |
@@ -89,7 +110,7 @@ jobs:
             --quiet
 
       # -----------------------------------------------------------------------
-      # 5. Set custom audience(s) on the service
+      # 6. Set custom audience(s) on the service
       #
       #    gcloud run services update SERVICE --add-custom-audiences=AUDIENCE
       #
@@ -107,7 +128,7 @@ jobs:
             --quiet
 
       # -----------------------------------------------------------------------
-      # 6. Verify the custom audience is configured
+      # 7. Verify the custom audience is configured
       #
       #    Reads back the service description and confirms the expected audience
       #    string appears in the custom-audiences list.  The step fails if it
@@ -133,7 +154,7 @@ jobs:
           fi
 
       # -----------------------------------------------------------------------
-      # 7. Print the service URL
+      # 8. Print the service URL
       # -----------------------------------------------------------------------
       - name: Get Cloud Run service URL
         run: |
