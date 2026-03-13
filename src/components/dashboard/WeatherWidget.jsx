@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Cloud, Thermometer, Droplets, MapPin, RefreshCw, AlertCircle } from "lucide-react";
+import React, { useState } from "react";
+import { Cloud, Droplets, MapPin, RefreshCw, AlertCircle } from "lucide-react";
 
 const WMO_CODES = {
   0: { label: "Clear Sky", emoji: "☀️" },

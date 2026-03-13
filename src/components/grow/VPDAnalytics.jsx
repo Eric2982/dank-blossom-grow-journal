@@ -1,10 +1,10 @@
 import React, { useMemo, useState } from "react";
 import {
-  ComposedChart, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
-  ResponsiveContainer, ReferenceArea, ReferenceLine, Area, Legend, Scatter, ScatterChart, ZAxis
+  ComposedChart, Line, XAxis, YAxis, CartesianGrid, Tooltip,
+  ResponsiveContainer, ReferenceArea, ReferenceLine
 } from "recharts";
 import { format } from "date-fns";
-import { Wind, ThermometerSun, Droplets, Info, CheckCircle, AlertTriangle, TrendingUp } from "lucide-react";
+import { Wind, ThermometerSun, CheckCircle, AlertTriangle, TrendingUp } from "lucide-react";
 
 // ── VPD calculation ──────────────────────────────────────────────────────────
 function calcVPD(tempF, rh) {
