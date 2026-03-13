@@ -1,5 +1,4 @@
 import React from "react";
-import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { createPageUrl } from "./components/utils";
 import { LayoutDashboard, ShoppingBag, Leaf, MessageSquare, ArrowLeft, Settings, Trophy, Users } from "lucide-react";
