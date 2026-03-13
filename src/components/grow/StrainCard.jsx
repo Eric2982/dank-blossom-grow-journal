@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Sprout, Flower, BarChart3 } from "lucide-react";
 import { differenceInDays } from "date-fns";
 import { Link } from "react-router-dom";
-import { createPageUrl } from "../../utils";
+import { createPageUrl } from "../../components/utils";
 
 const typeColors = {
   indica: "bg-purple-500/15 text-purple-400 border-purple-500/20",

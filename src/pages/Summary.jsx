@@ -5,7 +5,7 @@ import { Thermometer, Droplets, Sun, Zap, Wind, FlaskConical, Activity, ArrowLef
 import StatCard from "../components/grow/StatCard";
 import PullToRefresh from "../components/PullToRefresh";
 import { Link } from "react-router-dom";
-import { createPageUrl } from "../utils";
+import { createPageUrl } from "../components/utils";
 import { Button } from "@/components/ui/button";
 
 export default function Summary() {

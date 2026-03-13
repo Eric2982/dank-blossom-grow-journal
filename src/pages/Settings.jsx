@@ -10,7 +10,7 @@ import { Link } from "react-router-dom";
 import CancelSubscriptionButton from "../components/settings/CancelSubscriptionButton";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
-import { createPageUrl } from "../utils";
+import { createPageUrl } from "../components/utils";
 import PullToRefresh from "../components/PullToRefresh";
 import { format } from "date-fns";
 
