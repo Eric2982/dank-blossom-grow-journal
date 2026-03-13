@@ -1,7 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://dankblossominc.com/foo.html</loc>
-    <lastmod>2022-06-04</lastmod>
+    <loc>https://dankblossominc.com/</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dankblossominc.com/Dashboard</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dankblossominc.com/Summary</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dankblossominc.com/Chat</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dankblossominc.com/Store</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dankblossominc.com/Learn</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dankblossominc.com/Premium</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dankblossominc.com/Challenges</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dankblossominc.com/Community</loc>
+    <lastmod>2026-03-13</lastmod>
+  </url>
+  <url>
+    <loc>https://dankblossominc.com/Nutrients</loc>
+    <lastmod>2026-03-13</lastmod>
   </url>
 </urlset>
