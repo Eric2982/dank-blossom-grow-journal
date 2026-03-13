@@ -1,6 +1,6 @@
 export default {
   fetch(request) {
-    const base = "https://example.com";
+    const base = "https://dankblossominc.com";
     const statusCode = 301;
 
     const source = new URL(request.url);
