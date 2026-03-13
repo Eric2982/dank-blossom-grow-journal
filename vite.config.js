@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => ({
     legacySDKImports: process.env.BASE44_LEGACY_SDK_IMPORTS === 'true',
     hmrNotifier: true,
     navigationNotifier: true,
-    visualEditAgent: true
+    visualEditAgent: false
   }), react(), ...(mode !== 'test' ? [cloudflare()] : [])],
   build: {
     rollupOptions: {
