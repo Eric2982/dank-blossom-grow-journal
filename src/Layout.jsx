@@ -18,7 +18,6 @@ const navItems = [
 
 export default function Layout({ children, currentPageName }) {
   const navigate = useNavigate();
-  const location = useLocation();
   const isRootPage = rootPages.includes(currentPageName);
   const [pageCache, setPageCache] = React.useState({});
   const [renderedPages, setRenderedPages] = React.useState(new Set());
