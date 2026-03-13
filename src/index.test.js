@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import worker from './index.js';
 
 const TARGET_DOMAIN = 'dankblossominc.com';
@@ -31,6 +31,38 @@ describe('Cloudflare redirect worker', () => {
     const request = new Request('https://workers.dev/');
     const response = await worker.fetch(request);
     expect(response.status).toBe(301);
+  });
+});
+
+describe('Cloudflare Worker asset serving on target domain', () => {
+  let mockEnv;
+
+  beforeEach(() => {
+    const mockResponse = new Response('<html>app</html>', { status: 200 });
+    mockEnv = {
+      ASSETS: { fetch: vi.fn().mockResolvedValue(mockResponse) },
+    };
+  });
+
+  it('serves SPA assets when request is from dankblossominc.com', async () => {
+    const request = new Request(`https://${TARGET_DOMAIN}/`);
+    const response = await worker.fetch(request, mockEnv);
+    expect(response.status).toBe(200);
+    expect(mockEnv.ASSETS.fetch).toHaveBeenCalledWith(request);
+  });
+
+  it('does not redirect when request is already from dankblossominc.com', async () => {
+    const request = new Request(`https://${TARGET_DOMAIN}/dashboard`);
+    const response = await worker.fetch(request, mockEnv);
+    expect(response.status).not.toBe(301);
+    expect(response.headers.get('Location')).toBeNull();
+  });
+
+  it('serves assets for any path on dankblossominc.com', async () => {
+    const request = new Request(`https://${TARGET_DOMAIN}/grow-journal/entry/123`);
+    const response = await worker.fetch(request, mockEnv);
+    expect(response.status).toBe(200);
+    expect(mockEnv.ASSETS.fetch).toHaveBeenCalledWith(request);
   });
 });
 

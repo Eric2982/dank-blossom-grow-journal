@@ -13,8 +13,13 @@ export default {
     }
 
     const base = "https://dankblossominc.com";
-    const statusCode = 301;
 
+    // If already on the canonical domain, serve the SPA assets directly
+    if (url.hostname === "dankblossominc.com") {
+      return env.ASSETS.fetch(request);
+    }
+
+    const statusCode = 301;
     const destination = new URL(url.pathname, base);
     return Response.redirect(destination.toString(), statusCode);
   },
