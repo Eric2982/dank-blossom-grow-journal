@@ -53,6 +53,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
+    - run: npm run lint
     - run: npm run build --if-present
     - name: Validate wrangler deployment configuration
       run: npx wrangler deploy --dry-run --outdir /tmp/wrangler-dry
