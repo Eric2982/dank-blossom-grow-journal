@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { createPageUrl } from "./utils";
+import { createPageUrl } from "./components/utils";
 import { LayoutDashboard, ShoppingBag, Leaf, MessageSquare, ArrowLeft, Settings, Trophy, Users } from "lucide-react";
 import { motion } from "framer-motion";
 import { AlertDialog, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
