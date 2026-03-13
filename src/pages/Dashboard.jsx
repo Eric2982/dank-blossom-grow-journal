@@ -8,7 +8,7 @@ import StrainCard from "../components/grow/StrainCard";
 import StrainForm from "../components/grow/StrainForm";
 import PullToRefresh from "../components/PullToRefresh";
 import { Link } from "react-router-dom";
-import { createPageUrl } from "../utils";
+import { createPageUrl } from "../components/utils";
 import WeatherWidget from "../components/dashboard/WeatherWidget";
 
 export default function Dashboard() {
