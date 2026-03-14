@@ -12,10 +12,10 @@ export default {
       return fetch(new Request(proxyUrl.toString(), request));
     }
 
-    const base = "https://dankblossominc.com";
+    const base = "https://dankblossom.app";
 
     // If already on the canonical domain, serve the SPA assets directly
-    if (url.hostname === "dankblossominc.com") {
+    if (url.hostname === "dankblossom.app") {
       return env.ASSETS.fetch(request);
     }
 

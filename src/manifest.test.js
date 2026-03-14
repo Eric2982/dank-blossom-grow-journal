@@ -5,7 +5,7 @@ import { resolve } from 'path';
 const MANIFEST_PATH = resolve(process.cwd(), 'public/manifest.json');
 
 // Domain that must serve this file over HTTPS at /manifest.json
-const DOMAIN = 'dankblossominc.com';
+const DOMAIN = 'dankblossom.app';
 
 describe('Web App Manifest', () => {
   let data;
@@ -55,11 +55,11 @@ describe('Web App Manifest', () => {
     }
   });
 
-  it('should be located in public/ so it is served over HTTPS on dankblossominc.com', () => {
+  it('should be located in public/ so it is served over HTTPS on dankblossom.app', () => {
     // Files in public/ are served at the root path by Vite and Cloudflare Workers.
     // This ensures the file is accessible at:
-    //   https://dankblossominc.com/manifest.json
+    //   https://dankblossom.app/manifest.json
     expect(MANIFEST_PATH).toContain('public/manifest.json');
-    expect(DOMAIN).toBe('dankblossominc.com');
+    expect(DOMAIN).toBe('dankblossom.app');
   });
 });

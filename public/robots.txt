@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://dankblossominc.com/sitemap.xml
+Sitemap: https://dankblossom.app/sitemap.xml

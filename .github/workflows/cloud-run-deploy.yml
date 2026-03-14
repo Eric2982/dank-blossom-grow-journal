@@ -7,7 +7,7 @@
 #                               roles/iam.serviceAccountUser
 #                               roles/storage.admin (if pushing to GCR/Artifact Registry)
 #   CLOUD_RUN_CUSTOM_AUDIENCE – The audience string(s) to register, e.g.
-#                               "https://dankblossominc.com"
+#                               "https://dankblossom.app"
 #
 # Required repository variables (Settings → Variables → Actions):
 #   CLOUD_RUN_SERVICE       – Cloud Run service name, e.g. "dank-blossom-app"
