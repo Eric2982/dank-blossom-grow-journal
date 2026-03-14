@@ -1,16 +1,16 @@
 import { describe, it, expect, vi, afterEach, beforeEach } from 'vitest';
 import worker from './index.js';
 
-const TARGET_DOMAIN = 'dankblossominc.com';
+const TARGET_DOMAIN = 'dankblossom.app';
 const BASE44_BACKEND = 'https://my-to-do-list-81bfaad7.base44.app';
 
 describe('Cloudflare redirect worker', () => {
-  it('redirects to https://dankblossominc.com', async () => {
+  it('redirects to https://dankblossom.app', async () => {
     const request = new Request('https://workers.dev/some-path');
     const response = await worker.fetch(request);
     expect(response.status).toBe(301);
     const location = response.headers.get('Location');
-    expect(location).toMatch(/^https:\/\/dankblossominc\.com/);
+    expect(location).toMatch(/^https:\/\/dankblossom\.app/);
   });
 
   it('preserves the pathname in the redirect', async () => {
@@ -44,21 +44,21 @@ describe('Cloudflare Worker asset serving on target domain', () => {
     };
   });
 
-  it('serves SPA assets when request is from dankblossominc.com', async () => {
+  it('serves SPA assets when request is from dankblossom.app', async () => {
     const request = new Request(`https://${TARGET_DOMAIN}/`);
     const response = await worker.fetch(request, mockEnv);
     expect(response.status).toBe(200);
     expect(mockEnv.ASSETS.fetch).toHaveBeenCalledWith(request);
   });
 
-  it('does not redirect when request is already from dankblossominc.com', async () => {
+  it('does not redirect when request is already from dankblossom.app', async () => {
     const request = new Request(`https://${TARGET_DOMAIN}/dashboard`);
     const response = await worker.fetch(request, mockEnv);
     expect(response.status).not.toBe(301);
     expect(response.headers.get('Location')).toBeNull();
   });
 
-  it('serves assets for any path on dankblossominc.com', async () => {
+  it('serves assets for any path on dankblossom.app', async () => {
     const request = new Request(`https://${TARGET_DOMAIN}/grow-journal/entry/123`);
     const response = await worker.fetch(request, mockEnv);
     expect(response.status).toBe(200);

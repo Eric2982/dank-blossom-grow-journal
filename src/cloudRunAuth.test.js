@@ -115,7 +115,7 @@ describe('isTokenExpired', () => {
 // ---------------------------------------------------------------------------
 
 describe('verifyCloudRunToken', () => {
-  const AUDIENCE = 'https://dankblossominc.com';
+  const AUDIENCE = 'https://dankblossom.app';
 
   it('returns valid=true for a well-formed, non-expired token with the correct audience', () => {
     const token = buildToken({ aud: AUDIENCE, exp: nowPlusSec(3600), sub: 'svc' });
