@@ -101,7 +101,11 @@ export default function Dashboard() {
           </div>
         )}
 
-        <StrainForm open={showStrainForm} onOpenChange={setShowStrainForm} onSubmit={(data) => createStrainMutation.mutate(data)} />
+        <StrainForm
+          open={showStrainForm}
+          onOpenChange={setShowStrainForm}
+          onSubmit={(data) => createStrainMutation.mutate(data)}
+        />
       </div>
     </PullToRefresh>
   );
